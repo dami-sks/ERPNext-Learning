@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kuwa Advisory — ERPNext Learning Library</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='8' cy='16' r='6' fill='%23E63815'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23005B50'/%3E%3Ccircle cx='24' cy='16' r='6' fill='%23F79F1B'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Instrument Sans', sans-serif;
+    background: #FAFAF8;
+    color: #0A0A0A;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .bg-blob {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(90px);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .bg-blob.blob-1 { top: -12%; left: -8%; width: 440px; height: 440px; background: #E63815; opacity: 0.28; }
+  .bg-blob.blob-2 { top: 25%; right: -12%; width: 400px; height: 400px; background: #005B50; opacity: 0.24; }
+  .bg-blob.blob-3 { bottom: -18%; left: 22%; width: 480px; height: 480px; background: #F79F1B; opacity: 0.22; }
+
+  #launcher {
+    position: relative;
+    z-index: 1;
+    padding: 52px;
+    max-width: 1100px;
+    margin: 0 auto;
+    transition: opacity 0.2s;
+  }
+
+  @media (max-width: 600px) {
+    #launcher { padding: 28px; }
+  }
+
+  .wordmark {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: #E63815;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+  }
+
+  h1.page-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #0A0A0A;
+    letter-spacing: -0.01em;
+    margin: 0 0 10px 0;
+  }
+
+  .page-subtitle {
+    font-size: 14px;
+    color: #6B6B66;
+    margin: 0 0 24px 0;
+  }
+
+  .header-rule {
+    border: none;
+    border-top: 1px solid #DEDEDA;
+    margin: 0 0 32px 0;
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  .card {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: rgba(255,255,255,0.40);
+    border: 1px solid rgba(255,255,255,0.55);
+    border-radius: 14px;
+    padding: 20px;
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    box-shadow:
+      0 8px 32px rgba(0,0,0,0.10),
+      inset 0 1px 0 rgba(255,255,255,0.6),
+      inset 0 0 0 1px rgba(255,255,255,0.15);
+    transition: box-shadow 0.15s, transform 0.15s;
+  }
+
+  /* rough frosted-glass grain */
+  .card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 220px 220px;
+    opacity: 0.5;
+    mix-blend-mode: overlay;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n2'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.75' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n2)'/%3E%3C/svg%3E");
+    background-size: 140px 140px;
+    opacity: 0.25;
+    mix-blend-mode: multiply;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .card-badge, .card-title, .card-description, .card-action {
+    position: relative;
+    z-index: 1;
+  }
+
+  .card.is-live {
+    cursor: pointer;
+  }
+
+  .card.is-live:hover {
+    box-shadow:
+      0 16px 44px rgba(0,0,0,0.16),
+      inset 0 1px 0 rgba(255,255,255,0.7),
+      inset 0 0 0 1px rgba(255,255,255,0.2);
+    transform: translateY(-2px);
+  }
+
+  .card.is-live:focus-visible {
+    outline: 2px solid #0A0A0A;
+    outline-offset: 3px;
+  }
+
+  .card.is-coming-soon {
+    opacity: 0.42;
+    cursor: default;
+  }
+
+  .card-badge {
+    font-size: 9.5px;
+    text-transform: uppercase;
+    letter-spacing: 1.4px;
+    font-weight: 700;
+  }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #0A0A0A;
+    margin-top: 6px;
+  }
+
+  .card-description {
+    font-size: 13.5px;
+    color: #3A3A36;
+    line-height: 1.65;
+    margin-top: 8px;
+  }
+
+  .card-action {
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 16px;
+  }
+
+  .card-action.coming-soon-label {
+    color: #9A9A95;
+  }
+
+  /* Reader state */
+  #reader-frame {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    border: none;
+    margin: 0;
+    padding: 0;
+    z-index: 100;
+  }
+
+  #back-pill {
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    z-index: 9999;
+    background: rgba(10,10,10,0.55);
+    border: 1px solid rgba(255,255,255,0.18);
+    color: #FAFAF8;
+    padding: 10px 18px;
+    border-radius: 24px;
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.12);
+    backdrop-filter: blur(14px) saturate(160%);
+    -webkit-backdrop-filter: blur(14px) saturate(160%);
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    display: none;
+  }
+
+  #back-pill:hover {
+    background: rgba(230,56,21,0.75);
+    border-color: rgba(230,56,21,0.6);
+  }
+
+  #back-pill.visible {
+    display: block;
+  }
+
+  /* Shared floating actions: WhatsApp + back-to-top */
+  .kw-fab {
+    position: fixed;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    font-family: 'Instrument Sans', sans-serif;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.2s ease;
+  }
+
+  #kw-wa-btn {
+    bottom: 24px;
+    right: 24px;
+    width: 52px;
+    height: 52px;
+    background: #25D366;
+    box-shadow: 0 6px 20px rgba(37,211,102,0.40), 0 2px 8px rgba(0,0,0,0.18);
+  }
+
+  #kw-wa-btn:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 10px 26px rgba(37,211,102,0.5), 0 3px 10px rgba(0,0,0,0.22);
+  }
+
+  #kw-top-btn {
+    bottom: 88px;
+    right: 24px;
+    width: 44px;
+    height: 44px;
+    background: rgba(10,10,10,0.82);
+    color: #FAFAF8;
+    font-size: 18px;
+    font-weight: 700;
+    opacity: 0;
+    pointer-events: none;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+  }
+
+  #kw-top-btn.vis {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  #kw-top-btn:hover {
+    background: #E63815;
+    transform: translateY(-2px);
+  }
+
+  .kw-fab.kw-hidden {
+    display: none;
+  }
+
+  @media (max-width: 600px) {
+    #kw-wa-btn { width: 46px; height: 46px; bottom: 18px; right: 18px; }
+    #kw-top-btn { width: 38px; height: 38px; bottom: 72px; right: 18px; font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-blob blob-1"></div>
+<div class="bg-blob blob-2"></div>
+<div class="bg-blob blob-3"></div>
+
+<div id="launcher">
+  <div class="wordmark">Kuwa Advisory</div>
+  <h1 class="page-title">ERPNext Learning Library</h1>
+  <p class="page-subtitle">A growing library of structured reference documents for ERPNext and Frappe. Click any resource to open it.</p>
+  <hr class="header-rule">
+  <div class="card-grid" id="card-grid"></div>
+</div>
+
+<div id="back-pill">&larr; All Resources</div>
+
+<a id="kw-wa-btn" class="kw-fab" href="https://wa.me/2347089167007?text=Hi%2C%20I%20have%20a%20question%20about%20the%20ERPNext%2FFrappe%20learning%20resources." target="_blank" rel="noopener" aria-label="Message on WhatsApp" title="Message me on WhatsApp">
+  <svg viewBox="0 0 24 24" width="24" height="24" fill="#fff"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 1.67c2.24 0 4.35.87 5.94 2.46a8.2 8.2 0 0 1 2.41 5.78c0 4.55-3.7 8.25-8.25 8.25a8.2 8.2 0 0 1-4.19-1.15l-.3-.17-3.12.82.83-3.04-.19-.31a8.18 8.18 0 0 1-1.28-4.4c0-4.55 3.7-8.24 8.15-8.24zm4.52 5.86c-.25-.12-1.47-.72-1.7-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.78.97-.14.17-.29.19-.53.06-.25-.12-1.04-.38-1.99-1.22-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.14.16-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.23.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.68 4.25 3.75.59.25 1.06.4 1.42.52.6.19 1.14.16 1.57.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.1-.23-.16-.48-.28z"/></svg>
+</a>
+<button id="kw-top-btn" class="kw-fab" aria-label="Back to top" title="Back to top">&uarr;</button>
+
+<script>
+  // Add a new resource by appending one object here. No other code changes needed.
+  const RESOURCES = [
+    {
+      id: "erpnext-core",
+      title: "ERPNext Core Reference",
+      description: "Fourteen parts covering every ERPNext module in dependency order. Built from four live implementations across Nigeria, Kenya, the UAE, and the Netherlands.",
+      type: "Core Reference",
+      file: "erpnext-core-reference.html",
+      status: "live"
+    },
+    {
+      id: "erpnext-education",
+      title: "ERPNext Education Module Reference",
+      description: "DocType-level reference for the Frappe Education module, built from a live ACE school implementation in Uganda. Covers all 37 doctypes across 8 dependency layers.",
+      type: "Module Reference",
+      file: "erpnext-education-module-reference.html",
+      status: "live"
+    },
+    {
+      id: "frappe-framework",
+      title: "Frappe Framework Guide",
+      description: "First-principles guide to the Frappe framework: DocTypes, hooks, the bench, custom apps, and the system that ERPNext runs on top of.",
+      type: "Framework Guide",
+      file: "frappe-framework-guide.html",
+      status: "live"
+    },
+    {
+      id: "kuwa-dev-track",
+      title: "Kuwa Dev Track: Frappe App Development",
+      description: "A three-week learning plan for building and deploying custom Frappe apps, from Python reading literacy to a live custom app with zero code outside the framework.",
+      type: "Dev Track",
+      file: "kuwa_dev_track_learning_plan.html",
+      status: "live"
+    },
+    {
+      id: "frappe-hr",
+      title: "Frappe HR Reference",
+      description: "DocType-level reference for the Frappe HR module: recruitment, onboarding, attendance, payroll, and performance, in dependency order.",
+      type: "Module Reference",
+      file: "frappe-hr-reference.html",
+      status: "live"
+    }
+  ];
+
+  const TYPE_COLORS = {
+    "Core Reference": "#E63815",
+    "Module Reference": "#005B50",
+    "Framework Guide": "#F79F1B"
+  };
+  const DEFAULT_TYPE_COLOR = "#0A0A0A";
+
+  function typeColor(type) {
+    return TYPE_COLORS[type] || DEFAULT_TYPE_COLOR;
+  }
+
+  function renderCards() {
+    const grid = document.getElementById('card-grid');
+    grid.innerHTML = '';
+
+    RESOURCES.forEach(resource => {
+      const isLive = resource.status === 'live';
+      const color = typeColor(resource.type);
+
+      const card = document.createElement('div');
+      card.className = 'card ' + (isLive ? 'is-live' : 'is-coming-soon');
+
+      const badge = document.createElement('div');
+      badge.className = 'card-badge';
+      badge.style.color = color;
+      badge.textContent = resource.type;
+
+      const title = document.createElement('div');
+      title.className = 'card-title';
+      title.textContent = resource.title;
+
+      const description = document.createElement('div');
+      description.className = 'card-description';
+      description.textContent = resource.description;
+
+      const action = document.createElement('div');
+      if (isLive) {
+        action.className = 'card-action';
+        action.style.color = color;
+        action.textContent = 'Open →';
+      } else {
+        action.className = 'card-action coming-soon-label';
+        action.textContent = 'Coming soon';
+      }
+
+      card.appendChild(badge);
+      card.appendChild(title);
+      card.appendChild(description);
+      card.appendChild(action);
+
+      if (isLive) {
+        card.tabIndex = 0;
+        card.setAttribute('role', 'button');
+        card.addEventListener('click', () => openResource(resource));
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openResource(resource);
+          }
+        });
+      } else {
+        card.setAttribute('aria-disabled', 'true');
+      }
+
+      grid.appendChild(card);
+    });
+  }
+
+  const DEFAULT_TITLE = document.title;
+  let currentFrame = null;
+
+  function openResource(resource, opts) {
+    opts = opts || {};
+    const launcher = document.getElementById('launcher');
+    const backPill = document.getElementById('back-pill');
+
+    launcher.style.opacity = '0';
+    launcher.setAttribute('inert', '');
+
+    if (currentFrame) currentFrame.remove();
+    const iframe = document.createElement('iframe');
+    iframe.id = 'reader-frame';
+    iframe.title = resource.title;
+    iframe.src = resource.file;
+    document.body.appendChild(iframe);
+    currentFrame = iframe;
+
+    backPill.classList.add('visible');
+    // the embedded resource has its own WhatsApp / back-to-top buttons
+    document.getElementById('kw-wa-btn').classList.add('kw-hidden');
+    document.getElementById('kw-top-btn').classList.add('kw-hidden');
+    document.title = resource.title + ' — Kuwa Advisory';
+
+    if (opts.push !== false) {
+      history.pushState({ resourceId: resource.id }, '', '#' + resource.id);
+    }
+  }
+
+  function closeReader() {
+    const launcher = document.getElementById('launcher');
+    const backPill = document.getElementById('back-pill');
+
+    if (currentFrame) {
+      currentFrame.remove();
+      currentFrame = null;
+    }
+
+    backPill.classList.remove('visible');
+    launcher.style.opacity = '1';
+    launcher.removeAttribute('inert');
+    document.getElementById('kw-wa-btn').classList.remove('kw-hidden');
+    document.getElementById('kw-top-btn').classList.remove('kw-hidden');
+    document.title = DEFAULT_TITLE;
+  }
+
+  function goBackToLauncher() {
+    if (history.state && history.state.resourceId) {
+      history.back();
+    } else {
+      closeReader();
+    }
+  }
+
+  document.getElementById('back-pill').addEventListener('click', goBackToLauncher);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && currentFrame) {
+      goBackToLauncher();
+    }
+  });
+
+  window.addEventListener('popstate', (e) => {
+    const state = e.state;
+    const resource = state && state.resourceId
+      ? RESOURCES.find(r => r.id === state.resourceId && r.status === 'live')
+      : null;
+    if (resource) {
+      openResource(resource, { push: false });
+    } else {
+      closeReader();
+    }
+  });
+
+  const topBtn = document.getElementById('kw-top-btn');
+  function toggleTopBtn() {
+    if (window.scrollY > 400) {
+      topBtn.classList.add('vis');
+    } else {
+      topBtn.classList.remove('vis');
+    }
+  }
+  window.addEventListener('scroll', toggleTopBtn, { passive: true });
+  topBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  toggleTopBtn();
+
+  renderCards();
+
+  // Deep-link support: kuwa-learning-hub.html#erpnext-core opens straight into that resource
+  (function initFromHash() {
+    history.replaceState({ resourceId: null }, '', location.pathname + location.search);
+    const id = location.hash.slice(1);
+    const resource = RESOURCES.find(r => r.id === id && r.status === 'live');
+    if (resource) openResource(resource, { push: true });
+  })();
+</script>
+
+</body>
+</html>

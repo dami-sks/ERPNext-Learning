@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ERPNext Education Module / Complete Reference</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23005B50'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0A0A0A;
+  --red:#E63815;
+  --teal:#005B50;
+  --amber:#F79F1B;
+  --parchment:#FAFAF8;
+  --white:#FFFFFF;
+  --border:#E4E2DD;
+  --border-soft:#EDEBE6;
+  --muted:#6B6863;
+  --muted-2:#918E88;
+  --sidebar-w:280px;
+  --font:'Instrument Sans',-apple-system,BlinkMacSystemFont,sans-serif;
+  --red-soft:#FDEEEA;
+  --teal-soft:#E8F1EF;
+  --amber-soft:#FEF3E1;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--parchment);color:var(--ink);line-height:1.6;font-size:15px;-webkit-font-smoothing:antialiased}
+.app{display:flex;min-height:100vh}
+
+/* ============ SIDEBAR ============ */
+.sidebar{
+  width:var(--sidebar-w);
+  background:var(--ink);
+  color:var(--white);
+  position:fixed;
+  top:0;left:0;bottom:0;
+  overflow-y:auto;
+  z-index:100;
+  display:flex;
+  flex-direction:column;
+  border-right:1px solid rgba(255,255,255,.06);
+}
+.sidebar::-webkit-scrollbar{width:6px}
+.sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:3px}
+.sb-logo{padding:26px 22px 18px;border-bottom:1px solid rgba(255,255,255,.09)}
+.sb-mark{font-size:19px;font-weight:700;letter-spacing:-.3px;color:var(--white)}
+.sb-mark span{color:var(--teal)}
+.sb-sub{font-size:10px;color:rgba(255,255,255,.42);text-transform:uppercase;letter-spacing:1.6px;margin-top:4px;font-weight:500}
+.sb-search{padding:16px 18px 12px;border-bottom:1px solid rgba(255,255,255,.08)}
+.sb-search input{
+  width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);
+  color:#fff;padding:9px 12px;border-radius:6px;font-family:var(--font);font-size:13px;
+  outline:none;transition:.15s;
+}
+.sb-search input::placeholder{color:rgba(255,255,255,.32)}
+.sb-search input:focus{border-color:var(--teal);background:rgba(255,255,255,.1)}
+.sb-count{font-size:10.5px;color:rgba(255,255,255,.35);margin-top:8px;letter-spacing:.3px}
+.sb-nav{padding:14px 12px 30px;flex:1}
+.sb-group{margin-bottom:4px}
+.sb-group-label{
+  font-size:10px;text-transform:uppercase;letter-spacing:1.6px;color:rgba(255,255,255,.32);
+  padding:14px 10px 7px;font-weight:600;
+}
+.sb-link{
+  display:flex;align-items:center;gap:9px;padding:7px 10px;border-radius:6px;
+  color:rgba(255,255,255,.7);text-decoration:none;font-size:13.2px;transition:.12s;
+  cursor:pointer;
+}
+.sb-link:hover{background:rgba(255,255,255,.07);color:#fff}
+.sb-link.active{background:rgba(0,91,80,.28);color:#fff}
+.sb-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.dot-general{background:#9C9890}
+.dot-people{background:var(--amber)}
+.dot-program{background:var(--teal)}
+.dot-enroll{background:#4E8A7F}
+.dot-schedule{background:#6B8FA3}
+.dot-assess{background:var(--red)}
+.dot-fees{background:#B23A1E}
+.dot-attend{background:#C98A2C}
+.dot-other{background:#8A8680}
+.sb-link.hidden{display:none}
+
+/* ============ MAIN CONTENT ============ */
+.content{margin-left:var(--sidebar-w);flex:1;max-width:980px;padding:0 56px 100px}
+
+.hero{padding:64px 0 40px;border-bottom:1px solid var(--border)}
+.hero-eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.hero-rule{width:36px;height:2px;background:var(--teal)}
+.hero-eyebrow span{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--teal)}
+.hero h1{font-size:38px;font-weight:700;letter-spacing:-.5px;line-height:1.15;margin-bottom:18px}
+.hero p.lead{font-size:16.5px;color:var(--muted);max-width:700px;line-height:1.65;margin-bottom:20px}
+.hero-sources{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+.src-tag{
+  font-size:11.5px;font-weight:600;padding:6px 12px;border-radius:20px;
+  background:rgba(255,255,255,.6);border:1px solid var(--border);color:var(--muted);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+}
+.src-tag b{color:var(--ink)}
+
+section.block{padding:52px 0;border-bottom:1px solid var(--border)}
+section.block:last-child{border-bottom:none}
+.block-head{margin-bottom:28px}
+.block-eyebrow{font-size:11px;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;color:var(--muted-2);margin-bottom:8px}
+.block-head h2{font-size:26px;font-weight:700;letter-spacing:-.3px;margin-bottom:10px}
+.block-head p{color:var(--muted);font-size:14.5px;max-width:680px}
+
+/* ============ DEPENDENCY MAP ============ */
+.dep-legend{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:26px}
+.dep-legend-item{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);font-weight:500}
+.dep-legend-swatch{width:11px;height:11px;border-radius:3px}
+.dep-map{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:36px 30px}
+.dep-level{margin-bottom:0}
+.dep-level-row{display:flex;align-items:flex-start;gap:20px;padding:18px 0}
+.dep-level-row + .dep-level-row{border-top:1px dashed var(--border-soft)}
+.dep-level-num{
+  flex-shrink:0;width:86px;padding-top:6px;
+}
+.dep-level-num .n{font-size:22px;font-weight:700;line-height:1}
+.dep-level-num .l{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted-2);margin-top:4px;font-weight:600}
+.dep-level-num.stage-first .n{color:var(--teal)}
+.dep-level-num.stage-mid .n{color:var(--amber)}
+.dep-level-num.stage-last .n{color:var(--red)}
+.dep-nodes{display:flex;gap:10px;flex-wrap:wrap;flex:1}
+.dep-node{
+  padding:9px 15px;border-radius:7px;font-size:13px;font-weight:600;
+  border:1.5px solid transparent;white-space:nowrap;
+}
+.stage-first .dep-node{background:var(--teal-soft);color:var(--teal);border-color:#C9DFDA}
+.stage-mid .dep-node{background:var(--amber-soft);color:#8A5A0E;border-color:#F0D6A3}
+.stage-last .dep-node{background:var(--red-soft);color:var(--red);border-color:#F3C6BA}
+.dep-arrow-row{display:flex;justify-content:center;padding:2px 0;color:var(--muted-2);font-size:14px}
+
+/* ============ DOCTYPE CARDS ============ */
+.dc-grid-list{display:flex;flex-direction:column;gap:22px}
+.dc-card{
+  background:var(--white);border:1px solid var(--border);border-radius:10px;
+  padding:28px 30px 30px;scroll-margin-top:24px;
+}
+.dc-card.hidden{display:none}
+.dc-head{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:6px;flex-wrap:wrap}
+.dc-head h3{font-size:20px;font-weight:700;letter-spacing:-.2px}
+.dc-alt{font-size:12px;color:var(--muted-2);font-weight:500;font-style:italic;margin-left:2px}
+.dc-tag{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:4px 10px;border-radius:20px;white-space:nowrap}
+.tag-general{background:#F0EFEC;color:#6B6863}
+.tag-people{background:var(--amber-soft);color:#8A5A0E}
+.tag-program{background:var(--teal-soft);color:var(--teal)}
+.tag-enroll{background:#E6F0EE;color:#3C6C61}
+.tag-schedule{background:#E9EFF2;color:#3E5F70}
+.tag-assess{background:var(--red-soft);color:var(--red)}
+.tag-fees{background:#FBE4DC;color:#B23A1E}
+.tag-attend{background:#FBEBD3;color:#93611E}
+.tag-other{background:#EFEEEC;color:#726F6A}
+.dc-plain{font-size:15px;line-height:1.65;color:var(--ink);margin:14px 0 18px;padding:14px 16px;background:rgba(255,255,255,.55);border:1px solid var(--border);border-radius:8px;backdrop-filter:blur(8px) saturate(140%);-webkit-backdrop-filter:blur(8px) saturate(140%)}
+.dc-sub{margin-top:18px}
+.dc-sub h4{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.1px;color:var(--muted-2);margin-bottom:8px;display:flex;align-items:center;gap:7px}
+.dc-sub p{font-size:14px;color:var(--ink);line-height:1.6}
+.dc-sub ul,.dc-sub ol{padding-left:20px;font-size:14px;line-height:1.7;color:var(--ink)}
+.dc-sub li{margin-bottom:4px}
+.dc-cols{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:18px}
+@media(max-width:720px){.dc-cols{grid-template-columns:1fr}}
+.dc-callout{margin-top:16px;padding:14px 16px;border-radius:10px;border:1px solid;backdrop-filter:blur(8px) saturate(150%);-webkit-backdrop-filter:blur(8px) saturate(150%)}
+.dc-callout.errors{background:rgba(230,56,21,.07);border-color:rgba(230,56,21,.24)}
+.dc-callout.errors h4{color:var(--red)}
+.dc-callout.console{background:rgba(0,91,80,.06);border-color:rgba(0,91,80,.22)}
+.dc-callout.console h4{color:var(--teal)}
+.dc-callout.gap{background:rgba(247,159,27,.11);border-color:rgba(247,159,27,.3)}
+.dc-callout.gap h4{color:#8A5A0E}
+code{background:#F0EFEC;padding:1px 6px;border-radius:4px;font-size:12.8px;font-family:'SF Mono',Consolas,monospace;color:#B23A1E}
+.dc-callout code{background:rgba(255,255,255,.6)}
+
+.mini-note{font-size:12.5px;color:var(--muted-2);margin-top:6px}
+
+footer.page-footer{padding:50px 0 20px;color:var(--muted-2);font-size:12.5px}
+footer.page-footer a{color:var(--muted);}
+
+@media(max-width:900px){
+  .sidebar{position:relative;width:100%;height:auto}
+  .content{margin-left:0}
+  .app{flex-direction:column}
+}
+
+@media print{
+  .sidebar{display:none}
+  .content{margin-left:0;max-width:100%;padding:0 20px}
+  .dc-card{break-inside:avoid;border:1px solid #ccc;box-shadow:none}
+  a{color:inherit;text-decoration:none}
+  body{font-size:11pt}
+  .hero{padding:20px 0}
+}
+
+/* FLOATING ACTIONS */
+.kw-fab{position:fixed;z-index:9999;display:flex;align-items:center;justify-content:center;border-radius:50%;text-decoration:none;cursor:pointer;border:none;font-family:var(--font);transition:transform .15s ease,box-shadow .15s ease,opacity .2s ease}
+#kw-wa-btn{bottom:24px;right:24px;width:52px;height:52px;background:#25D366;box-shadow:0 6px 20px rgba(37,211,102,.4),0 2px 8px rgba(0,0,0,.18)}
+#kw-wa-btn:hover{transform:translateY(-2px) scale(1.05);box-shadow:0 10px 26px rgba(37,211,102,.5),0 3px 10px rgba(0,0,0,.22)}
+#kw-top-btn{bottom:88px;right:24px;width:44px;height:44px;background:rgba(10,10,10,.82);color:var(--parchment);font-size:18px;font-weight:700;opacity:0;pointer-events:none;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 6px 18px rgba(0,0,0,.25)}
+#kw-top-btn.vis{opacity:1;pointer-events:auto}
+#kw-top-btn:hover{background:var(--teal);transform:translateY(-2px)}
+.skip-link{position:absolute;top:-100px;left:12px;z-index:10000;background:var(--ink);color:var(--parchment);padding:10px 18px;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;transition:top .15s ease}
+.skip-link:focus{top:12px}
+.content:focus{outline:none}
+#kw-prog{position:fixed;top:0;left:0;right:0;height:3px;background:var(--teal);transform-origin:left;transform:scaleX(0);z-index:10001;transition:transform .08s linear}
+@media(max-width:600px){
+  #kw-wa-btn{width:46px;height:46px;bottom:18px;right:18px}
+  #kw-top-btn{width:38px;height:38px;bottom:72px;right:18px;font-size:16px}
+}
+</style>
+</head>
+<body>
+<a href="#main-content" class="skip-link">Skip to content</a>
+<div id="kw-prog"></div>
+<div class="app">
+
+<nav class="sidebar" id="sidebar">
+  <div class="sb-logo">
+    <div class="sb-mark">Education<span>.</span>Reference</div>
+    <div class="sb-sub">ERPNext v16 / Frappe Education</div>
+  </div>
+  <div class="sb-search">
+    <input type="text" id="searchInput" placeholder="Search a doctype or tool...">
+    <div class="sb-count" id="searchCount">37 entries</div>
+  </div>
+  <div class="sb-nav" id="sbNav">
+
+    <div class="sb-group" data-group="overview">
+      <div class="sb-group-label">Start here</div>
+      <a class="sb-link" data-search="dependency map order sequence build" href="#dep-map"><span class="sb-dot dot-general"></span>Dependency map</a>
+    </div>
+
+    <div class="sb-group" data-group="general">
+      <div class="sb-group-label">General education</div>
+      <a class="sb-link" data-search="academic year calendar" href="#academic-year"><span class="sb-dot dot-general"></span>Academic Year</a>
+      <a class="sb-link" data-search="academic term semester trimester" href="#academic-term"><span class="sb-dot dot-general"></span>Academic Term</a>
+      <a class="sb-link" data-search="education settings defaults" href="#education-settings"><span class="sb-dot dot-general"></span>Education Settings</a>
+    </div>
+
+    <div class="sb-group" data-group="people">
+      <div class="sb-group-label">People &amp; admissions</div>
+      <a class="sb-link" data-search="guardian parent" href="#guardian"><span class="sb-dot dot-people"></span>Guardian</a>
+      <a class="sb-link" data-search="student record profile" href="#student"><span class="sb-dot dot-people"></span>Student</a>
+      <a class="sb-link" data-search="student applicant admission pipeline" href="#student-applicant"><span class="sb-dot dot-people"></span>Student Applicant</a>
+      <a class="sb-link" data-search="student admission portal website" href="#student-admission"><span class="sb-dot dot-people"></span>Student Admission</a>
+      <a class="sb-link" data-search="student category concession" href="#student-category"><span class="sb-dot dot-people"></span>Student Category</a>
+      <a class="sb-link" data-search="student batch name" href="#student-batch"><span class="sb-dot dot-people"></span>Student Batch</a>
+    </div>
+
+    <div class="sb-group" data-group="program">
+      <div class="sb-group-label">Program &amp; course</div>
+      <a class="sb-link" data-search="course subject topic" href="#course"><span class="sb-dot dot-program"></span>Course</a>
+      <a class="sb-link" data-search="program major curriculum" href="#program"><span class="sb-dot dot-program"></span>Program</a>
+      <a class="sb-link" data-search="instructor teacher employee" href="#instructor"><span class="sb-dot dot-program"></span>Instructor</a>
+    </div>
+
+    <div class="sb-group" data-group="enroll">
+      <div class="sb-group-label">Enrollment</div>
+      <a class="sb-link" data-search="program enrollment submit docstatus" href="#program-enrollment"><span class="sb-dot dot-enroll"></span>Program Enrollment</a>
+      <a class="sb-link" data-search="program enrollment tool bulk" href="#program-enrollment-tool"><span class="sb-dot dot-enroll"></span>Program Enrollment Tool</a>
+      <a class="sb-link" data-search="student group class section batch course" href="#student-group"><span class="sb-dot dot-enroll"></span>Student Group</a>
+      <a class="sb-link" data-search="student group creation tool bulk" href="#student-group-creation-tool"><span class="sb-dot dot-enroll"></span>Student Group Creation Tool</a>
+    </div>
+
+    <div class="sb-group" data-group="schedule">
+      <div class="sb-group-label">Scheduling</div>
+      <a class="sb-link" data-search="course schedule timetable" href="#course-schedule"><span class="sb-dot dot-schedule"></span>Course Schedule (Timetable)</a>
+      <a class="sb-link" data-search="topic content lms" href="#topic"><span class="sb-dot dot-schedule"></span>Topic</a>
+      <a class="sb-link" data-search="course scheduling tool bulk timetable" href="#course-scheduling-tool"><span class="sb-dot dot-schedule"></span>Course Scheduling Tool</a>
+      <a class="sb-link" data-search="room classroom venue" href="#room"><span class="sb-dot dot-schedule"></span>Room</a>
+    </div>
+
+    <div class="sb-group" data-group="assess">
+      <div class="sb-group-label">Assessment</div>
+      <a class="sb-link" data-search="assessment criteria parameter" href="#assessment-criteria"><span class="sb-dot dot-assess"></span>Assessment Criteria</a>
+      <a class="sb-link" data-search="assessment group tree term test exam" href="#assessment-group"><span class="sb-dot dot-assess"></span>Assessment Group</a>
+      <a class="sb-link" data-search="grading scale grade threshold" href="#grading-scale"><span class="sb-dot dot-assess"></span>Grading Scale</a>
+      <a class="sb-link" data-search="assessment plan schedule exam" href="#assessment-plan"><span class="sb-dot dot-assess"></span>Assessment Plan</a>
+      <a class="sb-link" data-search="assessment result marks" href="#assessment-result"><span class="sb-dot dot-assess"></span>Assessment Result</a>
+      <a class="sb-link" data-search="assessment result tool marks entry" href="#assessment-result-tool"><span class="sb-dot dot-assess"></span>Assessment Result Tool</a>
+      <a class="sb-link" data-search="final assessment grades report" href="#final-assessment-grades"><span class="sb-dot dot-assess"></span>Final Assessment Grades</a>
+    </div>
+
+    <div class="sb-group" data-group="fees">
+      <div class="sb-group-label">Fees management</div>
+      <a class="sb-link" data-search="fee category component item" href="#fee-category"><span class="sb-dot dot-fees"></span>Fee Category</a>
+      <a class="sb-link" data-search="fee structure template" href="#fee-structure"><span class="sb-dot dot-fees"></span>Fee Structure</a>
+      <a class="sb-link" data-search="fee schedule invoice batch" href="#fee-schedule"><span class="sb-dot dot-fees"></span>Fee Schedule</a>
+      <a class="sb-link" data-search="fees student fee record receipt" href="#fees"><span class="sb-dot dot-fees"></span>Fees (Student Fee / Receipt)</a>
+    </div>
+
+    <div class="sb-group" data-group="attend">
+      <div class="sb-group-label">Attendance</div>
+      <a class="sb-link" data-search="student attendance present absent" href="#student-attendance"><span class="sb-dot dot-attend"></span>Student Attendance</a>
+      <a class="sb-link" data-search="student attendance tool bulk" href="#student-attendance-tool"><span class="sb-dot dot-attend"></span>Student Attendance Tool</a>
+      <a class="sb-link" data-search="student leave application" href="#student-leave-application"><span class="sb-dot dot-attend"></span>Student Leave Application</a>
+    </div>
+
+    <div class="sb-group" data-group="other">
+      <div class="sb-group-label">Others</div>
+      <a class="sb-link" data-search="student log note incident" href="#student-log"><span class="sb-dot dot-other"></span>Student Log</a>
+      <a class="sb-link" data-search="student portal self service" href="#student-portal"><span class="sb-dot dot-other"></span>Student Portal</a>
+      <a class="sb-link" data-search="tracking progress dashboard" href="#tracking-progress"><span class="sb-dot dot-other"></span>Tracking the Progress</a>
+    </div>
+
+  </div>
+</nav>
+
+<main class="content" id="main-content" tabindex="-1">
+
+<div class="hero">
+  <div class="hero-eyebrow"><div class="hero-rule"></div><span>ERPNext v16 &middot; Education Module</span></div>
+  <h1>The complete field guide to Frappe Education</h1>
+  <p class="lead">This document teaches every doctype and tool in the Education module in plain language, in the order you actually need to build them. It combines the official Frappe documentation with what really happened during a live ACE curriculum school implementation for Arise Education Network (AEN) in Uganda, on ERPNext v16. Where the documentation and the real system disagreed, both sides are shown.</p>
+  <div class="hero-sources">
+    <span class="src-tag"><b>Source 1:</b> docs.frappe.io/education, all linked pages</span>
+    <span class="src-tag"><b>Source 2:</b> Arise Education Network live implementation, site ariseedn.local, v16</span>
+  </div>
+</div>
+
+
+<section class="block" id="dep-map">
+  <div class="block-head">
+    <div class="block-eyebrow">Build order</div>
+    <h2>The dependency map</h2>
+    <p>Every doctype in this module leans on something built before it. The Fee Schedule cannot exist without a Student Group. A Student Group cannot exist without enrolled students. Enrolled students cannot exist without a Program. This map shows the eight layers in the order they need to be built, so you never arrive at a form with nothing to select in a required field.</p>
+  </div>
+
+  <div class="dep-legend">
+    <div class="dep-legend-item"><span class="dep-legend-swatch" style="background:#005B50"></span>Build first, no dependencies</div>
+    <div class="dep-legend-item"><span class="dep-legend-swatch" style="background:#F79F1B"></span>Mid-chain, needs the layer above</div>
+    <div class="dep-legend-item"><span class="dep-legend-swatch" style="background:#E63815"></span>Built last, needs everything below it</div>
+  </div>
+
+  <div class="dep-map">
+
+    <div class="dep-level-row stage-first">
+      <div class="dep-level-num stage-first"><div class="n">01</div><div class="l">Calendar</div></div>
+      <div class="dep-nodes">
+        <div class="dep-node">Academic Year</div>
+        <div class="dep-node">Academic Term</div>
+      </div>
+    </div>
+
+    <div class="dep-level-row stage-first">
+      <div class="dep-level-num stage-first"><div class="n">02</div><div class="l">Independent masters</div></div>
+      <div class="dep-nodes">
+        <div class="dep-node">Student Category</div>
+        <div class="dep-node">Grading Scale</div>
+        <div class="dep-node">Assessment Criteria</div>
+        <div class="dep-node">Assessment Group</div>
+        <div class="dep-node">Fee Category</div>
+        <div class="dep-node">Room</div>
+      </div>
+    </div>
+
+    <div class="dep-level-row stage-mid">
+      <div class="dep-level-num stage-mid"><div class="n">03</div><div class="l">People</div></div>
+      <div class="dep-nodes">
+        <div class="dep-node">Guardian</div>
+        <div class="dep-node">Student</div>
+        <div class="dep-node">Student Applicant (optional)</div>
+      </div>
+    </div>
+
+    <div class="dep-level-row stage-mid">
+      <div class="dep-level-num stage-mid"><div class="n">04</div><div class="l">Academic structure</div></div>
+      <div class="dep-nodes">
+        <div class="dep-node">Course</div>
+        <div class="dep-node">Program</div>
+        <div class="dep-node">Instructor</div>
+      </div>
+    </div>
+
+    <div class="dep-level-row stage-mid">
+      <div class="dep-level-num stage-mid"><div class="n">05</div><div class="l">Enrollment</div></div>
+      <div class="dep-nodes">
+        <div class="dep-node">Program Enrollment (submitted)</div>
+        <div class="dep-node">Student Group</div>
+      </div>
+    </div>
+
+    <div class="dep-level-row stage-last">
+      <div class="dep-level-num stage-last"><div class="n">06</div><div class="l">Scheduling &amp; assessment</div></div>
+      <div class="dep-nodes">
+        <div class="dep-node">Course Schedule</div>
+        <div class="dep-node">Assessment Plan</div>
+        <div class="dep-node">Assessment Result</div>
+      </div>
+    </div>
+
+    <div class="dep-level-row stage-last">
+      <div class="dep-level-num stage-last"><div class="n">07</div><div class="l">Fees</div></div>
+      <div class="dep-nodes">
+        <div class="dep-node">Fee Structure (submitted)</div>
+        <div class="dep-node">Fee Schedule (submitted)</div>
+      </div>
+    </div>
+
+    <div class="dep-level-row stage-last">
+      <div class="dep-level-num stage-last"><div class="n">08</div><div class="l">Money &amp; records</div></div>
+      <div class="dep-nodes">
+        <div class="dep-node">Fees / Sales Invoice</div>
+        <div class="dep-node">Fee Receipt (print format)</div>
+        <div class="dep-node">Student Attendance</div>
+        <div class="dep-node">Final Assessment Grades</div>
+      </div>
+    </div>
+
+  </div>
+  <p class="mini-note" style="margin-top:16px">The short version: if a form has an empty dropdown where you expected to pick a Student Group, Program, or Course, the cause is almost always a missing record in a layer above it, not a bug in the form you are looking at.</p>
+</section>
+
+<section class="block" id="general">
+  <div class="block-head">
+    <div class="block-eyebrow">Layer 01</div>
+    <h2>General education</h2>
+    <p>The calendar backbone and the global defaults. Everything else in the module points back to these three records, directly or indirectly.</p>
+  </div>
+  <div class="dc-grid-list">
+
+    <article class="dc-card" id="academic-year" data-search="academic year calendar">
+      <div class="dc-head"><h3>Academic Year</h3><span class="dc-tag tag-general">General</span></div>
+      <p class="dc-plain">An Academic Year is the top-level time container for a school year, for example 2025-2026. It holds a start date and an end date, and every other academic record in the system, enrollments, assessments, attendance, fees, points back to one.</p>
+      <div class="dc-cols">
+        <div class="dc-sub"><h4>Why it exists</h4><p>Every doctype that changes year to year needs a stable reference point so records do not blur together across years. Reports, fee collections, and grading all filter by Academic Year first.</p></div>
+        <div class="dc-sub"><h4>Dependencies</h4><ul><li>None. This is the first thing you create.</li></ul></div>
+      </div>
+      <div class="dc-sub"><h4>How to create it</h4><ol><li>Go to Education &gt; Academic Year &gt; New.</li><li>Enter the year name, for example 2025-2026.</li><li>Set the start date and end date.</li><li>Save.</li></ol></div>
+      <div class="dc-sub"><h4>If this is missing</h4><p>Nothing downstream can be created. Student Group, Program Enrollment, Assessment Plan, Fee Structure, and Fee Schedule all have an Academic Year field, and several treat it as a hard filter for reporting and defaults.</p></div>
+      <div class="dc-callout console"><h4>Faster path</h4><p>If you set the current Academic Year inside <a href="#education-settings">Education Settings</a> once it exists, it becomes the default value pre-filled on every form that has this field, saving a click on every single record you create afterward.</p></div>
+    </article>
+
+    <article class="dc-card" id="academic-term" data-search="academic term semester trimester">
+      <div class="dc-head"><h3>Academic Term</h3><span class="dc-tag tag-general">General</span></div>
+      <p class="dc-plain">An Academic Term is a slice inside an Academic Year, a quarter, trimester, or semester. Most Ugandan and East African schools run three terms per year, and AEN follows that pattern with Term 1, Term 2, and Term 3 inside 2025-2026.</p>
+      <div class="dc-cols">
+        <div class="dc-sub"><h4>Why it exists</h4><p>Fee Schedules, Program Enrollments, Student Groups, and Assessment Plans are all filtered by term, not just by year. A school that bills termly, not annually, needs this layer to exist.</p></div>
+        <div class="dc-sub"><h4>Dependencies</h4><ul><li>Academic Year</li></ul></div>
+      </div>
+      <div class="dc-sub"><h4>How to create it</h4><ol><li>Go to Education &gt; Settings &gt; Academic Term.</li><li>Select the parent Academic Year.</li><li>Enter start and end dates for the term.</li><li>Save.</li></ol></div>
+      <div class="dc-callout gap"><h4>Docs versus reality</h4><p>This is the single most expensive mismatch to get wrong. At AEN, Student Groups and Program Enrollments were built against <code>2025-2026 (Term 2 2026)</code>, but Fee Structures were built against <code>2025-2026 (Term 3 2026)</code>. The result was Fee Schedules that consistently showed zero students, with no error message explaining why. Every doctype that references Academic Term must reference the exact same term string, character for character, or the join between Student Group and Program Enrollment silently returns nothing. Decide your term naming and stick to it before you build anything downstream.</p></div>
+      <div class="dc-sub"><h4>Common errors</h4><ul><li>Fee Schedule shows zero Total Students, even though the Student Group clearly has students in it. Almost always a term mismatch between the group and the enrollment, not a bug.</li><li>Assessment Plan for the wrong term cannot simply be edited once submitted. It has to be cancelled and recreated with the correct term.</li></ul></div>
+    </article>
+
+    <article class="dc-card" id="education-settings" data-search="education settings defaults global">
+      <div class="dc-head"><h3>Education Settings</h3><span class="dc-tag tag-general">General</span></div>
+      <p class="dc-plain">A single settings document that controls defaults and behavior across the entire module: the current Academic Year and Term, how Instructor records are named, whether a User account is created automatically for every new Student, and whether Sales Invoices are created as Draft or Submitted.</p>
+      <div class="dc-sub"><h4>How to configure it</h4><ol><li>Go to Education &gt; Settings &gt; Education Settings.</li><li>Set the current Academic Year and Academic Term. These become the pre-filled default everywhere that field appears.</li><li>Set an Attendance Freeze Date if you want to lock attendance editing after a cut-off.</li><li>Choose how Instructor records are named: Full Name, Naming Series, or Employee Number.</li></ol></div>
+      <div class="dc-cols">
+        <div class="dc-sub"><h4>Fields worth knowing</h4><ul>
+          <li><b>Skip User Creation for New Student</b>: leave this off if students need portal login access. Turning it on blocks the User record needed for the Student Portal.</li>
+          <li><b>Submit Sales Invoice from Program Enrollment / Fee Schedule</b>: off means every generated invoice sits in Draft until someone submits it by hand.</li>
+          <li><b>Make Academic Term Mandatory</b>: forces the Program Enrollment Tool to require a term, which prevents the exact term-mismatch failure described above.</li>
+        </ul></div>
+        <div class="dc-sub"><h4>Portal Settings tab</h4><p>School abbreviation, logo, and Razorpay credentials for online fee collection live here. This tab only matters if the Student Portal is switched on for parents and students.</p></div>
+      </div>
+      <div class="dc-callout console"><h4>Practical advice</h4><p>Visit this document before creating a single Academic Year or Fee Structure. Turning on <b>Make Academic Term Mandatory</b> early would have prevented the entire AEN Term 2 versus Term 3 problem, since the Program Enrollment Tool would have refused to let a term go unset.</p></div>
+    </article>
+
+  </div>
+</section>
+
+<section class="block" id="people">
+  <div class="block-head">
+    <div class="block-eyebrow">Layer 02 to 03</div>
+    <h2>People &amp; admissions</h2>
+    <p>The human records. Everything billing-related, academic-related, and attendance-related eventually connects back to a Student, and every Student connects to a Guardian.</p>
+  </div>
+  <div class="dc-grid-list">
+
+    <article class="dc-card" id="guardian" data-search="guardian parent">
+      <div class="dc-head"><h3>Guardian</h3><span class="dc-tag tag-people">People</span></div>
+      <p class="dc-plain">A Guardian is the record for a student's parent or responsible adult: father, mother, or another relative. One Guardian can be linked to several students, which matters for schools with siblings enrolled.</p>
+      <div class="dc-cols">
+        <div class="dc-sub"><h4>How to create it</h4><ol><li>Go to Education &gt; Student &gt; Guardian &gt; New.</li><li>Enter the Guardian's name, and optionally email, mobile number, occupation, and work address.</li><li>Save. It can also be created inline from within a Student form.</li></ol></div>
+        <div class="dc-sub"><h4>Features worth knowing</h4><ul><li><b>Guardian Of</b> auto-populates once a Student links to this Guardian.</li><li><b>Invite as User</b> sends a portal login invitation by email, for parents who need to see fees and grades.</li></ul></div>
+      </div>
+      <div class="dc-callout gap"><h4>Docs versus reality</h4><p>The documentation shows creating a Guardian by name through the UI. At AEN scale, bulk Guardian import required an <code>EDU-GRD-2026-XXXXX</code> style ID in the import file, not the Guardian's name. The importer resolves Guardians by ID, and a plain name in that column fails silently or creates a duplicate. Export an existing Guardian first to see the exact ID format your site uses before building an import sheet.</p></div>
+    </article>
+
+    <article class="dc-card" id="student" data-search="student record profile">
+      <div class="dc-head"><h3>Student</h3><span class="dc-tag tag-people">People</span></div>
+      <p class="dc-plain">The Student record holds a student's personal information: name, date of birth, gender, address, guardian links, and sibling details. It is the hub every other academic and financial record connects back to.</p>
+      <div class="dc-cols">
+        <div class="dc-sub"><h4>Dependencies</h4><ul><li>User (only if portal access is needed immediately)</li><li>Guardian (can be created inline from this form)</li></ul></div>
+        <div class="dc-sub"><h4>If this is missing</h4><p>Nothing billing-related, attendance-related, or assessment-related can exist. Program Enrollment, Student Group, Fee Schedule, and Assessment Result all require a Student to already exist.</p></div>
+      </div>
+      <div class="dc-sub"><h4>How to create it</h4><ol><li>Go to Education &gt; Student &gt; Student &gt; New.</li><li>Enter First, Middle, and Last Name.</li><li>Add Student Email Address and Joining Date.</li><li>Optionally fill Personal Details, Home Address, Guardian Details, and Sibling Details.</li><li>Save.</li></ol></div>
+      <div class="dc-callout errors"><h4>Common errors</h4><ul>
+        <li>Bulk import requires <code>EDU-STU-2026-XXXXX</code> style IDs for linked fields such as Guardian, not names typed as plain text.</li>
+        <li>Forgetting to uncheck the <b>Enabled</b> box after recording a student's Exit Details leaves a departed student active in every group and report.</li>
+      </ul></div>
+      <div class="mini-note">Once saved, a full dashboard becomes visible on the Student form showing linked Program Enrollments, Fee Schedules, Attendance, and Assessment Results for that student in one place.</div>
+    </article>
+
+    <article class="dc-card" id="student-applicant" data-search="student applicant admission pipeline">
+      <div class="dc-head"><h3>Student Applicant</h3><span class="dc-tag tag-people">People</span></div>
+      <p class="dc-plain">A record created when a prospective student applies for admission, either manually or through the public Student Applicant web form. Its status moves from Applied through Approved or Rejected, and clicking Enroll converts an approved applicant directly into a Student plus a Program Enrollment in one action.</p>
+      <div class="dc-cols">
+        <div class="dc-sub"><h4>Dependencies</h4><ul><li>Academic Year</li><li>Academic Term</li><li>Program</li></ul></div>
+        <div class="dc-sub"><h4>How to create it</h4><ol><li>Go to Student Applicant &gt; New.</li><li>Enter First Name, Program applied for, and Student Email.</li><li>Save.</li></ol></div>
+      </div>
+      <div class="dc-callout gap"><h4>Docs versus reality</h4><p>ERPNext ships a simple two-state status field: Applied and Enrolled or Rejected. For AEN, this status field was extended to reflect a real admission pipeline: Application Received, Diagnostic Scheduled, Diagnostic Completed, Offer Pending, and Offer Accepted, since ACE schools run a diagnostic placement test before offering a grade level. This is a configuration change, not a code change, done through the status field's options.</p></div>
+    </article>
+
+    <article class="dc-card" id="student-admission" data-search="student admission portal website online">
+      <div class="dc-head"><h3>Student Admission</h3><span class="dc-tag tag-people">People</span></div>
+      <p class="dc-plain">A document that publishes a public online admission portal on the ERPNext-generated website for one Program, with its own route, eligibility rules, and application window. This is the doctype that makes the Student Applicant web form appear online for a given intake.</p>
+      <div class="dc-cols">
+        <div class="dc-sub"><h4>Dependencies</h4><ul><li>Academic Year</li><li>Program</li></ul></div>
+        <div class="dc-sub"><h4>How to create it</h4><ol><li>Go to Student Admission &gt; New.</li><li>Select Academic Year and enter a Route, the URL path for the portal.</li><li>Set Admission Start and End Date.</li><li>Check Publish on Website when ready to go live.</li></ol></div>
+      </div>
+      <div class="dc-sub"><h4>Additional fields</h4><p>Minimum and Maximum Age, Application Fee, and a Naming Series for how applicant records get numbered all live here, alongside an Introduction field shown to applicants before they apply.</p></div>
+    </article>
+
+    <article class="dc-card" id="student-category" data-search="student category concession classification">
+      <div class="dc-head"><h3>Student Category</h3><span class="dc-tag tag-people">People</span></div>
+      <p class="dc-plain">A simple classification tag for students, used for fee concessions or reporting groups: scholarship recipients, students with disabilities, foreign nationals, or any other category a school needs to treat differently at fee time.</p>
+      <div class="dc-cols">
+        <div class="dc-sub"><h4>Dependencies</h4><ul><li>None. This is a Level 02 independent master.</li></ul></div>
+        <div class="dc-sub"><h4>Where it is used</h4><p>Selected on Program Enrollment for a given student, and selected on Fee Structure to filter which students a particular fee schedule applies to. A scholarship Fee Structure at zero cost, filtered by Student Category, is the standard way to handle scholarship students without manual discounting on every invoice.</p></div>
+      </div>
+      <div class="dc-sub"><h4>How to create it</h4><ol><li>Go to Education &gt; Settings &gt; Student Category &gt; New.</li><li>Enter a name.</li><li>Save.</li></ol></div>
+    </article>
+
+    <article class="dc-card" id="student-batch" data-search="student batch name cohort">
+      <div class="dc-head"><h3>Student Batch</h3><span class="dc-tag tag-people">People</span></div>
+      <p class="dc-plain">A batch is a named cohort of students within a Program, selected at Program Enrollment time. A Student Group can later be built from an entire batch rather than course by course.</p>
+      <div class="dc-cols">
+        <div class="dc-sub"><h4>How to create it</h4><ol><li>Go to Education &gt; Settings &gt; Student Batch Name &gt; New.</li><li>Enter a batch name.</li><li>Save.</li></ol></div>
+        <div class="dc-sub"><h4>Where it is used</h4><p>Selected on Program Enrollment. A Student Batch-Wise Attendance report can then show how many students from a given batch were present on any date.</p></div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<section class="block" id="program-course">
+  <div class="block-head">
+    <div class="block-eyebrow">Layer 04</div>
+    <h2>Program &amp; course</h2>
+    <p>The academic structure. A Program is the curriculum a student enrolls into, built from one or more Courses, and taught by Instructors.</p>
+  </div>
+  <div class="dc-grid-list">
+
+    <article class="dc-card" id="course" data-search="course subject topic assessment">
+      <div class="dc-head"><h3>Course</h3><span class="dc-tag tag-program">Program</span></div>
+      <p class="dc-plain">A Course is a subject: Mathematics, English, Bible Studies. Each Course carries its own default Grading Scale and Assessment Criteria, so every assessment built against that Course inherits a consistent grading structure.</p>
+      <div class="dc-cols">
+        <div class="dc-sub"><h4>Dependencies</h4><ul><li>Department</li><li>Topics (optional, see below)</li></ul></div>
+        <div class="dc-sub"><h4>How to create it</h4><ol><li>Go to Education &gt; Masters &gt; Course &gt; New.</li><li>Enter Course Name and Department.</li><li>Add Topics if the curriculum is digital.</li><li>In the Assessment tab, set a Default Grading Scale and add Assessment Criteria rows.</li><li>Save.</li></ol></div>
+      </div>
+      <div class="dc-callout gap"><h4>Docs versus reality</h4><p>The documentation treats Topics as a normal step, a set of digital content units a Course covers. For AEN, Topics were left entirely blank. Topics exist for digital learning content delivered through the Frappe LMS module, videos and online modules a student watches. ACE curriculum students work through physical PACE booklets, so there is no digital content to attach. Leaving Topics empty caused no negative effect anywhere else in the system. If your school teaches from physical material, do not feel obligated to fill this field.</p></div>
+      <div class="dc-sub"><h4>The AEN assessment criteria pattern</h4><p>13 Courses were built, and all 13 reused the same 12 Assessment Criteria named PACE Slot 1 through PACE Slot 12, each weighted 8.33, with slot 12 weighted 8.37 so the total lands at exactly 100. Since the same generic Course record, Mathematics, is reused from Grade 1 through Grade 8, the specific PACE number for each slot is captured later, at Assessment Plan and Assessment Result level, not on the Course itself.</p></div>
+    </article>
+
+    <article class="dc-card" id="program" data-search="program major curriculum grade level">
+      <div class="dc-head"><h3>Program</h3><span class="dc-tag tag-program">Program</span></div>
+      <p class="dc-plain">A Program is the curriculum a school offers at a level: an Economics Major, or ACE Grade 5. It is built from a collection of Courses and is the thing a student formally enrolls into.</p>
+      <div class="dc-cols">
+        <div class="dc-sub"><h4>Dependencies</h4><ul><li>Department</li><li>Course (at least one)</li></ul></div>
+        <div class="dc-sub"><h4>How to create it</h4><ol><li>Go to Education &gt; Masters &gt; Program &gt; New.</li><li>Enter Program Name and Abbreviation.</li><li>Select Department.</li><li>Add the Courses that belong to this Program.</li><li>Save.</li></ol></div>
+      </div>
+      <div class="dc-sub"><h4>Portal settings</h4><p>A Program can be published on the website with Is Published, allowing Allow Self Enroll for applicants to enroll themselves, an Intro Video, and a Description shown publicly.</p></div>
+      <div class="dc-callout gap"><h4>Docs versus reality</h4><p>There is no rule that Programs must be named a particular way. At AEN, Programs were deliberately named ACE Grade 1 through ACE Grade 12 rather than the more curriculum-accurate ACE Level, because that is the language staff, parents, and the school's own signage actually use. Match the Program name to how the people running the school talk about it, not to the vendor's internal terminology, since the name appears on every invoice and report a parent will see.</p></div>
+    </article>
+
+    <article class="dc-card" id="instructor" data-search="instructor teacher employee">
+      <div class="dc-head"><h3>Instructor</h3><span class="dc-tag tag-program">Program</span></div>
+      <p class="dc-plain">A teacher, tutor, or professor record, linked to an existing Employee. It maintains an Instructor Log, a running history of every Course and Student Group a teacher has been assigned to.</p>
+      <div class="dc-cols">
+        <div class="dc-sub"><h4>Dependencies</h4><ul><li>Employee (must exist first)</li><li>Department</li></ul></div>
+        <div class="dc-sub"><h4>How to create it</h4><ol><li>Go to Education &gt; Masters &gt; Instructor &gt; New.</li><li>Select the Employee.</li><li>Select the Department.</li><li>Save.</li></ol></div>
+      </div>
+      <div class="dc-sub"><h4>After creation</h4><p>Student Group, Course Schedule, and Assessment Plan can all be created directly from an Instructor's record. On an Assessment Plan specifically, an Instructor can be assigned as either the Supervisor or the Examiner.</p></div>
+    </article>
+
+  </div>
+</section>
+
+<section class="block" id="enroll">
+  <div class="block-head">
+    <div class="block-eyebrow">Layer 05</div>
+    <h2>Enrollment</h2>
+    <p>This is where a Student stops being a name in the system and becomes a billable, gradable, attendance-tracked participant in a Program. It is also the layer where the entire AEN Fee Schedule failure originated, so read this section closely.</p>
+  </div>
+  <div class="dc-grid-list">
+
+    <article class="dc-card" id="program-enrollment" data-search="program enrollment submit docstatus">
+      <div class="dc-head"><h3>Program Enrollment</h3><span class="dc-tag tag-enroll">Enrollment</span></div>
+      <p class="dc-plain">The record of one student enrolling into one Program for one Academic Term. It is the join that everything downstream, Student Group, Fee Schedule, Assessment Plan, quietly relies on, even though none of those forms mention Program Enrollment directly.</p>
+      <div class="dc-cols">
+        <div class="dc-sub"><h4>Dependencies</h4><ul><li>Student</li><li>Program</li><li>Academic Year, Academic Term</li><li>Fee Structure (for the Fees subtable)</li></ul></div>
+        <div class="dc-sub"><h4>How to create it</h4><ol><li>Go to Program Enrollment &gt; New.</li><li>Select Student and Program.</li><li>Select Academic Year and Academic Term.</li><li>Save, then Submit.</li></ol></div>
+      </div>
+      <div class="dc-callout gap"><h4>Docs versus reality, the core lesson of this whole document</h4><p>The documentation describes Program Enrollment as a straightforward enrollment record. What it does not make obvious is that Fee Schedule does not simply count students inside a Student Group. Internally it runs a join between <code>Student Group Student</code> and <code>Program Enrollment</code>, filtered on a matching Academic Term and on <code>docstatus = 1</code>, meaning submitted, not just saved. A Student Group with nine visible students and zero matching Term 3 Program Enrollments will show a Fee Schedule with zero students, with no error explaining why. This single mismatch, enrollments sitting in Term 2 while Fee Structures were built for Term 3, was the root cause behind a multi-session debugging effort at AEN. Confirm your Program Enrollments are both term-matched and submitted before troubleshooting anything else in the fee chain.</p></div>
+      <div class="dc-callout errors"><h4>Common errors</h4><ul>
+        <li>CSV import of Program Enrollments at scale fails or behaves unreliably because of child table handling (the Fees and Courses subtables). Bulk import through the standard Data Import tool is not reliable for this doctype past a handful of records.</li>
+        <li>A saved but unsubmitted Program Enrollment is invisible to the Fee Schedule join, since it filters on <code>docstatus = 1</code>.</li>
+      </ul></div>
+      <div class="dc-callout console"><h4>Faster, more reliable path</h4><p>At AEN, bulk Program Enrollment creation was done through the bench console, not CSV import, once the CSV importer proved unreliable for the volume involved (50 records across Grades 3 to 10). A minimal console pattern looks like this:</p>
+      <pre style="background:rgba(255,255,255,.6);padding:10px 12px;border-radius:6px;font-size:12px;overflow-x:auto;margin-top:8px"><code>import frappe
+pe = frappe.get_doc({
+    "doctype": "Program Enrollment",
+    "student": "EDU-STU-2026-00011",
+    "program": "ACE Grade 5",
+    "academic_year": "2025-2026",
+    "academic_term": "2025-2026 (Term 3 2026)",
+    "enrollment_date": "2026-09-08"
+})
+pe.insert()
+pe.submit()
+frappe.db.commit()</code></pre>
+      <p style="margin-top:8px">Run this per student, or loop it over a list of student IDs. Remember to <code>submit()</code>, not just <code>insert()</code>, or the record will be invisible to Fee Schedule regardless of how correct the term is.</p></div>
+    </article>
+
+    <article class="dc-card" id="program-enrollment-tool" data-search="program enrollment tool bulk promote">
+      <div class="dc-head"><h3>Program Enrollment Tool</h3><span class="dc-tag tag-enroll">Enrollment</span></div>
+      <p class="dc-plain">The intended UI path for bulk-enrolling students, either brand new students pulled from Student Applicant, or existing students being promoted into a new term or Program from their prior Program Enrollment.</p>
+      <div class="dc-sub"><h4>How to use it</h4><ol>
+        <li>Go to Education &gt; Tools &gt; Program Enrollment Tool.</li>
+        <li>Set Get Students From to either Student Applicant or Program Enrollment.</li>
+        <li>Enter the target Academic Year, Academic Term, and Program.</li>
+        <li>Click Get Students, review the fetched list, remove any that should not be included.</li>
+        <li>Click Enroll Students to create Program Enrollments in bulk.</li>
+      </ol></div>
+      <div class="dc-callout gap"><h4>Docs versus reality</h4><p>This is the documented, correct path for exactly the kind of term promotion AEN needed, moving existing Term 2 students into Term 3. In practice it was bypassed in favor of the bench console, because the console gave precise, auditable control over which student IDs went into which term, at a point in the debugging process where trust in the automated tooling had already broken down. If you are promoting students in bulk and have not yet hit a term-mismatch problem, start with this tool rather than the console. Turning on <b>Make Academic Term Mandatory</b> in Education Settings first will stop this tool from ever creating a term-less enrollment.</p></div>
+    </article>
+
+    <article class="dc-card" id="student-group" data-search="student group class section batch course activity">
+      <div class="dc-head"><h3>Student Group</h3><span class="dc-tag tag-enroll">Enrollment</span></div>
+      <p class="dc-plain">A Student Group is a class section: a specific cluster of students taking the same course or belonging to the same batch, for a specific Academic Term. This is what a Fee Schedule, Course Schedule, and Assessment Plan all actually attach to.</p>
+      <div class="dc-cols">
+        <div class="dc-sub"><h4>Dependencies</h4><ul><li>Student</li><li>Program Enrollment, submitted, correct term</li><li>Student Batch Name, Student Category (optional filters)</li><li>Instructor</li></ul></div>
+        <div class="dc-sub"><h4>Group Based On options</h4><ul><li><b>Batch</b>: pulls every student in a batch.</li><li><b>Course</b>: pulls every student enrolled in that specific course.</li><li><b>Activity</b>: free selection, no automatic criteria, used for clubs or events.</li></ul></div>
+      </div>
+      <div class="dc-sub"><h4>How to create it</h4><ol><li>Go to Student Group &gt; New.</li><li>Select Group Based On.</li><li>Enter Student Group Name, Academic Year, Academic Term, Program.</li><li>Click Get Students, which pulls matching students automatically.</li><li>Save.</li></ol></div>
+      <div class="dc-callout gap"><h4>Docs versus reality</h4><p>Get Students is described as a reliable one-click fetch. It only works when a student's Program Enrollment academic_term string exactly matches the Student Group's academic_term string. When AEN's enrollments sat in Term 2 while groups were being built for Term 3, Get Students silently returned nothing, with the form giving no indication of why. The fix at AEN was populating Student Groups directly through the bench console once the correct Term 3 Program Enrollments existed, rather than repeatedly retrying Get Students in the browser.</p></div>
+      <div class="mini-note">AEN's confirmed naming convention for Student Group: <code>Course/Program/Academic Year (Term)</code>, for example <code>Mathematics/ACE Grade 5/2025-2026 (Term 3 2026)</code>. Keeping this format consistent made troubleshooting the term-mismatch issue far easier, since the term was visible directly in the group name.</div>
+    </article>
+
+    <article class="dc-card" id="student-group-creation-tool" data-search="student group creation tool bulk">
+      <div class="dc-head"><h3>Student Group Creation Tool</h3><span class="dc-tag tag-enroll">Enrollment</span></div>
+      <p class="dc-plain">Bulk-creates Student Groups across every Course in a Program in one action, instead of building each group one at a time.</p>
+      <div class="dc-sub"><h4>How to use it</h4><ol>
+        <li>Go to Education &gt; Tools &gt; Student Group Creation Tool.</li>
+        <li>Select Academic Term and Program.</li>
+        <li>Optionally check Separate course based Group for every Batch, to split each course by batch.</li>
+        <li>Click Get Courses, review or edit the fetched course list.</li>
+        <li>Click Create Student Groups.</li>
+      </ol></div>
+      <div class="dc-callout gap"><h4>Docs versus reality</h4><p>Like Get Students on the Student Group form itself, this tool does not auto-populate students into the groups it creates when Program Enrollments and the target Academic Term do not match. At AEN, this meant the tool successfully created the group shells for Term 3 but left them empty of students, requiring the same console-based population workaround described under Student Group above.</p></div>
+    </article>
+
+  </div>
+</section>
+
+<section class="block" id="schedule">
+  <div class="block-head">
+    <div class="block-eyebrow">Layer 06</div>
+    <h2>Scheduling</h2>
+    <p>The timetable layer. None of this is mandatory for a working fee and assessment system, but it is what turns a Student Group into an actual daily routine.</p>
+  </div>
+  <div class="dc-grid-list">
+
+    <article class="dc-card" id="course-schedule" data-search="course schedule timetable itinerary">
+      <div class="dc-head"><h3>Course Schedule <span class="dc-alt">(what most people call the Timetable)</span></h3><span class="dc-tag tag-schedule">Schedule</span></div>
+      <p class="dc-plain">A single scheduled slot: one Student Group, taught by one Instructor, for one Course, in one Room, at a specific time. A full timetable is simply many Course Schedule records viewed together on a calendar. This is also the doctype attendance is marked against, for schools that track attendance per lecture rather than per day.</p>
+      <div class="dc-cols">
+        <div class="dc-sub"><h4>Dependencies</h4><ul><li>Student Group</li><li>Instructor</li><li>Course</li><li>Program</li><li>Room</li></ul></div>
+        <div class="dc-sub"><h4>How to create it</h4><ol><li>Create from the Schedule Calendar view.</li><li>Select Student Group, Instructor, Course.</li><li>Set From Time and To Time.</li><li>Select Room.</li></ol></div>
+      </div>
+      <div class="dc-sub"><h4>Marking attendance from here</h4><p>Clicking Attendance on a Course Schedule opens a checklist of every student in that group, with checkboxes for Present or Absent, plus Check All and Uncheck All shortcuts for fast marking.</p></div>
+    </article>
+
+    <article class="dc-card" id="topic" data-search="topic content lms digital">
+      <div class="dc-head"><h3>Topic</h3><span class="dc-tag tag-schedule">Schedule</span></div>
+      <p class="dc-plain">A sub-unit of digital content within a Course, intended for schools delivering material through the Frappe LMS module: video lessons, readings, or online modules a student works through.</p>
+      <div class="dc-sub"><h4>When to skip it</h4><p>If a school teaches from physical material rather than digital content, as with ACE curriculum PACE booklets, this field can be left empty entirely with no negative effect elsewhere. Do not feel obligated to populate Topics just because the Course creation flow prompts for it.</p></div>
+    </article>
+
+    <article class="dc-card" id="course-scheduling-tool" data-search="course scheduling tool bulk timetable">
+      <div class="dc-head"><h3>Course Scheduling Tool</h3><span class="dc-tag tag-schedule">Schedule</span></div>
+      <p class="dc-plain">A bulk version of Course Schedule, used to generate a recurring timetable slot, for example every Monday and Wednesday at 9am, across a date range, instead of creating each individual Course Schedule record by hand.</p>
+      <div class="dc-sub"><h4>Dependencies</h4><ul><li>Student Group</li><li>Instructor</li><li>Course</li><li>Room</li></ul></div>
+      <div class="mini-note">Not used at AEN, since ACE curriculum students self-pace through PACE booklets rather than attending fixed lecture slots. This tool matters most for schools running a conventional lecture timetable.</div>
+    </article>
+
+    <article class="dc-card" id="room" data-search="room classroom venue hall">
+      <div class="dc-head"><h3>Room</h3><span class="dc-tag tag-schedule">Schedule</span></div>
+      <p class="dc-plain">A physical space record: a classroom, examination hall, or lab, with a room number and seating capacity. This is what Course Schedule and Assessment Plan attach a venue to.</p>
+      <div class="dc-sub"><h4>How to create it</h4><ol><li>Go to Education &gt; Masters &gt; Room &gt; New.</li><li>Enter the room name, room number, and seating capacity.</li><li>Save.</li></ol></div>
+    </article>
+
+  </div>
+</section>
+
+<section class="block" id="assess">
+  <div class="block-head">
+    <div class="block-eyebrow">Layer 02 &amp; 06</div>
+    <h2>Assessment</h2>
+    <p>The official documentation gives an exact setup order for this module, and it is worth quoting directly: build Assessment Criteria first, then Assessment Group, then Grading Scale. Only after a Student Group and Course exist can an Assessment Plan be scheduled. Assessment Results follow from there, ideally entered in bulk through the Assessment Result Tool rather than one at a time.</p>
+  </div>
+  <div class="dc-grid-list">
+
+    <article class="dc-card" id="assessment-criteria" data-search="assessment criteria parameter pace slot">
+      <div class="dc-head"><h3>Assessment Criteria</h3><span class="dc-tag tag-assess">Assessment</span></div>
+      <p class="dc-plain">A single parameter a student is graded on within a course: Writing, Practicals, Presentation, or in AEN's case, PACE Slot 1 through PACE Slot 12. Marks entered against an Assessment Result are broken down by these criteria, not given as one lump score.</p>
+      <div class="dc-cols">
+        <div class="dc-sub"><h4>Dependencies</h4><ul><li>None. Build this first, it is a Level 02 independent master.</li></ul></div>
+        <div class="dc-sub"><h4>Where it attaches</h4><p>Added to a Course's Assessment tab with a Weightage, and later pulled automatically into any Assessment Plan built for that Course.</p></div>
+      </div>
+      <div class="dc-sub"><h4>The AEN pattern</h4><p>12 generic criteria named PACE Slot 1 through PACE Slot 12 were created once, then reused across all 13 Courses at every grade level, each weighted 8.33 except slot 12 at 8.37, for an exact total of 100. Because the same Course record spans multiple grades, the specific PACE number for each slot is recorded later, at Assessment Plan and Assessment Result level, not baked into the criteria name itself.</p></div>
+    </article>
+
+    <article class="dc-card" id="assessment-group" data-search="assessment group tree term test exam hierarchy">
+      <div class="dc-head"><h3>Assessment Group</h3><span class="dc-tag tag-assess">Assessment</span></div>
+      <p class="dc-plain">A tree-structured master that defines the hierarchy of examinations at a school, for example one Assessment Group per Academic Term within an Academic Year, or categories like Term Tests and End of Term Exams.</p>
+      <div class="dc-cols">
+        <div class="dc-sub"><h4>Dependencies</h4><ul><li>None. Build alongside Assessment Criteria.</li></ul></div>
+        <div class="dc-sub"><h4>Where it is used</h4><p>Selected on every Assessment Plan, to categorize which examination cycle that plan belongs to.</p></div>
+      </div>
+      <div class="dc-callout gap"><h4>A naming trap worth flagging</h4><p>Assessment Group is easy to confuse with Assessment Criteria Group, a separate, smaller field that lives inside the Course's Assessment tab and simply labels a cluster of Assessment Criteria for organizational purposes, for example naming all 12 PACE Slot criteria under one label called PACE Completion. Assessment Group is the term-level examination hierarchy used on Assessment Plan. Assessment Criteria Group is a cosmetic grouping label on the Course form. They sound identical and control entirely different things.</p></div>
+    </article>
+
+    <article class="dc-card" id="grading-scale" data-search="grading scale grade threshold letter percent">
+      <div class="dc-head"><h3>Grading Scale</h3><span class="dc-tag tag-assess">Assessment</span></div>
+      <p class="dc-plain">Defines the score thresholds that translate a percentage into a letter grade or achievement level, for example 90 percent and above is an A+, 80 and above is an A-.</p>
+      <div class="dc-cols">
+        <div class="dc-sub"><h4>Dependencies</h4><ul><li>None. Build alongside Assessment Criteria and Assessment Group.</li></ul></div>
+        <div class="dc-sub"><h4>Where it is used</h4><p>Set as the Default Grading Scale on a Course, and automatically pulled into any Assessment Plan built for that Course.</p></div>
+      </div>
+      <div class="mini-note">At AEN, only one Grading Scale, named ACE Standard, was ever submitted in the system. Because Frappe auto-selects the only submitted Grading Scale as the default wherever this field appears, every Course inherited ACE Standard automatically without it being explicitly set on each one.</div>
+    </article>
+
+    <article class="dc-card" id="assessment-plan" data-search="assessment plan schedule exam from time to time">
+      <div class="dc-head"><h3>Assessment Plan</h3><span class="dc-tag tag-assess">Assessment</span></div>
+      <p class="dc-plain">A scheduled examination event for one Student Group and one Course: when it happens, in which room, supervised and examined by which Instructors, and against which Grading Scale and Assessment Criteria.</p>
+      <div class="dc-cols">
+        <div class="dc-sub"><h4>Dependencies</h4><ul><li>Student Group</li><li>Course</li><li>Program</li><li>Assessment Group</li><li>Grading Scale</li></ul></div>
+        <div class="dc-sub"><h4>How to create it</h4><ol><li>Go to Assessment Plan &gt; New.</li><li>Select Student Group, Course, Assessment Group.</li><li>Grading Scale auto-fills from the Course.</li><li>Set Schedule Date, From Time, To Time, Room, Examiner, Supervisor.</li><li>Enter Maximum Assessment Score; Assessment Criteria auto-populate from the Course.</li><li>Save.</li></ol></div>
+      </div>
+      <div class="dc-callout errors"><h4>Common errors</h4><ul>
+        <li>From Time and To Time are mandatory fields. Bulk CSV import of Assessment Plans fails when these are left blank or formatted inconsistently, along with general child table grouping issues in the Assessment Criteria subtable.</li>
+        <li>A submitted Assessment Plan built for the wrong Academic Term cannot be edited in place. It has to be cancelled and recreated with the correct term, exactly as with Program Enrollment.</li>
+      </ul></div>
+      <div class="dc-callout console"><h4>Faster path for bulk creation</h4><p>At AEN, 28 Assessment Plans across two grades were built through a Python script rather than the UI form, generating each plan's dictionary of field values programmatically and inserting through <code>frappe.get_doc().insert()</code>, which handled the child table population far more reliably than CSV import did.</p></div>
+    </article>
+
+    <article class="dc-card" id="assessment-result" data-search="assessment result marks grade earned">
+      <div class="dc-head"><h3>Assessment Result</h3><span class="dc-tag tag-assess">Assessment</span></div>
+      <p class="dc-plain">A log of the marks or grade one student earned on one Assessment Plan, broken down by Assessment Criteria. This record is created in the background, not usually by hand.</p>
+      <div class="dc-sub"><h4>How it gets created</h4><p>Almost always generated automatically by the Assessment Result Tool as marks are entered, rather than created directly.</p></div>
+    </article>
+
+    <article class="dc-card" id="assessment-result-tool" data-search="assessment result tool marks entry bulk assessment tool">
+      <div class="dc-head"><h3>Assessment Result Tool <span class="dc-alt">(the "Assessment Tool")</span></h3><span class="dc-tag tag-assess">Assessment</span></div>
+      <p class="dc-plain">The bulk marks-entry screen. Select an Assessment Plan, and every student in that Student Group is fetched into a table with one column per Assessment Criteria, ready for scores to be typed in directly.</p>
+      <div class="dc-sub"><h4>How to use it</h4><ol><li>Go to Education &gt; Tools &gt; Assessment Result Tool.</li><li>Select the Assessment Plan.</li><li>Enter marks for each student, per criteria column.</li><li>Move to the next student. An Assessment Result record is auto-created in the background for each one as you go.</li></ol></div>
+      <div class="mini-note">At AEN, this workflow produced 35 submitted Assessment Results, giving a complete end-to-end PACE tracking demo from enrollment through to graded results.</div>
+    </article>
+
+    <article class="dc-card" id="final-assessment-grades" data-search="final assessment grades report summary">
+      <div class="dc-head"><h3>Final Assessment Grades</h3><span class="dc-tag tag-assess">Assessment</span></div>
+      <p class="dc-plain">A report, not a doctype to create records in, that shows the overall final grade for each student at the end of a term or program, rolling up individual Assessment Results into a single summary grade per student per Grading Scale.</p>
+      <div class="dc-sub"><h4>Where to find it</h4><p>Education &gt; Reports &gt; Final Assessment Grades. Useful for report card generation and for spotting which students have gaps in their assessment record before a term closes.</p></div>
+    </article>
+
+  </div>
+</section>
+
+<section class="block" id="fees-mgmt">
+  <div class="block-head">
+    <div class="block-eyebrow">Layer 07 to 08</div>
+    <h2>Fees management</h2>
+    <p>The billing chain. This is the layer with the most silent failure modes in the entire module, because three separate doctypes each auto-populate fields from the one before it, and any break in that chain shows up as a zero, not an error.</p>
+  </div>
+  <div class="dc-grid-list">
+
+    <article class="dc-card" id="fee-category" data-search="fee category component item accounting defaults">
+      <div class="dc-head"><h3>Fee Category</h3><span class="dc-tag tag-fees">Fees</span></div>
+      <p class="dc-plain">A component of fee calculation: Tuition Fees, Hostel Fees, Transport Fees. Fee Categories are the line items a Fee Structure is built from.</p>
+      <div class="dc-cols">
+        <div class="dc-sub"><h4>Dependencies</h4><ul><li>None. Build this first, it is a Level 02 independent master.</li></ul></div>
+        <div class="dc-sub"><h4>How to create it</h4><ol><li>Go to Education &gt; Fees &gt; Fee Category &gt; New.</li><li>Enter Name and Description.</li><li>Save.</li></ol></div>
+      </div>
+      <div class="dc-callout gap"><h4>What actually happens behind the scenes</h4><p>From v15.1 onward, creating a Fee Category silently creates a matching Item record in the Item doctype. From v15.4, a child table called Accounting Defaults appears, letting a Fee Category route income to a different Company, Income Account, or Cost Center than the default set on Fee Structure. This matters directly for multi-entity setups: AEN's holding company, Arise Education Network, was deliberately kept out of every Fee Category accounting default and every Fee Schedule Company field, since the holding company never bills students directly, only the two operating schools underneath it do. Get this separation right at the Fee Category level and it holds correctly all the way through to the Sales Invoice.</p></div>
+    </article>
+
+    <article class="dc-card" id="fee-structure" data-search="fee structure template component amount">
+      <div class="dc-head"><h3>Fee Structure</h3><span class="dc-tag tag-fees">Fees</span></div>
+      <p class="dc-plain">A reusable template of fee components and amounts for a Program, used to generate Fee Schedules or individual Fees records. Think of it as the price list before it becomes an actual bill.</p>
+      <div class="dc-cols">
+        <div class="dc-sub"><h4>Dependencies</h4><ul><li>Academic Term, Academic Year</li><li>Program</li><li>Student Category (optional filter)</li></ul></div>
+        <div class="dc-sub"><h4>How to create it</h4><ol><li>Go to Fee Structure &gt; New.</li><li>Select Program and other basic details.</li><li>In the Components table, add Fee Category rows with amounts.</li><li>Set Receivable Account, Income Account, and Company.</li><li>Save and Submit.</li></ol></div>
+      </div>
+      <div class="dc-sub"><h4>What Company controls here</h4><p>Whichever Company is selected on Fee Structure is the Company every generated Sales Invoice will be created against. In a group-of-companies setup, this is the field that decides which legal entity actually bills the student, not the Program and not the holding company above it.</p></div>
+      <div class="mini-note">From v15.1 onward, multiple Fee Schedules can be generated directly from one submitted Fee Structure using the Create Fee Schedule button, which opens a modal to pick a fee plan, adjust amounts, and select a Student Group, rather than building each Fee Schedule from scratch.</div>
+    </article>
+
+    <article class="dc-card" id="fee-schedule" data-search="fee schedule invoice batch total students component">
+      <div class="dc-head"><h3>Fee Schedule</h3><span class="dc-tag tag-fees">Fees</span></div>
+      <p class="dc-plain">Turns a Fee Structure into an actual billing timeline for a specific Student Group: a due date, a fee breakdown, and, once submitted, a Create Sales Invoice button that generates one invoice per student in the group.</p>
+      <div class="dc-cols">
+        <div class="dc-sub"><h4>Dependencies</h4><ul><li>Fee Structure, submitted</li><li>Student Group, populated with students</li><li>Underlying Program Enrollments, submitted, correct term</li></ul></div>
+        <div class="dc-sub"><h4>How to create it</h4><ol><li>Go to Fee Schedule &gt; New.</li><li>Select Fee Structure; Fee Break Up for Each Student auto-populates.</li><li>Select Academic Year, Academic Term, Due Date, Student Group.</li><li>Save and Submit.</li><li>Status changes from Draft to Invoice Pending. Click Create Sales Invoice.</li></ol></div>
+      </div>
+      <div class="dc-callout errors"><h4>Common errors, in the order AEN actually hit them</h4><ul>
+        <li><b>Total Students shows zero.</b> Almost never a Student Group problem. Check first whether the students in that group have submitted Program Enrollments for the exact matching Academic Term. If Term 3 has no Program Enrollments, Fee Schedule sees zero students, regardless of how many students are visibly sitting inside the Student Group table.</li>
+        <li><b>All invoice amounts show as 0.</b> The Components child table did not auto-populate from the Fee Structure, usually after a CSV import route rather than the native UI flow. Open the Fee Schedule and manually add components from the Fee Structure, or rebuild through the console with components explicitly appended.</li>
+        <li><b>Total Students still blank after saving, even with a confirmed non-zero join count.</b> A known v16 UI rendering issue: the browser's fetch that writes <code>total_students</code> runs once, at the moment a Student Group is selected, and does not always refresh afterward. Removing and re-adding the Student Group row sometimes forces a refresh; if not, this is a case for creating the Fee Schedule through the console instead.</li>
+      </ul></div>
+      <div class="dc-callout console"><h4>When the console becomes the correct path, not just a workaround</h4><p>At AEN, once students were added to Student Groups directly through the console rather than through the native Get Students flow, the Fee Schedule UI's student-count fetch stopped recognizing those students correctly, even though the underlying data was accurate. The fix was creating Fee Schedules through the console too: querying the actual join directly, setting <code>total_students</code> explicitly, and building each fee component row by hand. One detail is easy to miss: when a fee component's <code>total</code> field is set in the browser, JavaScript computes it before the form is even submitted. Going through the console bypasses that JavaScript entirely, so <code>total</code> arrives as <code>None</code> and the Python validator crashes trying to sum it. The fix is setting <code>total</code> explicitly on every component row inside the console script, replicating what the browser would have done automatically. Once a site's data has been built this way for even one Fee Schedule, treat the console as the permanent, correct path for that site going forward, not an occasional workaround.</p></div>
+    </article>
+
+    <article class="dc-card" id="fees" data-search="fees student fee record receipt sales invoice payment">
+      <div class="dc-head"><h3>Fees <span class="dc-alt">(covers "Student Fee" and "Fee Receipt")</span></h3><span class="dc-tag tag-fees">Fees</span></div>
+      <p class="dc-plain">The individual fee record for one student: what they owe, the due date, and once paid, the payment record against it. There is no separate doctype called Student Fee or Fee Receipt in the Education module; both are informal names for what this Fees doctype, and the Sales Invoice it generates, actually do.</p>
+      <div class="dc-cols">
+        <div class="dc-sub"><h4>Dependencies</h4><ul><li>Student</li><li>Fee Category</li><li>Fee Structure</li></ul></div>
+        <div class="dc-sub"><h4>How to create it</h4><ol><li>Go to Fees &gt; New.</li><li>Select Student, add Due Date.</li><li>Select a Fee Structure; components auto-populate.</li><li>Save.</li></ol></div>
+      </div>
+      <div class="dc-sub"><h4>Where the receipt actually comes from</h4><p>What most people mean by a Fee Receipt is the printed or PDF version of a submitted Fees record or its Sales Invoice, generated from the Letter Head and Print Heading set under Printing Settings on the Fees or Fee Schedule form, not a separate record type.</p></div>
+      <div class="dc-sub"><h4>The v15.1 onward flow</h4><p>Since v15.1, a Sales Invoice is created against a student and a Fee Schedule, with every Fee Category listed as a line item on the Sales Invoice Item table. Since v15.3, a Sales Order can be created instead of a Sales Invoice, useful for schools that want to show a pending charge before the student has actually joined, converting to an invoice only once they enroll.</p></div>
+      <div class="mini-note">Payment can be recorded directly from a Fees record by selecting a Mode of Payment in the Payment Entry and submitting.</div>
+    </article>
+
+  </div>
+</section>
+
+<section class="block" id="attend">
+  <div class="block-head">
+    <div class="block-eyebrow">Layer 08</div>
+    <h2>Attendance</h2>
+    <p>Daily presence tracking, either per lecture through Course Schedule, or per day through Student Group.</p>
+  </div>
+  <div class="dc-grid-list">
+
+    <article class="dc-card" id="student-attendance" data-search="student attendance present absent leave">
+      <div class="dc-head"><h3>Student Attendance</h3><span class="dc-tag tag-attend">Attendance</span></div>
+      <p class="dc-plain">A single attendance record for one student, on one date, against either a Course Schedule or a Student Group.</p>
+      <div class="dc-cols">
+        <div class="dc-sub"><h4>How to create it</h4><ol><li>Select Student, Course Schedule or Student Group, and date.</li><li>Set Status.</li><li>Save.</li></ol></div>
+        <div class="dc-sub"><h4>v15.3.1 onward</h4><p>Three states are available: Present, Leave, and Absent. The status can be changed even after the document is submitted, which was not possible in earlier versions.</p></div>
+      </div>
+      <div class="mini-note">For bulk marking rather than one student at a time, use the Student Attendance Tool below.</div>
+    </article>
+
+    <article class="dc-card" id="student-attendance-tool" data-search="student attendance tool bulk batch course activity">
+      <div class="dc-head"><h3>Student Attendance Tool</h3><span class="dc-tag tag-attend">Attendance</span></div>
+      <p class="dc-plain">Bulk attendance marking for an entire Student Group at once, filterable by Batch, Course, or Activity, rather than opening one Student Attendance record per student.</p>
+      <div class="dc-sub"><h4>How to use it</h4><ol><li>Go to Education &gt; Attendance &gt; Student Attendance Tool.</li><li>Select the Student Group basis and date.</li><li>Student details auto-fetch.</li><li>Mark attendance for the fetched list and save.</li></ol></div>
+    </article>
+
+    <article class="dc-card" id="student-leave-application" data-search="student leave application leave request holiday">
+      <div class="dc-head"><h3>Student Leave Application</h3><span class="dc-tag tag-attend">Attendance</span></div>
+      <p class="dc-plain">A formal leave record for a student across a date range, functioning as the official system record when a parent submits a leave request.</p>
+      <div class="dc-cols">
+        <div class="dc-sub"><h4>How to create it</h4><ol><li>Select Student, From Date, To Date.</li><li>Choose Attendance Based On: Course Schedule for per-lecture tracking, or Student Group for whole-day tracking.</li><li>Optionally check Mark as Present, if the student is representing the school at an event.</li><li>Save.</li></ol></div>
+        <div class="dc-sub"><h4>What happens on submission</h4><p>A Student Attendance record is created automatically, set to Leave, or to Present if Mark as Present was checked. If any date within the leave period falls on a holiday, that date is skipped. Total Leave Days is calculated automatically, excluding holidays from the default Holiday List.</p></div>
+      </div>
+      <div class="mini-note">Cancelling a Student Leave Application automatically cancels the linked Student Attendance record it created.</div>
+    </article>
+
+  </div>
+</section>
+
+<section class="block" id="other">
+  <div class="block-head">
+    <div class="block-eyebrow">Supporting cast</div>
+    <h2>Others</h2>
+    <p>Smaller doctypes and pages that round out the module without sitting directly in the main dependency chain.</p>
+  </div>
+  <div class="dc-grid-list">
+
+    <article class="dc-card" id="student-log" data-search="student log note incident behavioral">
+      <div class="dc-head"><h3>Student Log</h3><span class="dc-tag tag-other">Other</span></div>
+      <p class="dc-plain">A standalone, chronological note attached to a Student, used for behavioral observations, achievements, or any incident worth recording outside of formal Assessment Results. It carries its own Academic Year field, so notes can be filtered by the year they were made.</p>
+      <div class="dc-sub"><h4>Where it is useful</h4><p>Building a running record of a student's conduct or milestones over time, visible from the Student dashboard alongside their academic and financial history.</p></div>
+    </article>
+
+    <article class="dc-card" id="student-portal" data-search="student portal self service parent login">
+      <div class="dc-head"><h3>Student Portal</h3><span class="dc-tag tag-other">Other</span></div>
+      <p class="dc-plain">A self-service website, bundled with the Education module from v15.2.0 onward, where students and parents can log in to check their timetable, attendance, pay fees online, and view current and previous grades, without needing desk access to ERPNext itself.</p>
+      <div class="dc-cols">
+        <div class="dc-sub"><h4>Dependencies</h4><ul><li>User account on the Student record (Skip User Creation for New Student must be off in Education Settings)</li><li>Razorpay credentials, if online payment is required</li></ul></div>
+        <div class="dc-sub"><h4>Where to configure it</h4><p>Education Settings, Portal Settings tab: attendance-based-on-course-schedule behavior, payment gateway keys, and the school's abbreviation and logo shown on the portal.</p></div>
+      </div>
+    </article>
+
+    <article class="dc-card" id="tracking-progress" data-search="tracking progress dashboard overview student holistic">
+      <div class="dc-head"><h3>Tracking the Progress</h3><span class="dc-tag tag-other">Other</span></div>
+      <p class="dc-plain">Not a doctype on its own, but the documentation's guidance page on reading a student's overall academic picture from the records this module already generates. The most direct route is the dashboard visible on any saved Student record, which surfaces linked Program Enrollments, Fee Schedules, Attendance, and Assessment Results in one place, without needing to open each doctype's list view separately.</p>
+      <div class="dc-sub"><h4>Practical use</h4><p>For a single student, start from their Student record dashboard. For a whole cohort, use the Final Assessment Grades and Assessment Plan Status reports, alongside Student Fee Collection for the financial side, rather than trying to piece the picture together from individual records.</p></div>
+    </article>
+
+  </div>
+</section>
+
+<footer class="page-footer">
+  <p>Built from docs.frappe.io/education (all linked pages) and the Arise Education Network live implementation on ERPNext v16, site ariseedn.local. Where a callout is marked "docs versus reality," it reflects something the documentation does not make explicit but that showed up during an actual build.</p>
+</footer>
+
+</main>
+</div>
+
+<a id="kw-wa-btn" class="kw-fab" href="https://wa.me/2347089167007?text=Hi%2C%20I%20have%20a%20question%20about%20the%20ERPNext%2FFrappe%20learning%20resources." target="_blank" rel="noopener" aria-label="Message on WhatsApp" title="Message me on WhatsApp">
+  <svg viewBox="0 0 24 24" width="24" height="24" fill="#fff"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 1.67c2.24 0 4.35.87 5.94 2.46a8.2 8.2 0 0 1 2.41 5.78c0 4.55-3.7 8.25-8.25 8.25a8.2 8.2 0 0 1-4.19-1.15l-.3-.17-3.12.82.83-3.04-.19-.31a8.18 8.18 0 0 1-1.28-4.4c0-4.55 3.7-8.24 8.15-8.24zm4.52 5.86c-.25-.12-1.47-.72-1.7-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.78.97-.14.17-.29.19-.53.06-.25-.12-1.04-.38-1.99-1.22-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.14.16-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.23.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.68 4.25 3.75.59.25 1.06.4 1.42.52.6.19 1.14.16 1.57.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.1-.23-.16-.48-.28z"/></svg>
+</a>
+<button id="kw-top-btn" class="kw-fab" aria-label="Back to top" title="Back to top">&uarr;</button>
+
+<script>
+(function(){
+  var input = document.getElementById('searchInput');
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.dc-card'));
+  var links = Array.prototype.slice.call(document.querySelectorAll('.sb-link'));
+  var groups = Array.prototype.slice.call(document.querySelectorAll('.sb-group'));
+  var count = document.getElementById('searchCount');
+  var totalCards = cards.length;
+
+  function normalize(s){ return (s || '').toLowerCase(); }
+
+  input.addEventListener('input', function(){
+    var q = normalize(input.value).trim();
+    var visibleCount = 0;
+
+    cards.forEach(function(card){
+      var hay = normalize(card.id) + ' ' + normalize(card.querySelector('h3') ? card.querySelector('h3').textContent : '');
+      var match = q === '' || hay.indexOf(q) !== -1;
+      card.classList.toggle('hidden', !match);
+      if(match) visibleCount++;
+    });
+
+    links.forEach(function(link){
+      var hay = normalize(link.getAttribute('data-search')) + ' ' + normalize(link.textContent) + ' ' + normalize(link.getAttribute('href'));
+      var match = q === '' || hay.indexOf(q) !== -1;
+      link.classList.toggle('hidden', !match);
+    });
+
+    groups.forEach(function(group){
+      var anyVisible = Array.prototype.slice.call(group.querySelectorAll('.sb-link')).some(function(l){
+        return !l.classList.contains('hidden');
+      });
+      group.style.display = anyVisible ? '' : 'none';
+    });
+
+    if(q === ''){
+      count.textContent = totalCards + ' entries';
+    } else {
+      count.textContent = visibleCount + ' match' + (visibleCount === 1 ? '' : 'es');
+    }
+  });
+
+  // Highlight active section link on scroll
+  var sections = cards.concat(Array.prototype.slice.call(document.querySelectorAll('section.block')));
+  window.addEventListener('scroll', function(){
+    var scrollPos = window.scrollY + 120;
+    var current = null;
+    sections.forEach(function(s){
+      if(s.offsetTop <= scrollPos) current = s.id;
+    });
+    links.forEach(function(l){
+      l.classList.toggle('active', l.getAttribute('href') === '#' + current);
+    });
+  }, { passive: true });
+
+  var kwTopBtn = document.getElementById('kw-top-btn');
+  function kwToggleTop(){ kwTopBtn.classList.toggle('vis', window.scrollY > 400); }
+  window.addEventListener('scroll', kwToggleTop, { passive: true });
+  kwTopBtn.addEventListener('click', function(){ window.scrollTo({ top: 0, behavior: 'smooth' }); });
+  kwToggleTop();
+
+  var kwProg = document.getElementById('kw-prog');
+  function kwUpdateProg(){
+    var total = document.body.scrollHeight - window.innerHeight;
+    kwProg.style.transform = 'scaleX(' + (total > 0 ? window.scrollY / total : 0) + ')';
+  }
+  window.addEventListener('scroll', kwUpdateProg, { passive: true });
+  window.addEventListener('resize', kwUpdateProg);
+  kwUpdateProg();
+})();
+</script>
+
+</body>
+</html>

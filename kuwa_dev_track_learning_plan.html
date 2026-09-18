@@ -1,0 +1,1716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frappe App Development — Learning Plan | Kuwa Advisory</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%230A0A0A'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ── TOKENS ─────────────────────────────────────────────────────────── */
+:root {
+  --ink:     #0A0A0A;
+  --red:     #E63815;
+  --teal:    #005B50;
+  --amber:   #F79F1B;
+  --parch:   #FAFAF8;
+  --g1:      #EBEBEA;
+  --g2:      #D4D3D0;
+  --g3:      #8A8986;
+  --g4:      #5A5957;
+  --white:   #FFFFFF;
+  --code-bg: #F0EFED;
+  --ex-bg:   #EDF4F3;
+  --f-sans:  'Instrument Sans', system-ui, sans-serif;
+  --f-mono:  'JetBrains Mono', 'Fira Code', monospace;
+  --sidebar: 260px;
+  --content-max: 820px;
+}
+
+/* ── RESET ──────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--f-sans);
+  background: var(--parch);
+  color: var(--g4);
+  font-size: 15px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── BRAND BAR ──────────────────────────────────────────────────────── */
+.brand-bar {
+  background: var(--ink);
+  padding: 0 40px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 2px solid var(--red);
+}
+.brand-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.brand-mark {
+  font-family: var(--f-sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--white);
+}
+.brand-mark span { color: var(--red); }
+.brand-bar-right {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--g3);
+}
+.progress-bar {
+  position: fixed;
+  top: 48px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: var(--red);
+  z-index: 99;
+  transition: width 0.1s linear;
+}
+
+/* ── HERO ────────────────────────────────────────────────────────────── */
+.hero {
+  background: var(--ink);
+  color: var(--white);
+  padding: 72px 56px 64px;
+}
+.hero-overline {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.hero-overline::before {
+  content: '';
+  display: block;
+  width: 36px;
+  height: 2px;
+  background: var(--red);
+  flex-shrink: 0;
+}
+.hero-overline span {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--red);
+}
+.hero-title {
+  font-size: clamp(36px, 5vw, 58px);
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.05;
+  margin-bottom: 6px;
+}
+.hero-subtitle {
+  font-size: clamp(30px, 4vw, 48px);
+  font-weight: 400;
+  color: var(--g3);
+  line-height: 1.05;
+  margin-bottom: 48px;
+}
+.hero-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 0;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  margin-bottom: 56px;
+}
+.hero-meta-item {
+  padding: 20px 0 20px;
+  border-right: 1px solid rgba(255,255,255,0.1);
+  padding-right: 28px;
+  margin-right: 28px;
+}
+.hero-meta-item:last-child { border-right: none; margin-right: 0; padding-right: 0; }
+.hero-meta-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--g3);
+  margin-bottom: 6px;
+}
+.hero-meta-value {
+  font-size: 13px;
+  color: rgba(255,255,255,0.8);
+  line-height: 1.5;
+}
+
+/* Phase overview table in hero */
+.phase-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.phase-table th {
+  background: rgba(255,255,255,0.07);
+  color: var(--g3);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 10px 16px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.phase-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  color: rgba(255,255,255,0.75);
+  vertical-align: top;
+}
+.phase-table tr:last-child td { border-bottom: none; }
+.phase-table tr:nth-child(odd) td { background: rgba(255,255,255,0.03); }
+.phase-table .phase-name { font-weight: 600; color: var(--white); }
+.phase-table .phase-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 2px;
+  font-size: 10px;
+  font-weight: 600;
+  background: rgba(230,56,21,0.2);
+  color: var(--red);
+  letter-spacing: 0.04em;
+}
+
+/* ── DOCUMENT LAYOUT ────────────────────────────────────────────────── */
+.doc-layout {
+  display: grid;
+  grid-template-columns: var(--sidebar) 1fr;
+  min-height: 100vh;
+  align-items: start;
+}
+
+/* ── SIDEBAR ────────────────────────────────────────────────────────── */
+.sidebar {
+  position: sticky;
+  top: 48px;
+  height: calc(100vh - 48px);
+  overflow-y: auto;
+  background: #F0EFED;
+  border-right: 1px solid var(--g2);
+  padding: 32px 0 48px;
+}
+.sidebar::-webkit-scrollbar { width: 3px; }
+.sidebar::-webkit-scrollbar-track { background: transparent; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--g2); }
+.sidebar-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--g3);
+  padding: 0 24px;
+  margin-bottom: 16px;
+}
+.nav-section {
+  margin-bottom: 4px;
+}
+.nav-section-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 24px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.nav-section-head:hover { background: rgba(0,0,0,0.04); }
+.nav-section-head.active { background: rgba(230,56,21,0.08); }
+.nav-section-head.active .nav-dot { background: var(--red); }
+.nav-section-head.active .nav-section-title { color: var(--red); }
+.nav-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--g2);
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+.nav-section-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--g4);
+  line-height: 1.3;
+}
+.nav-days {
+  padding-left: 34px;
+  margin-bottom: 4px;
+}
+.nav-day-link {
+  display: block;
+  font-size: 11px;
+  color: var(--g3);
+  text-decoration: none;
+  padding: 4px 24px 4px 0;
+  line-height: 1.4;
+  transition: color 0.15s;
+  border-left: 1px solid var(--g2);
+  padding-left: 12px;
+  margin-left: 2px;
+}
+.nav-day-link:hover { color: var(--g4); }
+.nav-day-link.active { color: var(--red); border-left-color: var(--red); font-weight: 500; }
+.nav-divider {
+  height: 1px;
+  background: var(--g2);
+  margin: 12px 24px;
+}
+
+/* ── MAIN CONTENT ───────────────────────────────────────────────────── */
+.main-content {
+  padding: 56px 56px 80px 64px;
+  max-width: calc(var(--content-max) + 120px);
+}
+
+/* ── OVERLINE ───────────────────────────────────────────────────────── */
+.overline {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  margin-top: 56px;
+}
+.overline::before {
+  content: '';
+  display: block;
+  width: 28px;
+  height: 2px;
+  background: var(--red);
+  flex-shrink: 0;
+}
+.overline span {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--red);
+}
+
+/* ── SECTION HEADING ────────────────────────────────────────────────── */
+.section-heading {
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 3px solid var(--red);
+}
+.section-heading h2 {
+  font-size: 38px;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--ink);
+}
+.section-heading h2 .num {
+  color: var(--red);
+  margin-right: 12px;
+}
+.section-intro {
+  font-size: 15px;
+  color: var(--g4);
+  margin-top: 16px;
+  line-height: 1.7;
+}
+
+/* ── DAY HEADING ────────────────────────────────────────────────────── */
+.day-heading {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-top: 48px;
+  margin-bottom: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--g2);
+}
+.day-num {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--red);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.day-title {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.2;
+}
+
+/* ── SUB HEADING ────────────────────────────────────────────────────── */
+.sub-heading {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-top: 28px;
+  margin-bottom: 10px;
+}
+
+/* ── BODY TEXT ──────────────────────────────────────────────────────── */
+p.body-text, .body-text {
+  font-size: 15px;
+  color: var(--g4);
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+
+/* ── LABEL LINE ─────────────────────────────────────────────────────── */
+.label-line {
+  display: flex;
+  gap: 8px;
+  font-size: 14px;
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+.label-line .lbl {
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+  min-width: 110px;
+}
+.label-line .val { color: var(--g4); }
+
+/* ── BULLET LIST ────────────────────────────────────────────────────── */
+.bullet-list {
+  list-style: none;
+  margin: 10px 0 18px 0;
+}
+.bullet-list li {
+  font-size: 14.5px;
+  color: var(--g4);
+  line-height: 1.65;
+  padding: 5px 0 5px 20px;
+  position: relative;
+}
+.bullet-list li::before {
+  content: '\2013';
+  position: absolute;
+  left: 0;
+  color: var(--g3);
+  font-weight: 400;
+}
+
+/* ── CODE BLOCK ─────────────────────────────────────────────────────── */
+.code-block {
+  background: var(--code-bg);
+  border: 1px solid var(--g2);
+  border-radius: 0;
+  margin: 14px 0 20px;
+  overflow-x: auto;
+}
+.code-block pre {
+  font-family: var(--f-mono);
+  font-size: 12.5px;
+  line-height: 1.7;
+  padding: 18px 22px;
+  color: var(--ink);
+  white-space: pre;
+}
+.code-block .cm { color: var(--g3); font-style: italic; } /* comments */
+.code-block .kw { color: var(--teal); font-weight: 500; } /* keywords */
+.code-block .st { color: var(--g4); } /* strings */
+
+/* ── CALLOUT BOX ────────────────────────────────────────────────────── */
+.callout {
+  background: var(--ex-bg);
+  border-left: 4px solid var(--teal);
+  padding: 18px 22px;
+  margin: 20px 0;
+}
+.callout-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 8px;
+}
+.callout p {
+  font-size: 14px;
+  color: var(--g4);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* ── DATA TABLE ─────────────────────────────────────────────────────── */
+.table-wrap {
+  overflow-x: auto;
+  margin: 16px 0 24px;
+}
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+.data-table th {
+  background: var(--ink);
+  color: var(--white);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 10px 16px;
+  text-align: left;
+  white-space: nowrap;
+}
+.data-table td {
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--g2);
+  vertical-align: top;
+  line-height: 1.55;
+  color: var(--g4);
+}
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:nth-child(even) td { background: rgba(0,0,0,0.02); }
+.data-table .mono { font-family: var(--f-mono); font-size: 11.5px; color: var(--ink); }
+.data-table .bold { font-weight: 600; color: var(--ink); }
+
+/* ── API ENTRY ──────────────────────────────────────────────────────── */
+.api-entry {
+  margin: 18px 0;
+  border-left: 2px solid var(--g2);
+  padding-left: 16px;
+}
+.api-entry:hover { border-left-color: var(--red); }
+.api-call {
+  font-family: var(--f-mono);
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ink);
+  background: var(--code-bg);
+  padding: 6px 10px;
+  display: block;
+  margin-bottom: 6px;
+}
+.api-desc {
+  font-size: 13.5px;
+  color: var(--g4);
+  line-height: 1.6;
+}
+
+/* ── MODULE CARD ────────────────────────────────────────────────────── */
+.module-card {
+  border: 1px solid var(--g2);
+  margin: 20px 0;
+}
+.module-card-head {
+  background: var(--ink);
+  color: var(--white);
+  padding: 14px 20px;
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+.module-num {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--red);
+  text-transform: uppercase;
+}
+.module-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--white);
+}
+.module-body {
+  padding: 18px 20px;
+}
+.module-body .label-line { margin-bottom: 10px; }
+.module-body .label-line .lbl { min-width: 80px; color: var(--g3); font-weight: 600; font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; }
+.module-body .label-line .val { font-size: 13.5px; color: var(--g4); }
+
+/* ── SECTION ANCHOR ─────────────────────────────────────────────────── */
+.section-anchor {
+  scroll-margin-top: 64px;
+}
+
+/* ── FOOTER ─────────────────────────────────────────────────────────── */
+footer {
+  background: var(--ink);
+  color: var(--g3);
+  padding: 24px 56px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 2px solid var(--red);
+}
+footer span { color: var(--red); }
+
+/* ── RESPONSIVE ─────────────────────────────────────────────────────── */
+#kw-menu-btn { display: none; position: fixed; top: 14px; left: 14px; z-index: 260; width: 38px; height: 38px; border-radius: 8px; background: var(--ink); border: 1px solid rgba(255,255,255,.14); color: var(--parch); align-items: center; justify-content: center; cursor: pointer; font-size: 16px; }
+#sb-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.42); z-index: 90; }
+#sb-overlay.show { display: block; }
+@media (max-width: 900px) {
+  .doc-layout { grid-template-columns: 1fr; }
+  #kw-menu-btn { display: flex; }
+  .sidebar {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100vh;
+    z-index: 260;
+    transform: translateX(-100%);
+    transition: transform .25s ease;
+    box-shadow: 0 0 40px rgba(0,0,0,.35);
+  }
+  .sidebar.open { transform: translateX(0); }
+  .hero { padding: 64px 24px 48px; }
+  .main-content { padding: 40px 24px 60px; }
+  .brand-bar { padding: 0 24px 0 60px; }
+}
+
+/* ── FLOATING ACTIONS ──────────────────────────────────────────────── */
+.kw-fab{position:fixed;z-index:9999;display:flex;align-items:center;justify-content:center;border-radius:50%;text-decoration:none;cursor:pointer;border:none;font-family:var(--f-sans);transition:transform .15s ease,box-shadow .15s ease,opacity .2s ease}
+#kw-wa-btn{bottom:24px;right:24px;width:52px;height:52px;background:#25D366;box-shadow:0 6px 20px rgba(37,211,102,.4),0 2px 8px rgba(0,0,0,.18)}
+#kw-wa-btn:hover{transform:translateY(-2px) scale(1.05);box-shadow:0 10px 26px rgba(37,211,102,.5),0 3px 10px rgba(0,0,0,.22)}
+#kw-top-btn{bottom:88px;right:24px;width:44px;height:44px;background:rgba(10,10,10,.82);color:var(--parch);font-size:18px;font-weight:700;opacity:0;pointer-events:none;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 6px 18px rgba(0,0,0,.25)}
+#kw-top-btn.vis{opacity:1;pointer-events:auto}
+#kw-top-btn:hover{background:var(--red);transform:translateY(-2px)}
+@media(max-width:600px){
+  #kw-wa-btn{width:46px;height:46px;bottom:18px;right:18px}
+  #kw-top-btn{width:38px;height:38px;bottom:72px;right:18px;font-size:16px}
+}
+.skip-link{position:absolute;top:-100px;left:12px;z-index:10000;background:var(--ink);color:var(--parch);padding:10px 18px;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;transition:top .15s ease}
+.skip-link:focus{top:12px}
+.main-content:focus{outline:none}
+.code-block{position:relative}
+.cb-copy-btn{position:absolute;top:8px;right:10px;font-family:var(--f-sans);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--g4);background:var(--white);border:1px solid var(--g2);border-radius:4px;padding:3px 9px;cursor:pointer;opacity:0;transition:opacity .15s,color .15s,border-color .15s}
+.code-block:hover .cb-copy-btn,.cb-copy-btn:focus{opacity:1}
+.cb-copy-btn:hover{color:var(--ink);border-color:var(--g3)}
+.cb-copy-btn.done{color:var(--teal);border-color:var(--teal)}
+</style>
+</head>
+<body>
+<a href="#main-content" class="skip-link">Skip to content</a>
+
+<a id="kw-wa-btn" class="kw-fab" href="https://wa.me/2347089167007?text=Hi%2C%20I%20have%20a%20question%20about%20the%20ERPNext%2FFrappe%20learning%20resources." target="_blank" rel="noopener" aria-label="Message on WhatsApp" title="Message me on WhatsApp">
+  <svg viewBox="0 0 24 24" width="24" height="24" fill="#fff"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 1.67c2.24 0 4.35.87 5.94 2.46a8.2 8.2 0 0 1 2.41 5.78c0 4.55-3.7 8.25-8.25 8.25a8.2 8.2 0 0 1-4.19-1.15l-.3-.17-3.12.82.83-3.04-.19-.31a8.18 8.18 0 0 1-1.28-4.4c0-4.55 3.7-8.24 8.15-8.24zm4.52 5.86c-.25-.12-1.47-.72-1.7-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.78.97-.14.17-.29.19-.53.06-.25-.12-1.04-.38-1.99-1.22-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.14.16-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.23.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.68 4.25 3.75.59.25 1.06.4 1.42.52.6.19 1.14.16 1.57.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.1-.23-.16-.48-.28z"/></svg>
+</a>
+<button id="kw-top-btn" class="kw-fab" aria-label="Back to top" title="Back to top">&uarr;</button>
+<button id="kw-menu-btn" aria-label="Toggle navigation" title="Toggle navigation">&#9776;</button>
+<div id="sb-overlay"></div>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- BRAND BAR -->
+<header class="brand-bar">
+  <div class="brand-bar-left">
+    <div class="brand-mark">Kuwa <span>Advisory</span></div>
+    <div style="color:var(--g3);font-size:11px;">|</div>
+    <div class="brand-mark" style="color:var(--g3);font-weight:500;">Dev Track</div>
+  </div>
+  <div class="brand-bar-right">Frappe App Development</div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-overline"><span>Kuwa Advisory  |  Dev Track</span></div>
+  <div class="hero-title">Frappe App Development</div>
+  <div class="hero-subtitle">Learning Plan</div>
+  <div class="hero-meta">
+    <div class="hero-meta-item">
+      <div class="hero-meta-label">Starting Point</div>
+      <div class="hero-meta-value">ERPNext operator. Four live implementations. Bench running on frappe-bench-v16.</div>
+    </div>
+    <div class="hero-meta-item">
+      <div class="hero-meta-label">Goal</div>
+      <div class="hero-meta-value">Build and deploy custom Frappe apps for businesses.</div>
+    </div>
+    <div class="hero-meta-item">
+      <div class="hero-meta-label">Duration</div>
+      <div class="hero-meta-value">~3 weeks at 2 to 3 focused hours per day.</div>
+    </div>
+    <div class="hero-meta-item">
+      <div class="hero-meta-label">Constraint</div>
+      <div class="hero-meta-value">Zero custom code outside the Frappe framework.</div>
+    </div>
+  </div>
+  <table class="phase-table">
+    <thead>
+      <tr>
+        <th>Phase</th>
+        <th>Focus</th>
+        <th>Duration</th>
+        <th>Output</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="phase-name">Foundation</span></td>
+        <td>Python reading literacy and Frappe vocabulary</td>
+        <td><span class="phase-badge">2 Days</span></td>
+        <td>Can read and verify AI-generated Frappe code</td>
+      </tr>
+      <tr>
+        <td><span class="phase-name">Phase 1</span></td>
+        <td>Site-level scripting in the browser</td>
+        <td><span class="phase-badge">4 Days</span></td>
+        <td>Working DocType with automation on local bench</td>
+      </tr>
+      <tr>
+        <td><span class="phase-name">Phase 2</span></td>
+        <td>Custom app development in the file system</td>
+        <td><span class="phase-badge">7 Days</span></td>
+        <td>Portable, installable Frappe app with git history</td>
+      </tr>
+      <tr>
+        <td><span class="phase-name">Capstone</span></td>
+        <td>Tennis Club Management App — end to end</td>
+        <td><span class="phase-badge">5–7 Days</span></td>
+        <td>Full production app with all three automation modules</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- DOCUMENT LAYOUT -->
+<div class="doc-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-label">Contents</div>
+
+    <div class="nav-section">
+      <a href="#section-01" class="nav-section-head" data-section="section-01">
+        <div class="nav-dot"></div>
+        <div class="nav-section-title">01 — Foundation</div>
+      </a>
+      <div class="nav-days">
+        <a href="#day-01" class="nav-day-link" data-section="day-01">Day 01: Python Reading Literacy</a>
+        <a href="#day-02" class="nav-day-link" data-section="day-02">Day 02: Frappe Vocabulary</a>
+      </div>
+    </div>
+
+    <div class="nav-divider"></div>
+
+    <div class="nav-section">
+      <a href="#section-02" class="nav-section-head" data-section="section-02">
+        <div class="nav-dot"></div>
+        <div class="nav-section-title">02 — Phase 1: Site-Level Scripting</div>
+      </a>
+      <div class="nav-days">
+        <a href="#day-03" class="nav-day-link" data-section="day-03">Day 03: Custom DocTypes</a>
+        <a href="#day-04" class="nav-day-link" data-section="day-04">Day 04: Client Scripts</a>
+        <a href="#day-05" class="nav-day-link" data-section="day-05">Day 05: Server Scripts</a>
+        <a href="#day-06" class="nav-day-link" data-section="day-06">Day 06: Review</a>
+      </div>
+    </div>
+
+    <div class="nav-divider"></div>
+
+    <div class="nav-section">
+      <a href="#section-03" class="nav-section-head" data-section="section-03">
+        <div class="nav-dot"></div>
+        <div class="nav-section-title">03 — Phase 2: Custom App Dev</div>
+      </a>
+      <div class="nav-days">
+        <a href="#day-07" class="nav-day-link" data-section="day-07">Day 07: App Anatomy</a>
+        <a href="#day-08" class="nav-day-link" data-section="day-08">Day 08: DocTypes in Code</a>
+        <a href="#day-09" class="nav-day-link" data-section="day-09">Day 09: hooks.py in Depth</a>
+        <a href="#day-10" class="nav-day-link" data-section="day-10">Day 10: Git</a>
+        <a href="#day-11-13" class="nav-day-link" data-section="day-11-13">Days 11–13: Consolidation</a>
+      </div>
+    </div>
+
+    <div class="nav-divider"></div>
+
+    <div class="nav-section">
+      <a href="#section-04" class="nav-section-head" data-section="section-04">
+        <div class="nav-dot"></div>
+        <div class="nav-section-title">04 — Capstone: Tennis Club App</div>
+      </a>
+      <div class="nav-days">
+        <a href="#cap-master" class="nav-day-link" data-section="cap-master">Master Data Layer</a>
+        <a href="#cap-transact" class="nav-day-link" data-section="cap-transact">Transactional Layer</a>
+        <a href="#cap-modules" class="nav-day-link" data-section="cap-modules">Automation Modules</a>
+        <a href="#cap-sequence" class="nav-day-link" data-section="cap-sequence">Build Sequence</a>
+      </div>
+    </div>
+
+    <div class="nav-divider"></div>
+
+    <div class="nav-section">
+      <a href="#section-05" class="nav-section-head" data-section="section-05">
+        <div class="nav-dot"></div>
+        <div class="nav-section-title">05 — Resources</div>
+      </a>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content" id="main-content" tabindex="-1">
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- SECTION 01: FOUNDATION -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <div id="section-01" class="section-anchor">
+      <div class="overline"><span>Section 01</span></div>
+      <div class="section-heading">
+        <h2><span class="num">01</span>Foundation</h2>
+        <p class="section-intro">Two days. The goal is reading literacy, not writing ability. By the end of this section, you will be able to pick up any Frappe Server Script, read it line by line, and explain what it does to a client in plain English. You are not learning to write Python. You are learning to review it.</p>
+      </div>
+    </div>
+
+    <!-- DAY 01 -->
+    <div id="day-01" class="section-anchor">
+      <div class="day-heading">
+        <div class="day-num">DAY 01</div>
+        <div class="day-title">Python Reading Literacy</div>
+      </div>
+
+      <p class="body-text"><strong style="color:var(--ink)">Objective:</strong> Read a Frappe Server Script without confusion. Understand what every line is doing even if you could not write it from scratch.</p>
+
+      <div class="sub-heading">Variables and Data Types</div>
+      <p class="body-text">A variable is a named container. It holds a value. In Frappe, nearly everything you interact with is stored in a variable first.</p>
+      <div class="code-block"><pre>customer_name = <span class="st">"Acme Ltd"</span>     <span class="cm"># string — text in quotes</span>
+total = 1500.00                <span class="cm"># float — decimal number</span>
+count = 5                      <span class="cm"># integer — whole number</span>
+is_active = True               <span class="cm"># boolean — True or False</span></pre></div>
+
+      <div class="sub-heading">Dictionaries</div>
+      <p class="body-text">The most important concept for Frappe work. A dictionary holds key-value pairs, like a form with labelled fields. <strong style="color:var(--ink)">Every Frappe document is a dictionary under the hood.</strong> When Claude writes <code style="font-family:var(--f-mono);font-size:12px;background:var(--code-bg);padding:1px 5px">doc.customer_name</code>, it is accessing a dictionary key called <code style="font-family:var(--f-mono);font-size:12px;background:var(--code-bg);padding:1px 5px">customer_name</code> on the document object.</p>
+      <div class="code-block"><pre>invoice = {
+    <span class="st">"customer"</span>: <span class="st">"Acme Ltd"</span>,
+    <span class="st">"total"</span>: 1500,
+    <span class="st">"status"</span>: <span class="st">"Draft"</span>,
+    <span class="st">"items"</span>: []          <span class="cm"># empty list — more on this below</span>
+}
+
+<span class="cm"># Two ways to access a value</span>
+invoice[<span class="st">"customer"</span>]       <span class="cm"># returns "Acme Ltd"</span>
+invoice.get(<span class="st">"customer"</span>)   <span class="cm"># safer version — returns None if key is missing</span></pre></div>
+
+      <div class="sub-heading">Lists and For Loops</div>
+      <p class="body-text">A list is an ordered collection of items. A for loop runs a block of code once for each item in the list. <strong style="color:var(--ink)">Every child table in ERPNext (like the Items table on a Sales Invoice) is a list.</strong> Every automation that touches line items uses a loop.</p>
+      <div class="code-block"><pre>items = [<span class="st">"pen"</span>, <span class="st">"notebook"</span>, <span class="st">"stapler"</span>]
+
+<span class="cm"># Loop through each item</span>
+<span class="kw">for</span> item <span class="kw">in</span> items:
+    print(item)   <span class="cm"># runs once per item in the list</span>
+
+<span class="cm"># In Frappe: looping through a Sales Invoice's items child table</span>
+<span class="kw">for</span> row <span class="kw">in</span> doc.items:
+    print(row.item_name, row.qty, row.rate)</pre></div>
+
+      <div class="sub-heading">Functions</div>
+      <p class="body-text">A named block of code that runs when called. Functions take inputs (parameters) and return outputs. You will read many functions in Server Scripts. You need to know where a function starts, where it ends, and what it returns.</p>
+      <div class="code-block"><pre><span class="kw">def</span> calculate_total(qty, rate):
+    <span class="cm"># This runs when the function is called</span>
+    <span class="kw">return</span> qty * rate
+
+<span class="cm"># Calling the function</span>
+result = calculate_total(5, 300)   <span class="cm"># result = 1500</span>
+
+<span class="cm"># In Frappe, functions are methods on a document class</span>
+<span class="kw">def</span> validate(self):
+    <span class="cm"># self is the document. self.total is doc.total.</span>
+    <span class="kw">if</span> self.total &lt; 0:
+        frappe.throw(<span class="st">"Total cannot be negative"</span>)</pre></div>
+
+      <div class="sub-heading">If / Else Logic</div>
+      <p class="body-text">Frappe validation logic is almost entirely built from if/else blocks. Read them as plain English: if this condition is true, do this. Otherwise, do that.</p>
+      <div class="code-block"><pre><span class="cm"># Basic if/else</span>
+<span class="kw">if</span> doc.status == <span class="st">"Submitted"</span>:
+    frappe.throw(<span class="st">"Cannot edit a submitted document"</span>)
+<span class="kw">else</span>:
+    doc.save()
+
+<span class="cm"># elif for multiple conditions</span>
+<span class="kw">if</span> doc.total &gt; 100000:
+    doc.approval_required = 1
+<span class="kw">elif</span> doc.total &gt; 50000:
+    doc.approval_required = 0
+    doc.flag_for_review = 1
+<span class="kw">else</span>:
+    doc.approval_required = 0</pre></div>
+
+      <div class="sub-heading">How to Learn This</div>
+      <p class="body-text">Do not use a video course. Open <strong style="color:var(--ink)">replit.com</strong>, create a new Python repl, and type each concept by hand. One hour of typing beats three hours of watching. The goal is not memorisation. The goal is recognition: when you see a loop or a dictionary in a Server Script, you know immediately what it is doing.</p>
+
+      <div class="callout">
+        <div class="callout-label">End of Day Exercise</div>
+        <p>Ask Claude to give you three real Frappe Server Scripts at increasing complexity. For each one, write one paragraph in plain English describing what it does. No technical jargon. Write it as if you are explaining the business logic to a client. Do not move to Day 2 until you can do this without hesitation.</p>
+      </div>
+    </div>
+
+    <!-- DAY 02 -->
+    <div id="day-02" class="section-anchor">
+      <div class="day-heading">
+        <div class="day-num">DAY 02</div>
+        <div class="day-title">Frappe's Specific Vocabulary</div>
+      </div>
+
+      <p class="body-text"><strong style="color:var(--ink)">Objective:</strong> Recognize Frappe's core API calls on sight. Understand the Client Script structure. Learn to read a bench error log. Frappe has maybe six API calls that appear in 80% of all scripts. Today is learning to recognize them.</p>
+
+      <div class="sub-heading">How a DocType Maps to Python</div>
+      <p class="body-text">When you call <code style="font-family:var(--f-mono);font-size:12px;background:var(--code-bg);padding:1px 5px">frappe.get_doc()</code>, Frappe fetches a document from the database and returns it as a Python object. Every field on the DocType becomes an attribute. You already know what these fields are from your implementation work. Now you know how to access them in code.</p>
+      <div class="code-block"><pre>doc = frappe.get_doc(<span class="st">"Sales Invoice"</span>, <span class="st">"SINV-0001"</span>)
+
+<span class="cm"># Every field on the DocType is now an attribute</span>
+doc.customer          <span class="cm"># the customer field value</span>
+doc.posting_date      <span class="cm"># the date field value</span>
+doc.grand_total       <span class="cm"># the total field value</span>
+doc.status            <span class="cm"># "Draft", "Submitted", etc.</span>
+
+<span class="cm"># Child tables (like line items) are lists</span>
+<span class="kw">for</span> item <span class="kw">in</span> doc.items:
+    print(item.item_name, item.qty, item.rate)</pre></div>
+
+      <div class="sub-heading">The Six Core API Calls</div>
+      <p class="body-text">Learn these by recognition, not memorisation. Claude will write the code. You will read it and verify the logic makes sense against the DocType you know.</p>
+
+      <div class="api-entry">
+        <code class="api-call">frappe.get_doc("DocType", "Name")</code>
+        <div class="api-desc">Fetches a single complete document from the database. Use when you need the full record including all child tables. Returns a document object with all fields as attributes.</div>
+      </div>
+      <div class="api-entry">
+        <code class="api-call">frappe.get_all("DocType", filters={}, fields=[])</code>
+        <div class="api-desc">Fetches a list of documents matching the filter conditions. Returns a list of dictionaries. Use when you need multiple records — for example, all submitted invoices for a customer.</div>
+      </div>
+      <div class="api-entry">
+        <code class="api-call">frappe.db.get_value("DocType", "Name", "fieldname")</code>
+        <div class="api-desc">Fetches a single field value from a single document. Lighter than get_doc when you only need one value. For example, getting a customer's payment terms without loading the full Customer document.</div>
+      </div>
+      <div class="api-entry">
+        <code class="api-call">frappe.db.set_value("DocType", "Name", "fieldname", value)</code>
+        <div class="api-desc">Updates a single field value directly in the database. Bypasses the document save cycle. Use in on_submit hooks to update related records without triggering their own validation.</div>
+      </div>
+      <div class="api-entry">
+        <code class="api-call">frappe.throw("Your error message here")</code>
+        <div class="api-desc">Stops execution immediately and shows a red error message to the user in the browser. This is the only correct way to communicate validation failures in Frappe. Never use raise or print for user-facing errors.</div>
+      </div>
+      <div class="api-entry">
+        <code class="api-call">frappe.new_doc("DocType")</code>
+        <div class="api-desc">Creates a new document object in memory without saving it. Set fields on it, then call .insert() to save to the database. Use in on_submit hooks to auto-create related records.</div>
+      </div>
+
+      <div class="sub-heading">Client Script Structure</div>
+      <p class="body-text">You already understand JavaScript from website work. The Frappe Client Script pattern is just a wrapper Frappe adds around standard JS. The structure is consistent: a DocType name, then event handlers as an object.</p>
+      <div class="code-block"><pre>frappe.ui.form.on(<span class="st">"Court Booking"</span>, {
+
+    <span class="cm">// Runs every time the form loads or refreshes</span>
+    refresh: function(frm) {
+        <span class="cm">// frm is the form object. frm.doc is the document.</span>
+        console.log(frm.doc.member_name);
+    },
+
+    <span class="cm">// Runs when the coach field changes</span>
+    coach: function(frm) {
+        <span class="cm">// Fetch hourly_rate from the linked Coach Profile</span>
+        frm.set_value(<span class="st">"hourly_rate"</span>, frm.doc.coach_hourly_rate);
+    },
+
+    <span class="cm">// Runs when start_time changes</span>
+    start_time: function(frm) {
+        <span class="cm">// Recalculate total price</span>
+        calculate_price(frm);
+    }
+});</pre></div>
+
+      <div class="sub-heading">Reading Bench Error Logs</div>
+      <p class="body-text">When a Server Script breaks, the error appears in two places: a red error message in the browser (which Frappe shows via frappe.throw), and the full Python traceback in the bench terminal. The terminal traceback is the diagnostic tool.</p>
+      <p class="body-text">A Python traceback reads <strong style="color:var(--ink)">bottom to top</strong>. The last line is the actual error. The lines above show you the call path that led to it. Find the last line first. That tells you what broke. Then read upward to find which line of your code triggered it.</p>
+      <div class="code-block"><pre><span class="cm"># Example traceback — read from the bottom</span>
+Traceback (most recent call last):
+  File "/apps/frappe/frappe/model/document.py", line 1012, in run_method
+    return frappe.call(fn, *args, **kwargs)
+  File "/apps/kuwa_tennis/kuwa_tennis/doctype/court_booking/court_booking.py", line 23, in validate
+    self.check_booking_conflicts()
+  File "/apps/kuwa_tennis/kuwa_tennis/doctype/court_booking/court_booking.py", line 31, in check_booking_conflicts
+    existing = frappe.get_all("Court Booking", filters={"court": self.court})
+AttributeError: 'NoneType' object has no attribute 'lower'
+<span class="cm"># ↑ This is the actual error. self.court is None. The court field was empty.</span></pre></div>
+
+      <div class="callout">
+        <div class="callout-label">End of Day Exercise</div>
+        <p>Take one of the Server Scripts from Day 1. Identify every API call in it. For each call, write next to it: which of the six it is, and what it is doing to the database in plain English. Then open your bench, create a minimal Server Script on a test DocType, and deliberately trigger an error by referencing a field that does not exist. Find that error in the bench terminal. Read the traceback from bottom to top and identify the line in your code that caused it.</p>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- SECTION 02: PHASE 1 -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <div id="section-02" class="section-anchor">
+      <div class="overline"><span>Section 02</span></div>
+      <div class="section-heading">
+        <h2><span class="num">02</span>Phase 1: Site-Level Scripting</h2>
+        <p class="section-intro">Four days. Build everything through the Frappe browser UI only. No file system work beyond what you already know. The goal is to learn development patterns with immediate feedback before adding the complexity of a custom app structure. A Server Script written in the browser applies within seconds of saving. A custom app requires a file change, a bench restart, and sometimes a migration. The browser loop is faster and more forgiving for learning patterns.</p>
+      </div>
+    </div>
+
+    <!-- DAY 03 -->
+    <div id="day-03" class="section-anchor">
+      <div class="day-heading">
+        <div class="day-num">DAY 03</div>
+        <div class="day-title">Custom DocTypes with Intent</div>
+      </div>
+
+      <p class="body-text">You have built DocTypes before during implementations. This day is different. You are building with a developer mindset, not a configuration mindset. Every field name you create becomes a Python variable name.</p>
+
+      <div class="sub-heading">Field Naming Discipline</div>
+      <p class="body-text">Use <strong style="color:var(--ink)">snake_case</strong> throughout. <code style="font-family:var(--f-mono);font-size:12px;background:var(--code-bg);padding:1px 5px">customer_name</code> not "Customer Name". No spaces. This is not stylistic preference. It is functional: <code style="font-family:var(--f-mono);font-size:12px;background:var(--code-bg);padding:1px 5px">doc.customer_name</code> works. <code style="font-family:var(--f-mono);font-size:12px;background:var(--code-bg);padding:1px 5px">doc.Customer Name</code> is a syntax error. Your field names become Python variable names the moment you write a Server Script.</p>
+
+      <div class="sub-heading">Field Type Reference</div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Field Type</th><th>Use For</th><th>Code Access</th></tr></thead>
+          <tbody>
+            <tr><td class="bold">Data</td><td>Short text — names, codes, identifiers. Max ~140 chars.</td><td class="mono">doc.customer_name</td></tr>
+            <tr><td class="bold">Text Editor</td><td>Long text — notes, descriptions, rich text.</td><td class="mono">doc.notes</td></tr>
+            <tr><td class="bold">Link</td><td>Relationship to another DocType. Creates a foreign key. Always specify the linked DocType.</td><td class="mono">doc.court (returns the linked doc name)</td></tr>
+            <tr><td class="bold">Currency</td><td>Money. Always use Currency, never Float, for financial values. Respects precision settings.</td><td class="mono">doc.total_price</td></tr>
+            <tr><td class="bold">Int</td><td>Whole numbers — quantities, counts, stock levels.</td><td class="mono">doc.stock_quantity</td></tr>
+            <tr><td class="bold">Float</td><td>Decimals — hours, percentages, rates where sub-unit precision matters.</td><td class="mono">doc.duration_hours</td></tr>
+            <tr><td class="bold">Date</td><td>Date only. No time component.</td><td class="mono">doc.booking_date</td></tr>
+            <tr><td class="bold">Time</td><td>Time only. No date component.</td><td class="mono">doc.start_time</td></tr>
+            <tr><td class="bold">Check</td><td>Boolean true/false flag. Renders as a checkbox.</td><td class="mono">doc.is_active (returns 0 or 1)</td></tr>
+            <tr><td class="bold">Select</td><td>Fixed dropdown options. Options defined in the field settings.</td><td class="mono">doc.surface_type (returns the selected option string)</td></tr>
+            <tr><td class="bold">Table</td><td>Links a Child Table DocType for repeating line items.</td><td class="mono">doc.items (returns a list of child rows)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sub-heading">Child Tables</div>
+      <p class="body-text">A Child Table is its own DocType with "Is Child Table" checked. It has three auto-managed fields: Parent (links to the parent document name), Parenttype (the parent DocType), and Parentfield (the field name on the parent). You never set these manually. Frappe manages them.</p>
+      <p class="body-text">You link a Child Table to a parent DocType via a Table field. From code, <code style="font-family:var(--f-mono);font-size:12px;background:var(--code-bg);padding:1px 5px">doc.items</code> gives you the list of child rows. Each row is a document object with its own fields.</p>
+
+      <div class="sub-heading">Naming Series</div>
+      <p class="body-text">Every submittable DocType needs a Naming Series configured in the DocType settings. This generates sequential document names like BOOK-2026-00001 automatically. Set it before you create any test records, or your early test records will have ugly auto-generated names.</p>
+
+      <div class="sub-heading">Day 03 Practice</div>
+      <p class="body-text">Build a Court Booking DocType with these exact fields. Do not add any scripts yet. Structure only.</p>
+      <div class="code-block"><pre>DocType: Court Booking
+Naming Series: BOOK-.YYYY.-.####
+
+Fields:
+  member_name    Link       → Customer       mandatory
+  booking_date   Date                        mandatory
+  start_time     Time                        mandatory
+  end_time       Time                        mandatory
+  court          Link       → Tennis Court   mandatory   (create this DocType too)
+  coach          Link       → Coach Profile              (create this DocType too)
+  hourly_rate    Currency                    read_only   (will be fetched from coach)
+  duration_hours Float                       read_only   (will be computed)
+  total_price    Currency                    read_only   (will be computed)
+  notes          Small Text</pre></div>
+    </div>
+
+    <!-- DAY 04 -->
+    <div id="day-04" class="section-anchor">
+      <div class="day-heading">
+        <div class="day-num">DAY 04</div>
+        <div class="day-title">Client Scripts</div>
+      </div>
+      <p class="body-text">Add real-time behavior to forms. This code runs in the browser. No page refresh required. The user sees values update as they type or change fields.</p>
+
+      <div class="sub-heading">The Four Events You Will Use Most</div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Event</th><th>When It Runs</th><th>Use For</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">refresh</td><td>Every time the form loads or navigates to it</td><td>Set field visibility, make fields read-only, add custom buttons</td></tr>
+            <tr><td class="mono">onload</td><td>Once when the form first opens in this session</td><td>Set default values, configure field options dynamically</td></tr>
+            <tr><td class="mono">[fieldname]</td><td>When that specific field value changes</td><td>Auto-fetch related values, trigger recalculations</td></tr>
+            <tr><td class="mono">before_save</td><td>Before the form saves to the database</td><td>Client-side validation (backend validate is more reliable)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sub-heading">Fetching Values from a Linked Document</div>
+      <p class="body-text">When a user selects a Coach from the Link field, you want to automatically pull that coach's hourly_rate into the Court Booking form. There are two ways to do this.</p>
+      <div class="code-block"><pre><span class="cm">// Method 1: add_fetch — simple, declarative</span>
+<span class="cm">// frm.add_fetch(link_fieldname, source_fieldname, target_fieldname)</span>
+frm.add_fetch(<span class="st">"coach"</span>, <span class="st">"hourly_rate"</span>, <span class="st">"hourly_rate"</span>);
+<span class="cm">// When coach changes, Frappe fetches hourly_rate from Coach Profile</span>
+<span class="cm">// and puts it in the hourly_rate field on Court Booking.</span>
+
+<span class="cm">// Method 2: frappe.db.get_value — explicit, gives you more control</span>
+coach: <span class="kw">function</span>(frm) {
+    <span class="kw">if</span> (frm.doc.coach) {
+        frappe.db.get_value(<span class="st">"Coach Profile"</span>, frm.doc.coach, <span class="st">"hourly_rate"</span>)
+            .then(<span class="kw">function</span>(r) {
+                frm.set_value(<span class="st">"hourly_rate"</span>, r.message.hourly_rate);
+                calculate_price(frm);
+            });
+    }
+}</pre></div>
+
+      <div class="sub-heading">Computing a Derived Field in Real Time</div>
+      <div class="code-block"><pre><span class="kw">function</span> calculate_price(frm) {
+    <span class="kw">if</span> (frm.doc.start_time &amp;&amp; frm.doc.end_time &amp;&amp; frm.doc.hourly_rate) {
+        <span class="cm">// Convert time strings to minutes since midnight</span>
+        <span class="kw">var</span> start = frm.doc.start_time.split(<span class="st">":"</span>);
+        <span class="kw">var</span> end   = frm.doc.end_time.split(<span class="st">":"</span>);
+        <span class="kw">var</span> start_mins = parseInt(start[0]) * 60 + parseInt(start[1]);
+        <span class="kw">var</span> end_mins   = parseInt(end[0])   * 60 + parseInt(end[1]);
+        <span class="kw">var</span> hours = (end_mins - start_mins) / 60;
+
+        frm.set_value(<span class="st">"duration_hours"</span>, hours);
+        frm.set_value(<span class="st">"total_price"</span>, hours * frm.doc.hourly_rate);
+    }
+}
+
+frappe.ui.form.on(<span class="st">"Court Booking"</span>, {
+    start_time: <span class="kw">function</span>(frm) { calculate_price(frm); },
+    end_time:   <span class="kw">function</span>(frm) { calculate_price(frm); },
+    hourly_rate:<span class="kw">function</span>(frm) { calculate_price(frm); }
+});</pre></div>
+
+      <div class="callout">
+        <div class="callout-label">Day 04 Practice</div>
+        <p>Add a Client Script to the Court Booking DocType. When coach changes, fetch the hourly_rate from Coach Profile. When start_time, end_time, or hourly_rate changes, compute and display duration_hours and total_price in real time. Test it in the browser: create a test coach with a rate, create a booking, select the coach, and confirm the rate populates. Then change the times and confirm the price updates live.</p>
+      </div>
+    </div>
+
+    <!-- DAY 05 -->
+    <div id="day-05" class="section-anchor">
+      <div class="day-heading">
+        <div class="day-num">DAY 05</div>
+        <div class="day-title">Server Scripts</div>
+      </div>
+      <p class="body-text">Add backend validation and automation. Server Scripts run on the server, in Python, with access to the database. They are more powerful than Client Scripts and execute even when the form is saved via API (not just the browser UI).</p>
+
+      <div class="sub-heading">The Six DocType Events You Will Use Most</div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Event</th><th>Timing</th><th>Typical Use</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">before_validate</td><td>Before Frappe checks required fields</td><td>Pre-populate fields, set defaults based on other field values</td></tr>
+            <tr><td class="mono">validate</td><td>After required field checks</td><td>Business rule validation — the primary event for blocking bad data</td></tr>
+            <tr><td class="mono">before_save</td><td>Just before writing to the database</td><td>Final transforms, setting computed fields server-side</td></tr>
+            <tr><td class="mono">on_submit</td><td>After a document is submitted (status becomes Submitted)</td><td>Trigger downstream actions: create related records, send notifications</td></tr>
+            <tr><td class="mono">on_cancel</td><td>After a document is cancelled</td><td>Reverse on_submit actions: decrement stock, cancel related docs</td></tr>
+            <tr><td class="mono">before_delete</td><td>Before a document is deleted</td><td>Prevent deletion of protected records</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sub-heading">The doc Object in Server Scripts</div>
+      <p class="body-text">In a Server Script of type DocType Event, the <code style="font-family:var(--f-mono);font-size:12px;background:var(--code-bg);padding:1px 5px">doc</code> object is already available representing the current document. You do not need to call <code style="font-family:var(--f-mono);font-size:12px;background:var(--code-bg);padding:1px 5px">frappe.get_doc()</code>. Write <code style="font-family:var(--f-mono);font-size:12px;background:var(--code-bg);padding:1px 5px">doc.customer_name</code> directly.</p>
+
+      <div class="sub-heading">Conflict Detection Pattern</div>
+      <p class="body-text">This is the Conflict Prevention Engine for the capstone. The pattern queries for existing bookings that overlap with the current one and throws an error if any are found.</p>
+      <div class="code-block"><pre><span class="cm"># Server Script: DocType Event — Court Booking — validate</span>
+
+<span class="cm"># Step 1: Get all other bookings for the same court on the same date</span>
+existing = frappe.get_all(<span class="st">"Court Booking"</span>,
+    filters={
+        <span class="st">"court"</span>: doc.court,
+        <span class="st">"booking_date"</span>: doc.booking_date,
+        <span class="st">"name"</span>: [<span class="st">"!="</span>, doc.name],   <span class="cm"># exclude the current document</span>
+        <span class="st">"docstatus"</span>: [<span class="st">"!="</span>, 2]       <span class="cm"># exclude cancelled bookings</span>
+    },
+    fields=[<span class="st">"name"</span>, <span class="st">"start_time"</span>, <span class="st">"end_time"</span>, <span class="st">"member_name"</span>]
+)
+
+<span class="cm"># Step 2: Check each result for time overlap</span>
+<span class="kw">for</span> booking <span class="kw">in</span> existing:
+    <span class="cm"># Overlap condition: new booking starts before existing ends</span>
+    <span class="cm"># AND new booking ends after existing starts</span>
+    overlaps = (doc.start_time &lt; booking.end_time <span class="kw">and</span>
+                doc.end_time &gt; booking.start_time)
+    <span class="kw">if</span> overlaps:
+        frappe.throw(
+            <span class="st">"Court {0} is already booked from {1} to {2} (Booking: {3})"</span>.format(
+                doc.court,
+                booking.start_time,
+                booking.end_time,
+                booking.name
+            )
+        )
+
+<span class="cm"># Step 3: Repeat the same check for the coach (if assigned)</span>
+<span class="kw">if</span> doc.coach:
+    coach_bookings = frappe.get_all(<span class="st">"Court Booking"</span>,
+        filters={
+            <span class="st">"coach"</span>: doc.coach,
+            <span class="st">"booking_date"</span>: doc.booking_date,
+            <span class="st">"name"</span>: [<span class="st">"!="</span>, doc.name],
+            <span class="st">"docstatus"</span>: [<span class="st">"!="</span>, 2]
+        },
+        fields=[<span class="st">"name"</span>, <span class="st">"start_time"</span>, <span class="st">"end_time"</span>]
+    )
+    <span class="kw">for</span> booking <span class="kw">in</span> coach_bookings:
+        <span class="kw">if</span> doc.start_time &lt; booking.end_time <span class="kw">and</span> doc.end_time &gt; booking.start_time:
+            frappe.throw(
+                <span class="st">"Coach {0} is already booked during this time (Booking: {1})"</span>.format(
+                    doc.coach, booking.name
+                )
+            )</pre></div>
+
+      <div class="callout">
+        <div class="callout-label">Day 05 Practice</div>
+        <p>Add the conflict detection Server Script to Court Booking as a validate event. Test it deliberately: create two bookings for the same court at overlapping times and confirm the error fires with the conflicting booking name. Then test the coach conflict check. Then test that a cancelled booking does not trigger the conflict check.</p>
+      </div>
+    </div>
+
+    <!-- DAY 06 -->
+    <div id="day-06" class="section-anchor">
+      <div class="day-heading">
+        <div class="day-num">DAY 06</div>
+        <div class="day-title">Phase 1 Review and Consolidation</div>
+      </div>
+      <p class="body-text">Do not learn anything new today. Fix what is broken and understand what you built. The goal is to finish the day with everything working and everything understood.</p>
+      <ul class="bullet-list">
+        <li>Review all three DocTypes (Tennis Court, Coach Profile, Court Booking). Verify every field name is in snake_case and consistent across all scripts.</li>
+        <li>Read every Client Script line by line and explain it to yourself out loud. If you cannot explain a line, look it up before moving on.</li>
+        <li>Read every Server Script line by line and trace through what happens when a booking is submitted and when a conflict is triggered.</li>
+        <li>Run a complete simulation: create a court, create a coach, create three customers, make a valid booking, try to make an overlapping booking (confirm the error fires), confirm the price calculates correctly.</li>
+        <li>Add a List View customization for Court Booking showing booking_date, court, coach, member_name, and total_price as columns. This is in the DocType settings under List View Fields. No code required.</li>
+      </ul>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- SECTION 03: PHASE 2 -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <div id="section-03" class="section-anchor">
+      <div class="overline"><span>Section 03</span></div>
+      <div class="section-heading">
+        <h2><span class="num">03</span>Phase 2: Custom App Development</h2>
+        <p class="section-intro">Seven days. Move from browser-based scripts to a proper Frappe app that lives in the file system. Same functionality as Phase 1, rebuilt as an app. Site-level scripts cannot be version controlled easily, cannot be packaged for another site, and cannot be maintained over time. A custom app is portable, installable, and maintainable. If you want to deliver something to a client, it lives in an app.</p>
+      </div>
+    </div>
+
+    <!-- DAY 07 -->
+    <div id="day-07" class="section-anchor">
+      <div class="day-heading">
+        <div class="day-num">DAY 07</div>
+        <div class="day-title">The Anatomy of a Frappe App</div>
+      </div>
+      <p class="body-text">Understand what <code style="font-family:var(--f-mono);font-size:12px;background:var(--code-bg);padding:1px 5px">bench new-app</code> creates and why each folder and file exists.</p>
+
+      <div class="sub-heading">Create and Install the App</div>
+      <div class="code-block"><pre><span class="cm"># Navigate to your bench folder</span>
+cd ~/frappe-bench-v16
+
+<span class="cm"># Create the app — Frappe will ask for name, title, description, publisher, email</span>
+bench new-app kuwa_tennis
+
+<span class="cm"># Install the app on your local development site</span>
+bench --site your_site_name.local install-app kuwa_tennis
+
+<span class="cm"># Confirm it is installed</span>
+bench --site your_site_name.local list-apps</pre></div>
+
+      <div class="sub-heading">The File Structure</div>
+      <div class="code-block"><pre>kuwa_tennis/
+    kuwa_tennis/
+        modules.txt             <span class="cm"># lists the app's modules (Scheduling, Retail, etc.)</span>
+        hooks.py                <span class="cm"># THE most important file — wires events to Python functions</span>
+        __init__.py
+        scheduling/             <span class="cm"># module folder</span>
+            __init__.py
+            module_def.json     <span class="cm"># module definition</span>
+            doctype/            <span class="cm"># all DocTypes in this module live here</span>
+                court_booking/
+                    court_booking.json   <span class="cm"># DocType definition (fields, settings)</span>
+                    court_booking.py     <span class="cm"># Python controller (automation methods)</span>
+                    court_booking.js     <span class="cm"># Client Script (browser behavior)</span>
+                    __init__.py
+        retail/                 <span class="cm"># second module folder</span>
+            ...</pre></div>
+
+      <div class="sub-heading">What hooks.py Does</div>
+      <p class="body-text">hooks.py is a Python file that Frappe reads at startup. It is a configuration file that tells the framework which Python functions to run on which events. Every automation in your app is registered here. If you add a new function and do not register it in hooks.py, Frappe does not know it exists.</p>
+      <p class="body-text"><strong style="color:var(--ink)">Critical rule: after any change to hooks.py, restart the bench.</strong> Unlike Server Scripts in the browser which apply immediately, app code changes require a restart.</p>
+
+      <div class="callout">
+        <div class="callout-label">Day 07 Practice</div>
+        <p>Create the kuwa_tennis app with bench new-app. Install it on your local site. Create the Scheduling and Retail modules in modules.txt. Open the app folder in VSCode and familiarise yourself with the structure. Confirm both modules appear in Frappe's module list in the browser.</p>
+      </div>
+    </div>
+
+    <!-- DAY 08 -->
+    <div id="day-08" class="section-anchor">
+      <div class="day-heading">
+        <div class="day-num">DAY 08</div>
+        <div class="day-title">Creating DocTypes in Code</div>
+      </div>
+      <p class="body-text">Build DocTypes through the browser UI as before, but understand how they are stored as JSON in the app and what the Python controller file is for.</p>
+
+      <div class="sub-heading">Exporting a DocType to Your App</div>
+      <p class="body-text">After building a DocType in the browser, change the Module field to your custom module (Scheduling or Retail). This tells Frappe the DocType belongs to your app. Then export it to the file system.</p>
+      <div class="code-block"><pre><span class="cm"># Export all fixtures (DocTypes, Custom Fields, etc.) for your app</span>
+bench --site your_site_name.local export-fixtures
+
+<span class="cm"># Or export a specific DocType</span>
+bench --site your_site_name.local export-doc "DocType" "Court Booking"
+
+<span class="cm"># After export, the JSON file appears at:</span>
+<span class="cm"># apps/kuwa_tennis/kuwa_tennis/scheduling/doctype/court_booking/court_booking.json</span></pre></div>
+
+      <div class="sub-heading">The Python Controller</div>
+      <p class="body-text">Each DocType folder contains a Python file named after the DocType in snake_case. This is the controller file. It contains a class that inherits from <code style="font-family:var(--f-mono);font-size:12px;background:var(--code-bg);padding:1px 5px">frappe.model.document.Document</code>. Your automation methods live as methods on this class.</p>
+      <div class="code-block"><pre><span class="cm"># court_booking.py</span>
+<span class="kw">import</span> frappe
+<span class="kw">from</span> frappe.model.document <span class="kw">import</span> Document
+
+<span class="kw">class</span> CourtBooking(Document):
+
+    <span class="kw">def</span> validate(self):
+        <span class="st">"""Runs before every save. Business rule validation."""</span>
+        self.check_booking_conflicts()
+        self.calculate_total_price()
+
+    <span class="kw">def</span> on_submit(self):
+        <span class="st">"""Runs when the booking is submitted."""</span>
+        self.send_confirmation_notification()
+
+    <span class="kw">def</span> check_booking_conflicts(self):
+        <span class="st">"""Prevent double-booking of courts and coaches."""</span>
+        <span class="cm"># conflict detection logic goes here</span>
+        <span class="kw">pass</span>
+
+    <span class="kw">def</span> calculate_total_price(self):
+        <span class="st">"""Compute duration and price server-side as a backup to the Client Script."""</span>
+        <span class="kw">pass</span></pre></div>
+
+      <div class="callout">
+        <div class="callout-label">Day 08 Practice</div>
+        <p>Recreate the Tennis Court and Coach Profile DocTypes inside the kuwa_tennis app by setting their Module field to Scheduling. Export them to JSON. Open the JSON files in VSCode and read the structure — you will see every field you configured in the browser represented as a JSON object. Then open court_booking.py and write the class skeleton with empty method stubs for validate, on_submit, check_booking_conflicts, and calculate_total_price.</p>
+      </div>
+    </div>
+
+    <!-- DAY 09 -->
+    <div id="day-09" class="section-anchor">
+      <div class="day-heading">
+        <div class="day-num">DAY 09</div>
+        <div class="day-title">hooks.py in Depth</div>
+      </div>
+      <p class="body-text">Understand how to wire Python functions to Frappe events using hooks.py. This is the most important configuration file in any Frappe app.</p>
+
+      <div class="sub-heading">doc_events: Wiring Methods to Document Events</div>
+      <div class="code-block"><pre><span class="cm"># hooks.py — the path format is: app.module.doctype.doctype_name.doctype_name.ClassName.method</span>
+
+doc_events = {
+    <span class="st">"Court Booking"</span>: {
+        <span class="st">"validate"</span>: <span class="st">"kuwa_tennis.scheduling.doctype.court_booking.court_booking.CourtBooking.validate"</span>,
+        <span class="st">"on_submit"</span>: <span class="st">"kuwa_tennis.scheduling.doctype.court_booking.court_booking.CourtBooking.on_submit"</span>,
+        <span class="st">"on_cancel"</span>: <span class="st">"kuwa_tennis.scheduling.doctype.court_booking.court_booking.CourtBooking.on_cancel"</span>
+    },
+    <span class="st">"Retail POS"</span>: {
+        <span class="st">"on_submit"</span>: <span class="st">"kuwa_tennis.retail.doctype.retail_pos.retail_pos.RetailPOS.on_submit"</span>
+    }
+}</pre></div>
+
+      <div class="sub-heading">Other Important hooks.py Keys</div>
+      <div class="code-block"><pre><span class="cm"># Load a JavaScript file across ALL forms in the app</span>
+app_include_js = [<span class="st">"/assets/kuwa_tennis/js/utils.js"</span>]
+
+<span class="cm"># Load a CSS file across ALL pages in the app</span>
+app_include_css = [<span class="st">"/assets/kuwa_tennis/css/custom.css"</span>]
+
+<span class="cm"># Override a Frappe permission query (filter list views by custom rules)</span>
+permission_query_conditions = {
+    <span class="st">"Court Booking"</span>: <span class="st">"kuwa_tennis.scheduling.doctype.court_booking.court_booking.get_permission_query"</span>
+}
+
+<span class="cm"># Scheduled tasks — run Python functions on a timer</span>
+scheduler_events = {
+    <span class="st">"daily"</span>: [
+        <span class="st">"kuwa_tennis.tasks.send_booking_reminders"</span>
+    ],
+    <span class="st">"hourly"</span>: [
+        <span class="st">"kuwa_tennis.tasks.check_upcoming_bookings"</span>
+    ]
+}
+
+<span class="cm"># Override ERPNext or Frappe's built-in DocType class (advanced use)</span>
+override_doctype_class = {
+    <span class="st">"Sales Invoice"</span>: <span class="st">"kuwa_tennis.overrides.CustomSalesInvoice"</span>
+}</pre></div>
+
+      <div class="callout">
+        <div class="callout-label">Day 09 Practice</div>
+        <p>Move your conflict detection logic from the browser Server Script into the check_booking_conflicts method of the CourtBooking Python controller. Wire the validate method to doc_events in hooks.py. Restart the bench. Test that the conflict detection still works correctly. Then add a scheduler_events entry that calls a placeholder function (it can just print "hello" or pass). Confirm the bench restarts without errors after hooks.py changes.</p>
+      </div>
+    </div>
+
+    <!-- DAY 10 -->
+    <div id="day-10" class="section-anchor">
+      <div class="day-heading">
+        <div class="day-num">DAY 10</div>
+        <div class="day-title">Git and Version Control</div>
+      </div>
+      <p class="body-text">Set up git on your custom app. If you inject a script that breaks the site and you cannot figure out what changed, git lets you roll back to the last working commit. Three commands handle 90% of solo development work.</p>
+
+      <div class="code-block"><pre><span class="cm"># Navigate to your app folder</span>
+cd ~/frappe-bench-v16/apps/kuwa_tennis
+
+<span class="cm"># Initialize git in this folder</span>
+git init
+git add .
+git commit -m "Initial app structure — Tennis Court, Coach Profile, Court Booking"
+
+<span class="cm"># After every meaningful working change, commit it</span>
+git add .
+git commit -m "Add conflict detection to Court Booking validate"
+
+<span class="cm"># View your commit history</span>
+git log --oneline
+
+<span class="cm"># If something breaks and you need to go back to a working state</span>
+git stash                  <span class="cm"># save current uncommitted changes aside</span>
+git checkout [commit hash] <span class="cm"># move to a previous commit</span>
+<span class="cm"># OR to just discard all uncommitted changes:</span>
+git checkout -- .          <span class="cm"># restore all files to last commit</span></pre></div>
+
+      <div class="sub-heading">The .gitignore File</div>
+      <p class="body-text">Create a <code style="font-family:var(--f-mono);font-size:12px;background:var(--code-bg);padding:1px 5px">.gitignore</code> file in the app root to exclude compiled Python files from version history.</p>
+      <div class="code-block"><pre><span class="cm"># .gitignore — place this in apps/kuwa_tennis/</span>
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+*.egg-info/</pre></div>
+
+      <div class="callout">
+        <div class="callout-label">Day 10 Practice</div>
+        <p>Initialize git in the kuwa_tennis app folder. Create the .gitignore file. Make three meaningful commits: (1) initial app structure, (2) Tennis Court and Coach Profile DocTypes exported to JSON, (3) Court Booking with conflict detection in the Python controller and wired via hooks.py. Confirm all three appear in git log --oneline. Then deliberately break something (delete a line from the controller), confirm the bench error fires, and use git checkout to restore the file.</p>
+      </div>
+    </div>
+
+    <!-- DAYS 11-13 -->
+    <div id="day-11-13" class="section-anchor">
+      <div class="day-heading">
+        <div class="day-num">DAYS 11–13</div>
+        <div class="day-title">Phase 2 Practice and Consolidation</div>
+      </div>
+      <p class="body-text">Rebuild the full Phase 1 feature set inside the kuwa_tennis app. By the end of Day 13, the app must be installable on a fresh site and reproduce all Phase 1 functionality without touching the browser Script Manager.</p>
+      <ul class="bullet-list">
+        <li>Tennis Court and Coach Profile DocTypes with proper JSON files exported to the app folder, module set to Scheduling.</li>
+        <li>Court Booking DocType exported to JSON. The real-time pricing logic moved from the browser Client Script to <code style="font-family:var(--f-mono);font-size:12px">court_booking.js</code> in the app. Identical behavior.</li>
+        <li>Conflict detection and server-side price calculation moved from browser Server Scripts to the CourtBooking Python controller (<code style="font-family:var(--f-mono);font-size:12px">court_booking.py</code>), wired via doc_events in hooks.py.</li>
+        <li>A fresh git commit for each working state. Minimum three commits per day in this block.</li>
+        <li>Final test: install the app on a clean site with bench new-site and bench install-app. Confirm everything works from scratch with no manual browser configuration.</li>
+      </ul>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- SECTION 04: CAPSTONE -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <div id="section-04" class="section-anchor">
+      <div class="overline"><span>Section 04</span></div>
+      <div class="section-heading">
+        <h2><span class="num">04</span>Capstone: Tennis Club Management App</h2>
+        <p class="section-intro">Build a centralized operational system for a tennis facility. The system handles court scheduling, coach booking, and pro shop retail in one Frappe instance. This is a real project for a real club, which means you will test it against actual operational scenarios, not happy-path demos.</p>
+      </div>
+
+      <div class="label-line"><span class="lbl">Target users</span><span class="val">Club administrator and front desk staff</span></div>
+      <div class="label-line"><span class="lbl">Platform</span><span class="val">Frappe v16, kuwa_tennis custom app</span></div>
+      <div class="label-line"><span class="lbl">Constraint</span><span class="val">Zero custom code outside the Frappe framework. Configuration and framework methods only, no standalone Python libraries.</span></div>
+    </div>
+
+    <!-- MASTER DATA -->
+    <div id="cap-master" class="section-anchor">
+      <div class="overline"><span>Master Data Layer</span></div>
+      <p class="body-text">These DocTypes define the static, foundational records of the business. Build them first. Nothing else can exist without them. Build in this order: Tennis Court, then Coach Profile, then Pro Shop Item.</p>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>DocType</th><th>Field</th><th>Type</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td class="bold" rowspan="5" style="vertical-align:top;padding-top:16px;border-right:2px solid var(--red)">Tennis Court</td><td class="mono">court_name</td><td>Data</td><td>Mandatory. Naming series: COURT-.####</td></tr>
+            <tr><td class="mono">surface_type</td><td>Select</td><td>Options: Clay, Hard Court, Grass, Artificial Grass</td></tr>
+            <tr><td class="mono">is_indoor</td><td>Check</td><td>Default 0</td></tr>
+            <tr><td class="mono">is_active</td><td>Check</td><td>Default 1. Inactive courts are hidden from bookings.</td></tr>
+            <tr><td class="mono">notes</td><td>Text Editor</td><td>Court-specific notes for staff</td></tr>
+            <tr style="border-top:2px solid var(--g1)"><td class="bold" rowspan="6" style="vertical-align:top;padding-top:16px;border-right:2px solid var(--red)">Coach Profile</td><td class="mono">coach_name</td><td>Data</td><td>Mandatory. Naming series: COACH-.####</td></tr>
+            <tr><td class="mono">full_name</td><td>Data</td><td>Mandatory. Used in booking confirmations.</td></tr>
+            <tr><td class="mono">certifications</td><td>Small Text</td><td>Qualifications, e.g. "ITF Level 2, PTR Advanced"</td></tr>
+            <tr><td class="mono">hourly_rate</td><td>Currency</td><td>Mandatory. Fetched into Court Booking on coach selection.</td></tr>
+            <tr><td class="mono">is_available</td><td>Check</td><td>Default 1. Unavailable coaches hidden from booking form.</td></tr>
+            <tr><td class="mono">phone / email</td><td>Phone / Data</td><td>Contact for booking confirmations</td></tr>
+            <tr style="border-top:2px solid var(--g1)"><td class="bold" rowspan="6" style="vertical-align:top;padding-top:16px;border-right:2px solid var(--red)">Pro Shop Item</td><td class="mono">item_name</td><td>Data</td><td>Mandatory. Naming series: PSI-.####</td></tr>
+            <tr><td class="mono">item_title</td><td>Data</td><td>Display name shown on POS receipts</td></tr>
+            <tr><td class="mono">category</td><td>Select</td><td>Options: Rackets, Balls, Apparel, Accessories, Footwear, Other</td></tr>
+            <tr><td class="mono">unit_price</td><td>Currency</td><td>Mandatory. Fetched into POS line items.</td></tr>
+            <tr><td class="mono">stock_quantity</td><td>Int</td><td>Mandatory, default 0. Decremented by on_submit of Retail POS.</td></tr>
+            <tr><td class="mono">reorder_level</td><td>Int</td><td>Default 5. System notification triggered when stock falls below this.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TRANSACTIONAL -->
+    <div id="cap-transact" class="section-anchor">
+      <div class="overline"><span>Transactional Layer</span></div>
+      <p class="body-text">These DocTypes record the day-to-day operations. Build them after the master data layer is complete. They depend on it via Link fields.</p>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>DocType</th><th>Field</th><th>Type</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td class="bold" rowspan="10" style="vertical-align:top;padding-top:16px;border-right:2px solid var(--red)">Court Booking</td><td class="mono">naming_series</td><td>Naming Series</td><td>BOOK-.YYYY.-.####</td></tr>
+            <tr><td class="mono">member_name</td><td>Link → Customer</td><td>Mandatory. Links to ERPNext Customer.</td></tr>
+            <tr><td class="mono">booking_date</td><td>Date</td><td>Mandatory.</td></tr>
+            <tr><td class="mono">start_time</td><td>Time</td><td>Mandatory.</td></tr>
+            <tr><td class="mono">end_time</td><td>Time</td><td>Mandatory.</td></tr>
+            <tr><td class="mono">court</td><td>Link → Tennis Court</td><td>Mandatory. Conflict check fires on validate.</td></tr>
+            <tr><td class="mono">coach</td><td>Link → Coach Profile</td><td>Optional. If set, conflict check fires for coach too.</td></tr>
+            <tr><td class="mono">hourly_rate</td><td>Currency</td><td>Read only. Fetched from Coach Profile on coach field change.</td></tr>
+            <tr><td class="mono">duration_hours</td><td>Float</td><td>Read only. Computed from start_time and end_time.</td></tr>
+            <tr><td class="mono">total_price</td><td>Currency</td><td>Read only. duration_hours multiplied by hourly_rate.</td></tr>
+            <tr style="border-top:2px solid var(--g1)"><td class="bold" rowspan="5" style="vertical-align:top;padding-top:16px;border-right:2px solid var(--red)">POS Line Item <span style="font-weight:400;font-size:11px">(Child Table)</span></td><td class="mono">item</td><td>Link → Pro Shop Item</td><td>Mandatory. Drives unit_price and item_title auto-fetch.</td></tr>
+            <tr><td class="mono">item_title</td><td>Data</td><td>Read only. Fetched from Pro Shop Item.</td></tr>
+            <tr><td class="mono">quantity</td><td>Int</td><td>Mandatory, default 1.</td></tr>
+            <tr><td class="mono">unit_price</td><td>Currency</td><td>Read only. Fetched from Pro Shop Item.</td></tr>
+            <tr><td class="mono">line_total</td><td>Currency</td><td>Read only. quantity multiplied by unit_price.</td></tr>
+            <tr style="border-top:2px solid var(--g1)"><td class="bold" rowspan="6" style="vertical-align:top;padding-top:16px;border-right:2px solid var(--red)">Retail POS</td><td class="mono">naming_series</td><td>Naming Series</td><td>POS-.YYYY.-.####</td></tr>
+            <tr><td class="mono">buyer_name</td><td>Link → Customer</td><td>Mandatory.</td></tr>
+            <tr><td class="mono">transaction_date</td><td>Date</td><td>Mandatory, default today.</td></tr>
+            <tr><td class="mono">items</td><td>Table → POS Line Item</td><td>Mandatory. The child table for line items.</td></tr>
+            <tr><td class="mono">total_amount</td><td>Currency</td><td>Read only. Sum of all line_total values.</td></tr>
+            <tr><td class="mono">payment_method</td><td>Select</td><td>Options: Cash, Card, Mobile Money</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- AUTOMATION MODULES -->
+    <div id="cap-modules" class="section-anchor">
+      <div class="overline"><span>Automation Modules</span></div>
+      <p class="body-text">Build these after all DocTypes are tested and working with no scripts attached. Each module is independent. Test each one in isolation before combining.</p>
+
+      <div class="module-card">
+        <div class="module-card-head">
+          <span class="module-num">Module 01</span>
+          <span class="module-title">Real-Time Pricing Engine</span>
+        </div>
+        <div class="module-body">
+          <div class="label-line"><span class="lbl">Type</span><span class="val">Client Script on Court Booking</span></div>
+          <div class="label-line"><span class="lbl">Trigger</span><span class="val">on_change events on start_time, end_time, and hourly_rate. Fetch trigger on coach field change.</span></div>
+          <div class="label-line"><span class="lbl">Logic</span><span class="val">When coach changes, fetch hourly_rate from Coach Profile via frappe.db.get_value. When start_time, end_time, or hourly_rate changes, compute duration_hours as the time difference in decimal hours and total_price as duration_hours multiplied by hourly_rate. Set both fields via frm.set_value so they display in real time without a save.</span></div>
+          <div class="label-line"><span class="lbl">Goal</span><span class="val">User sees the price update live as they adjust the booking. No save required to see the cost.</span></div>
+          <div class="label-line"><span class="lbl">Also add</span><span class="val">A server-side calculation in the validate method of CourtBooking as a backup, so price is always correct even on programmatic saves.</span></div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-card-head">
+          <span class="module-num">Module 02</span>
+          <span class="module-title">Conflict Prevention Engine</span>
+        </div>
+        <div class="module-body">
+          <div class="label-line"><span class="lbl">Type</span><span class="val">Server Script (validate event) on Court Booking. Move to Python controller in Phase 2 consolidation.</span></div>
+          <div class="label-line"><span class="lbl">Trigger</span><span class="val">Before every save of a Court Booking document.</span></div>
+          <div class="label-line"><span class="lbl">Logic</span><span class="val">Query existing Court Booking records for the same court on the same date, excluding the current document and cancelled records. For each result, check whether the time ranges overlap using the condition: new start is before existing end AND new end is after existing start. If any overlap exists, throw an error naming the conflicting booking and the time range. Repeat the check for the assigned coach if a coach is set.</span></div>
+          <div class="label-line"><span class="lbl">Goal</span><span class="val">Zero double-bookings on courts or coaches. The error message tells staff exactly which existing booking conflicts.</span></div>
+          <div class="label-line"><span class="lbl">Edge cases</span><span class="val">Cancelled bookings must be excluded. The current document must be excluded from its own conflict check (using name != doc.name). Test with a booking that exactly touches another (end time of one equals start time of another — this should NOT be a conflict).</span></div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-card-head">
+          <span class="module-num">Module 03</span>
+          <span class="module-title">Inventory Depreciation Hook</span>
+        </div>
+        <div class="module-body">
+          <div class="label-line"><span class="lbl">Type</span><span class="val">Server Script (on_submit event) on Retail POS. Move to Python controller in Phase 2 consolidation.</span></div>
+          <div class="label-line"><span class="lbl">Trigger</span><span class="val">When a Retail POS document is submitted (status changes to Submitted).</span></div>
+          <div class="label-line"><span class="lbl">Logic</span><span class="val">Loop through each line item in the items child table. For each item, fetch current stock_quantity from Pro Shop Item using frappe.db.get_value. Subtract the purchased quantity. If the result is below zero, throw an error identifying the item and its available stock. If the result is zero or positive, update stock_quantity using frappe.db.set_value. After updating, if the new stock_quantity is below the item's reorder_level, create a Frappe notification to alert the administrator.</span></div>
+          <div class="label-line"><span class="lbl">Goal</span><span class="val">Stock quantities stay accurate in real time. Staff cannot sell more than is in stock. Low stock alerts fire automatically.</span></div>
+          <div class="label-line"><span class="lbl">Also handle</span><span class="val">on_cancel: when a Retail POS is cancelled, reverse the stock deduction by adding the quantities back to stock_quantity.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BUILD SEQUENCE -->
+    <div id="cap-sequence" class="section-anchor">
+      <div class="overline"><span>Build Sequence</span></div>
+      <p class="body-text">Build in this exact order. Each layer depends on the one before it. Do not add scripts until the DocType structure is fully tested.</p>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Week</th><th>Focus</th><th>Milestone</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="bold">Week 1</td>
+              <td>Build all six DocTypes. No scripts. Test data creation manually: create courts, create coaches, create a customer, create a POS with line items. Verify all Link fields pull correct records. Verify the child table works on Retail POS.</td>
+              <td>All DocTypes created, linked, and manually tested with real data. No errors on save or submit.</td>
+            </tr>
+            <tr>
+              <td class="bold">Week 2</td>
+              <td>Add all three automation modules starting as browser Server Scripts and Client Scripts. Test Module 01 (pricing) in isolation first. Then Module 02 (conflict detection) in isolation. Then Module 03 (inventory). Then test all three together in a combined scenario.</td>
+              <td>All three modules working correctly. Conflicts fire correctly. Prices update live. Stock decrements on POS submit.</td>
+            </tr>
+            <tr>
+              <td class="bold">Week 3</td>
+              <td>Move all scripts from browser into the kuwa_tennis app. Client Scripts become .js files in the DocType folder. Server Scripts become Python controller methods wired via doc_events in hooks.py. Commit each working state to git.</td>
+              <td>Full app installable on a fresh site with bench install-app. No manual browser configuration required. Git history with a commit per working milestone.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout">
+        <div class="callout-label">Final Test — Operational Day Simulation</div>
+        <p>Run a complete operational day simulation. Create a coach (Rate: USD 50/hr). Create two courts (Clay, Hard Court). Create three customers. Book Court 1 for Customer A from 09:00 to 11:00 with the coach (confirm price = USD 100, conflict check passes). Attempt to book Court 1 for Customer B from 10:00 to 12:00 (confirm conflict error fires naming the existing booking). Book Court 2 for Customer B from 10:00 to 12:00 (confirm this passes with no conflict). Process a Retail POS for Customer C with 2 rackets at USD 120 each and 4 cans of balls at USD 15 each (confirm stock decrements correctly). Attempt to sell more balls than are in stock (confirm the stock error fires). Cancel the Court 1 booking (confirm the cancel flow works and the slot is now available again). If all of these pass, the capstone is complete.</p>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- SECTION 05: RESOURCES -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <div id="section-05" class="section-anchor">
+      <div class="overline"><span>Section 05</span></div>
+      <div class="section-heading">
+        <h2><span class="num">05</span>Resources</h2>
+        <p class="section-intro">Primary sources only. Ordered by how frequently you will use them.</p>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Resource</th><th>URL</th><th>Use For</th></tr></thead>
+          <tbody>
+            <tr><td class="bold">Frappe Community Forum</td><td class="mono" style="font-size:11px">discuss.frappe.io</td><td>Your primary resource for errors and v16-specific questions. More accurate than official docs for real implementation issues. Search before asking — most problems have been solved.</td></tr>
+            <tr><td class="bold">Frappe API Reference</td><td class="mono" style="font-size:11px">frappeframework.com/docs/user/en/api/document</td><td>Look up frappe.get_doc, frappe.get_all, db methods, Document class methods, and form API.</td></tr>
+            <tr><td class="bold">Frappe Hooks Reference</td><td class="mono" style="font-size:11px">frappeframework.com/docs/user/en/python-api/hooks</td><td>All available hooks.py keys, their syntax, and their behaviors.</td></tr>
+            <tr><td class="bold">ERPNext Source Code</td><td class="mono" style="font-size:11px">github.com/frappe/erpnext</td><td>Read real DocType controller implementations. When you want to understand how a standard ERPNext document handles an event, the source code is the definitive reference.</td></tr>
+            <tr><td class="bold">Build With Hussain</td><td class="mono" style="font-size:11px">youtube.com/@buildwithhussain</td><td>Specific, high-quality tutorials on Frappe Bench CLI operations, custom app creation, and DocType building.</td></tr>
+            <tr><td class="bold">Replit</td><td class="mono" style="font-size:11px">replit.com</td><td>Foundation Day 1 only. Create a Python repl and type concepts by hand. No installation required.</td></tr>
+            <tr><td class="bold">NotebookLM</td><td class="mono" style="font-size:11px">notebooklm.google.com</td><td>Load Frappe framework doc PDFs for quick reference lookups. Treat output as a starting point. Verify Frappe-specific answers against discuss.frappe.io before acting — the docs have version inconsistencies.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<footer>
+  <div>Kuwa Advisory &nbsp;<span>|</span>&nbsp; Kigali, Rwanda &nbsp;<span>|</span>&nbsp; 2026</div>
+  <div>Frappe App Development Learning Plan &nbsp;<span>|</span>&nbsp; Version 1.0</div>
+</footer>
+
+<script>
+// ── PROGRESS BAR ────────────────────────────────────────────────────────────
+const progressBar = document.getElementById('progressBar');
+window.addEventListener('scroll', () => {
+  const scrollTop = document.documentElement.scrollTop;
+  const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+  progressBar.style.width = pct + '%';
+});
+
+// ── ACTIVE SIDEBAR HIGHLIGHTING ─────────────────────────────────────────────
+const sections = document.querySelectorAll('.section-anchor');
+const navLinks = document.querySelectorAll('.sidebar a[data-section]');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      navLinks.forEach(link => {
+        const isActive = link.dataset.section === id;
+        link.classList.toggle('active', isActive);
+        if (isActive && link.classList.contains('nav-section-head')) {
+          link.querySelector('.nav-dot').style.background = 'var(--red)';
+        }
+      });
+      // Highlight parent section head if a day link is active
+      navLinks.forEach(link => {
+        if (link.classList.contains('nav-section-head')) {
+          link.querySelector('.nav-dot').style.background = '';
+        }
+      });
+    }
+  });
+}, { rootMargin: '-48px 0px -70% 0px', threshold: 0 });
+
+sections.forEach(s => observer.observe(s));
+
+// ── CODE COMMENT STYLING ─────────────────────────────────────────────────────
+document.querySelectorAll('.code-block pre').forEach(pre => {
+  const lines = pre.innerHTML.split('\n');
+  const styled = lines.map(line => {
+    const trimmed = line.trimStart();
+    if (trimmed.startsWith('<span class="cm">')) return line; // already styled
+    return line;
+  });
+  // The spans are already in the HTML source for this file
+});
+
+// ── SMOOTH SCROLL FOR SIDEBAR LINKS ─────────────────────────────────────────
+document.querySelectorAll('.sidebar a[href^="#"]').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(link.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    closeMobileNav();
+  });
+});
+
+// ── FLOATING ACTIONS ─────────────────────────────────────────────────────────
+const kwTopBtn = document.getElementById('kw-top-btn');
+function kwToggleTop() { kwTopBtn.classList.toggle('vis', window.scrollY > 400); }
+window.addEventListener('scroll', kwToggleTop, { passive: true });
+kwTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+kwToggleTop();
+
+// ── MOBILE NAV DRAWER ────────────────────────────────────────────────────────
+const sidebarEl = document.querySelector('.sidebar');
+const kwMenuBtn = document.getElementById('kw-menu-btn');
+const sbOverlay = document.getElementById('sb-overlay');
+function openMobileNav() { sidebarEl.classList.add('open'); sbOverlay.classList.add('show'); }
+function closeMobileNav() { sidebarEl.classList.remove('open'); sbOverlay.classList.remove('show'); }
+kwMenuBtn.addEventListener('click', () => sidebarEl.classList.contains('open') ? closeMobileNav() : openMobileNav());
+sbOverlay.addEventListener('click', closeMobileNav);
+
+// ── COPY CODE BUTTONS ────────────────────────────────────────────────────────
+function kwFallbackCopy(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try { document.execCommand('copy'); } catch (e) {}
+  document.body.removeChild(ta);
+}
+document.querySelectorAll('.code-block').forEach(block => {
+  const pre = block.querySelector('pre');
+  if (!pre) return;
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'cb-copy-btn';
+  btn.textContent = 'Copy';
+  btn.addEventListener('click', () => {
+    const text = pre.innerText;
+    const showCopied = () => {
+      btn.textContent = 'Copied!';
+      btn.classList.add('done');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('done'); }, 2000);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(showCopied).catch(() => { kwFallbackCopy(text); showCopied(); });
+    } else {
+      kwFallbackCopy(text);
+      showCopied();
+    }
+  });
+  block.appendChild(btn);
+});
+</script>
+</body>
+</html>

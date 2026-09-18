@@ -1,0 +1,1483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frappe HR Reference | Kuwa Advisory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0A0A0A;--ink-2:#1A1A1A;
+  --red:#E63815;--red-soft:#FDECE8;
+  --teal:#005B50;--teal-deep:#004238;--teal-soft:#E8F0EE;
+  --amber:#F79F1B;--amber-soft:#FFF7E6;
+  --parchment:#FAFAF8;--stone:#F2F2EE;--stone-2:#E8E8E2;
+  --line:#DEDEDA;--muted:#6B6B66;--muted-2:#9A9A95;--white:#FFFFFF;
+  --font:'Instrument Sans',-apple-system,BlinkMacSystemFont,sans-serif;
+  --sidebar-w:292px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--ink);background:var(--parchment);line-height:1.6;font-size:15.5px;-webkit-font-smoothing:antialiased}
+.app{display:grid;grid-template-columns:var(--sidebar-w) 1fr;min-height:100vh}
+.sidebar{position:sticky;top:0;height:100vh;background:var(--ink);color:var(--parchment);padding:26px 20px 20px;overflow-y:auto;border-right:1px solid rgba(255,255,255,.06);z-index:50}
+.brand{margin-bottom:26px}
+.brand-mark{font-weight:700;font-size:21px;letter-spacing:-.02em;color:var(--white);line-height:1}
+.brand-sub{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);font-weight:700;margin-top:5px}
+.brand-tag{font-size:11px;color:rgba(250,250,248,.4);margin-top:8px;line-height:1.5}
+.sb-search{margin-bottom:22px}
+.sb-search input{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#fff;padding:9px 12px;border-radius:6px;font-family:var(--font);font-size:13px;outline:none}
+.sb-search input::placeholder{color:rgba(255,255,255,.32)}
+.sb-search input:focus{border-color:rgba(255,255,255,.35)}
+.nav-group{margin-bottom:22px}
+.nav-label{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(250,250,248,.32);font-weight:700;margin-bottom:10px;padding-left:10px}
+.nav-item{display:flex;align-items:baseline;gap:9px;padding:7px 10px;border-radius:5px;color:rgba(250,250,248,.68);text-decoration:none;font-size:13px;font-weight:500;border-left:2px solid transparent;transition:.14s}
+.nav-item:hover{background:rgba(255,255,255,.05);color:#fff}
+.nav-item.active{background:rgba(255,255,255,.06);color:#fff;border-left-color:var(--amber)}
+.nav-num{font-size:10.5px;color:rgba(250,250,248,.4);min-width:16px}
+.main{min-width:0}
+.hero{padding:64px 56px 48px;background:var(--ink);color:var(--white)}
+.hero-eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--red);font-weight:700;margin-bottom:14px}
+.hero h1{font-size:34px;font-weight:700;line-height:1.15;letter-spacing:-.01em;margin-bottom:16px}
+.hero p{font-size:15.5px;color:rgba(250,250,248,.7);max-width:640px;line-height:1.75}
+.hero-sources{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.src-chip{font-size:11px;padding:5px 11px;border-radius:20px;border:1px solid rgba(255,255,255,.16);color:rgba(250,250,248,.65)}
+.part{padding:52px 56px;border-bottom:1px solid var(--line)}
+.part-head{margin-bottom:32px}
+.part-eyebrow{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:8px}
+.part-title{font-size:27px;font-weight:700;letter-spacing:-.01em;margin-bottom:10px}
+.part-intro{font-size:15px;color:#3A3A36;max-width:680px;line-height:1.75}
+.sub{margin-bottom:38px}
+.sub-title{font-size:19px;font-weight:700;margin-bottom:6px}
+.sub-def{font-size:14.5px;color:var(--muted);font-style:italic;margin-bottom:16px;max-width:640px}
+.sub-body p{font-size:14.75px;color:#2A2A28;line-height:1.8;margin-bottom:12px;max-width:700px}
+.sub-body p:last-child{margin-bottom:0}
+.card{background:var(--white);border:1px solid var(--line);border-radius:10px;margin-bottom:20px;overflow:hidden}
+.card-head{padding:18px 24px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.card-name{font-size:18px;font-weight:700}
+.card-tag{font-size:9.5px;text-transform:uppercase;letter-spacing:1.4px;font-weight:700;padding:4px 9px;border-radius:3px;background:var(--teal-soft);color:var(--teal-deep);white-space:nowrap}
+.card-def{padding:16px 24px 4px;font-size:14px;color:#3A3A36;line-height:1.7}
+.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--line);margin-top:14px}
+.card-grid-cell{padding:14px 24px;border-right:1px solid var(--line)}
+.card-grid-cell:last-child{border-right:none}
+.card-grid-label{font-size:9.5px;text-transform:uppercase;letter-spacing:1.4px;color:var(--muted-2);font-weight:700;margin-bottom:6px}
+.card-grid-cell p,.card-grid-cell li{font-size:13.5px;color:#2A2A28;line-height:1.65}
+.card-grid-cell ul,.card-grid-cell ol{padding-left:16px}
+.card-steps{padding:16px 24px;border-top:1px solid var(--line)}
+.card-steps ol{padding-left:18px}
+.card-steps li{font-size:13.75px;color:#2A2A28;line-height:1.75;margin-bottom:4px}
+.fnote{margin:0 0 20px;background:var(--red-soft);border-left:3px solid var(--red);border-radius:0 6px 6px 0;padding:14px 18px}
+.fnote-label{font-size:9.5px;text-transform:uppercase;letter-spacing:1.6px;color:var(--red);font-weight:700;margin-bottom:7px}
+.fnote p{font-size:13.75px;color:#3A2420;line-height:1.72}
+.fnote code{background:rgba(230,56,21,.09);padding:1px 5px;border-radius:3px;font-size:12.5px}
+.tip{margin:0 0 20px;background:var(--amber-soft);border-left:3px solid var(--amber);border-radius:0 6px 6px 0;padding:14px 18px}
+.tip-label{font-size:9.5px;text-transform:uppercase;letter-spacing:1.6px;color:#8A5A00;font-weight:700;margin-bottom:7px}
+.tip p{font-size:13.75px;color:#3A2E10;line-height:1.72}
+.info{margin:0 0 20px;background:var(--teal-soft);border-left:3px solid var(--teal);border-radius:0 6px 6px 0;padding:14px 18px}
+.info-label{font-size:9.5px;text-transform:uppercase;letter-spacing:1.6px;color:var(--teal-deep);font-weight:700;margin-bottom:7px}
+.info p{font-size:13.75px;color:#1A3530;line-height:1.72}
+code,.mono{font-family:'SF Mono',Consolas,monospace;background:var(--stone);padding:1px 6px;border-radius:4px;font-size:13px}
+.dmap{display:flex;flex-direction:column;align-items:center;gap:2px;margin:28px 0 8px}
+.dmap-row{display:flex;gap:10px;width:100%;max-width:760px;justify-content:center;flex-wrap:wrap}
+.dmap-box{background:var(--white);border:1.5px solid var(--ink);border-radius:8px;padding:10px 14px;font-size:12px;font-weight:600;text-align:center;flex:1;min-width:120px}
+.dmap-box.done{border-color:var(--teal);background:var(--teal-soft);color:var(--teal-deep)}
+.dmap-arrow{font-size:16px;color:var(--muted-2);line-height:1;margin:2px 0}
+.dl-table{width:100%;border-collapse:collapse;font-size:13.5px;margin-bottom:20px}
+.dl-table th{background:var(--stone);padding:10px 14px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);font-weight:700;border-bottom:2px solid var(--line)}
+.dl-table td{padding:11px 14px;border-bottom:1px solid var(--line);color:#2A2A28;line-height:1.55;vertical-align:top}
+.dl-table tr:last-child td{border-bottom:none}
+.dl-table tr:hover td{background:var(--stone)}
+.index-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:24px}
+.index-card{background:var(--white);border:1px solid var(--line);border-radius:8px;padding:14px 16px}
+.index-card-label{font-size:9px;text-transform:uppercase;letter-spacing:1.4px;color:var(--muted-2);font-weight:700;margin-bottom:6px}
+.index-card-title{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.index-card-desc{font-size:12.5px;color:var(--muted);line-height:1.5}
+.seq-steps{counter-reset:seq;margin-bottom:20px}
+.seq-step{display:flex;gap:16px;margin-bottom:14px;align-items:flex-start}
+.seq-num{counter-increment:seq;content:counter(seq);min-width:28px;height:28px;background:var(--ink);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;margin-top:1px}
+.seq-body{flex:1;font-size:14px;color:#2A2A28;line-height:1.7}
+.seq-body strong{font-weight:700;color:var(--ink)}
+.foot{padding:40px 56px;font-size:12.5px;color:var(--muted-2)}
+@media(max-width:900px){
+  .app{grid-template-columns:1fr}
+  .sidebar{position:relative;height:auto}
+  .card-grid{grid-template-columns:1fr}
+  .card-grid-cell{border-right:none;border-bottom:1px solid var(--line)}
+  .part,.hero{padding:36px 22px}
+}
+@media print{
+  .sidebar{display:none}
+  .app{display:block}
+  .part{break-inside:avoid;padding:20px 10px}
+}
+.hidden-by-search{display:none !important}
+</style>
+</head>
+<body>
+<div class="app">
+<nav class="sidebar">
+  <div class="brand">
+    <div class="brand-mark">Kuwa</div>
+    <div class="brand-sub">Frappe HR Reference</div>
+    <div class="brand-tag">Fifteen parts, ordered by dependency. Every DocType explained, every silent failure documented.</div>
+  </div>
+  <div class="sb-search">
+    <input type="text" id="searchInput" placeholder="Search this reference..." oninput="filterRef(this.value)">
+  </div>
+  <div class="nav-group">
+    <div class="nav-label">Start Here</div>
+    <a href="#part-0" class="nav-item"><span class="nav-num">00</span> Orientation</a>
+    <a href="#part-1" class="nav-item"><span class="nav-num">01</span> Setup &amp; Organization</a>
+    <a href="#part-2" class="nav-item"><span class="nav-num">02</span> Leave Foundation</a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-label">Operations</div>
+    <a href="#part-3" class="nav-item"><span class="nav-num">03</span> Attendance &amp; Shifts</a>
+    <a href="#part-4" class="nav-item"><span class="nav-num">04</span> Payroll Foundation</a>
+    <a href="#part-5" class="nav-item"><span class="nav-num">05</span> Payroll Processing</a>
+    <a href="#part-6" class="nav-item"><span class="nav-num">06</span> Leave Operations</a>
+    <a href="#part-7" class="nav-item"><span class="nav-num">07</span> Tax &amp; Benefits</a>
+    <a href="#part-8" class="nav-item"><span class="nav-num">08</span> Expenses &amp; Loans</a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-label">People Processes</div>
+    <a href="#part-9" class="nav-item"><span class="nav-num">09</span> Recruitment</a>
+    <a href="#part-10" class="nav-item"><span class="nav-num">10</span> Employee Lifecycle</a>
+    <a href="#part-11" class="nav-item"><span class="nav-num">11</span> Performance &amp; Training</a>
+    <a href="#part-12" class="nav-item"><span class="nav-num">12</span> Overtime &amp; Correction</a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-label">Reference</div>
+    <a href="#part-13" class="nav-item"><span class="nav-num">13</span> Reports</a>
+    <a href="#part-14" class="nav-item"><span class="nav-num">14</span> Field Notes</a>
+  </div>
+</nav>
+
+<main class="main">
+
+<section class="hero" id="top">
+  <div class="hero-eyebrow">Kuwa Advisory</div>
+  <h1>The Frappe HR Reference</h1>
+  <p>Frappe HR is a separate app installed alongside ERPNext, not a module inside it. This reference covers every DocType across all 13 functional modules, ordered by dependency: what must exist before the next thing will work. Payroll failures, leave miscalculations, and silent exclusions all trace back to a dependency that was skipped or configured in the wrong order. That order is the architecture of this document.</p>
+  <div class="hero-sources">
+    <span class="src-chip">docs.frappe.io/hr</span>
+    <span class="src-chip">Gulf Medica LLC, UAE</span>
+    <span class="src-chip">Covenant Education Network, Uganda</span>
+    <span class="src-chip">ALU Frappe Club HR Codex</span>
+    <span class="src-chip">ERPNext Core Reference, Part 09</span>
+  </div>
+</section>
+
+<!-- PART 00 -->
+<section class="part" id="part-0">
+  <div class="part-head">
+    <div class="part-eyebrow">Part 00 · Start Here</div>
+    <h2 class="part-title">Orientation</h2>
+    <p class="part-intro">Four things to understand before any of the rest of this reference makes sense. Skip this only if you can explain what Frappe HR is, why it is not ERPNext, and why the Payroll Payable Account matters more than it looks.</p>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">What Frappe HR is, and what it is not</h3>
+    <div class="sub-body">
+      <p>Frappe HR is a standalone web application built on the Frappe Framework, published and maintained by Frappe Technologies. It is not a module inside ERPNext. It is a separate app, installed on the same bench, sitting alongside ERPNext rather than inside it. When someone says "ERPNext HR module," they usually mean Frappe HR. The distinction matters the moment something breaks, because the bug may live in one app, the fix in another, and the dependency in a third.</p>
+      <p>Frappe HR covers employee master data, attendance, shifts, leave, payroll, recruitment, onboarding, performance, training, expenses, loans, and fleet. Some of these, particularly payroll, post Journal Entries directly to the ERPNext General Ledger. HR and Finance are not separate systems. They share one set of books.</p>
+    </div>
+    <div class="info">
+      <div class="info-label">The ERPNext connection</div>
+      <p>Every Payroll Entry creates a Journal Entry that posts to ERPNext's General Ledger. Every Expense Claim approved and paid creates a payment against ERPNext's Accounts Payable. The Frappe HR app and the ERPNext app share the same Frappe Framework database. Configuring Frappe HR correctly depends on ERPNext's Chart of Accounts, Cost Centers, and Company records already being in place. Part 01 covers what must exist in ERPNext before Frappe HR setup can begin.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">The dependency chain, the one idea this reference is built around</h3>
+    <div class="sub-body">
+      <p>Every silent failure in Frappe HR traces back to the same pattern: a downstream document was configured before an upstream one existed, or an upstream one was saved but never submitted. The chain is absolute. Nothing in payroll works until the salary structure is submitted. Nothing in the salary structure works until the salary components exist. No leave application can post correctly unless a Leave Policy has been assigned and a Holiday List has been submitted against that employee.</p>
+      <p>This reference is ordered the way the dependency chain actually runs, not the way the Frappe HR sidebar happens to list modules.</p>
+    </div>
+    <div class="dmap">
+      <div class="dmap-row">
+        <div class="dmap-box done">00 Orientation</div>
+      </div>
+      <div class="dmap-arrow">↓</div>
+      <div class="dmap-row">
+        <div class="dmap-box done">01 Setup &amp; Organization</div>
+      </div>
+      <div class="dmap-arrow">↓</div>
+      <div class="dmap-row">
+        <div class="dmap-box done">02 Leave Foundation</div>
+        <div class="dmap-box done">03 Attendance &amp; Shifts</div>
+      </div>
+      <div class="dmap-arrow">↓</div>
+      <div class="dmap-row">
+        <div class="dmap-box done">04 Payroll Foundation</div>
+      </div>
+      <div class="dmap-arrow">↓</div>
+      <div class="dmap-row">
+        <div class="dmap-box done">05 Payroll Processing</div>
+        <div class="dmap-box done">06 Leave Operations</div>
+      </div>
+      <div class="dmap-arrow">↓</div>
+      <div class="dmap-row">
+        <div class="dmap-box done">07 Tax &amp; Benefits</div>
+        <div class="dmap-box done">08 Expenses &amp; Loans</div>
+      </div>
+      <div class="dmap-arrow">↓</div>
+      <div class="dmap-row">
+        <div class="dmap-box done">09 Recruitment</div>
+        <div class="dmap-box done">10 Employee Lifecycle</div>
+        <div class="dmap-box done">11 Performance &amp; Training</div>
+      </div>
+      <div class="dmap-arrow">↓</div>
+      <div class="dmap-row">
+        <div class="dmap-box done">12 Overtime &amp; Correction</div>
+        <div class="dmap-box done">13 Reports</div>
+        <div class="dmap-box done">14 Field Notes</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Draft versus Submit: the silent failure mechanism</h3>
+    <div class="sub-body">
+      <p>Every submittable document in Frappe HR carries a docstatus. Zero is Draft: saved, visible, and completely ignored by payroll processing. One is Submitted: active, locked, and the version the system actually reads. Two is Cancelled. A Holiday List Assignment sitting at Draft looks finished. Frappe HR does not use it. A Salary Structure saved but not submitted cannot be assigned to anyone. These are not bugs. They are the architecture. The rule applies uniformly to every submittable document in this reference.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">The one field that matters most in this entire reference</h3>
+    <p class="sub-def">Payroll Payable Account on the Salary Structure Assignment. One field. Missing it silently excludes a real employee from every payroll run. No error. No warning.</p>
+    <div class="fnote">
+      <div class="fnote-label">The critical pattern, introduced here, explained fully in Part 05</div>
+      <p>Frappe HR uses the Payroll Payable Account on the Salary Structure Assignment as a silent filter. An employee without it is not flagged as misconfigured. They simply do not appear in the Payroll Entry's employee list. Payroll submits successfully. The journal entry posts correctly for everyone else. The excluded employee's salary is not calculated, not posted, and not paid. Part 05 covers the full detection and correction sequence. It is flagged here because it is the most consequential silent failure in this entire reference, and understanding it early changes how every SSA gets reviewed before it is submitted.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PART 01 -->
+<section class="part" id="part-1">
+  <div class="part-head">
+    <div class="part-eyebrow">Part 01 · Setup &amp; Organization</div>
+    <h2 class="part-title">Setup &amp; Organization</h2>
+    <p class="part-intro">The ERPNext prerequisites, the Frappe HR settings, and the organization structure that must exist before a single Employee record can be created. Every field on an Employee links back to something built here. Get it wrong and correct it later, on every employee record individually.</p>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">ERPNext prerequisites</h3>
+    <div class="sub-body">
+      <p>Frappe HR draws on three things from ERPNext before its own setup begins. Company: every Frappe HR record belongs to a company, and that company must already exist in ERPNext with an active Fiscal Year. Chart of Accounts: salary expense accounts, payroll payable accounts, and expense claim accounts all point to specific leaf accounts in ERPNext's Chart of Accounts. Cost Center: department-level payroll cost reporting only works if a Cost Center tree already exists and each department will be mapped to one. These are not optional. Payroll will post to the wrong accounts, or not at all, if they are absent or wrong.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">HR Settings and Payroll Settings</h3>
+    <p class="sub-def">The two single-record settings pages that set defaults for every HR and Payroll transaction in the system.</p>
+    <div class="card">
+      <div class="card-grid" style="border-top:none;margin-top:0">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">HR Settings</div>
+          <p>Controls employee naming series, whether the Organizational Chart is enabled, leave approval defaults, and whether Daily Work Summary emails are active. Set these before creating employees.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Payroll Settings</div>
+          <p>Controls the payroll frequency default, whether salary slips are encrypted, the rounding precision for salary calculations, and which accounts are used by default for payroll postings. Set before processing the first payroll.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Department</h3>
+    <p class="sub-def">The organizational unit every employee belongs to. Required before an employee record can be saved.</p>
+    <div class="sub-body">
+      <p>Department is a simple record: a name, a parent department if the structure is hierarchical, and a company. Leave Approver can be set at department level, which then defaults onto every Leave Application raised by an employee in that department. Cost Center can be linked at department level, which pre-fills on payroll postings and enables department-wise cost reporting. Create departments before any employee records. An employee cannot be assigned to a department that does not yet exist.</p>
+    </div>
+    <div class="tip">
+      <div class="tip-label">Leave Approver hierarchy</div>
+      <p>Frappe HR supports three levels of leave approver resolution: per employee on the Employee record, per department on the Department record, and a system-level default in HR Settings. The per-employee setting wins. If unset, department level applies. If that is also unset, the HR Settings default applies. Setting it at department level once is faster than touching every employee record individually for a business where departments share a single approver.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Designation, Branch, Employee Grade, and Employee Group</h3>
+    <div class="card">
+      <div class="card-grid" style="border-top:none;margin-top:0">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Designation</div>
+          <p>Job title. Not linked to Department: any designation can appear in any department. Required on the Employee record. Create all active job titles before creating employees.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Branch</div>
+          <p>A physical or administrative location. Optional but useful for multi-location businesses where payroll is run per branch or attendance is tracked by site.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Employee Grade</div>
+          <p>A seniority band carrying a default Leave Policy. Setting the grade on an employee can auto-assign the correct leave entitlements for that band without selecting them one by one.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Employee Group</div>
+          <p>A custom grouping for reporting or payroll filtering. Not a hierarchy like Department. A single employee can be in multiple groups. Used to run Payroll Entry scoped to a subset of the workforce.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Employment Type and Employee Health Insurance</h3>
+    <div class="sub-body">
+      <p>Employment Type defines the contract category: Intern, Probation, Full-time, Part-time, Contract. It appears on the Employee record and can carry conditions in Salary Structure formulas, so a different calculation for probationers versus confirmed staff is configured here rather than duplicated across multiple structures. Employee Health Insurance records the provider, policy number, and coverage details, linked to an employee's record. It is reference data, not a calculation driver, but it makes the employee record a complete HR file rather than a payroll file with personal details missing.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Employee</h3>
+    <p class="sub-def">The root record. Every transaction in Frappe HR, from a leave application to a salary slip to an expense claim, belongs to an Employee. Nothing works without this record existing first.</p>
+    <div class="card">
+      <div class="card-def">The Employee record captures personal, professional, and administrative information across several tabs. The mandatory fields at creation are Name, Company, and Date of Joining. Everything else enriches the record but is optional at save time. The practical question is which fields downstream documents actually need, and those should be filled before the downstream document is created, not after.</div>
+      <div class="card-grid">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">What payroll needs</div>
+          <ul>
+            <li>Status: must be Active. An employee with status Left is excluded from all transactions.</li>
+            <li>Date of Joining: payroll prorates from this date in the first month.</li>
+            <li>Department and Designation: required fields, must match existing records.</li>
+            <li>Mode of Salary Payment: Bank, Cheque, or Cash, set here, not on the SSA.</li>
+          </ul>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">What leave needs</div>
+          <ul>
+            <li>Leave Policy can be assigned directly here or inherited from Employee Grade.</li>
+            <li>Holiday List can be assigned here; if absent, the Company's Holiday List is used as fallback.</li>
+            <li>Leave Approver can be set per employee or inherited from Department.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="fnote">
+      <div class="fnote-label">Field note, the status trap</div>
+      <p>Setting an Employee's status to Left is permanent in intent but technically reversible. What it immediately does is remove the employee from every transaction filter: they will not appear in Payroll Entry's Get Employees, Leave Application's employee selector, or Attendance records. If an employee is accidentally set to Left, correct it before the next payroll run. Doing so after a payroll has already been submitted without them requires the full correction sequence from Part 05.</p>
+    </div>
+    <div class="tip">
+      <div class="tip-label">Bulk creation</div>
+      <p>Multiple employees can be imported using Frappe's built-in Data Import tool. The import requires at minimum Name, Company, and Date of Joining. To auto-create user accounts alongside the import, include a Company Email or Preferred Contact Email column and set Create User Automatically to 1. User accounts created this way are linked to the Employee record immediately, with Create User Permission enabled by default, confining each user to their own record and company.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Organizational Chart</h3>
+    <div class="sub-body">
+      <p>The Organizational Chart is a live view generated from the "Reports To" field on each Employee record. It is not a separate doctype to configure. Set the Reports To field on each Employee correctly and the chart builds itself. It is visible in the HR module and gives any HR Manager a real-time picture of the company hierarchy without a separate diagramming tool. Enable it in HR Settings if it is not already showing.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PART 02 -->
+<section class="part" id="part-2">
+  <div class="part-head">
+    <div class="part-eyebrow">Part 02 · Leave Foundation</div>
+    <h2 class="part-title">Leave Foundation</h2>
+    <p class="part-intro">The records that must exist before a single leave application can be filed or a single payroll can correctly account for unpaid leave. This layer is often partially configured, which produces silent errors that only surface weeks later when a leave balance is wrong or a salary deduction is missing.</p>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Holiday List and Holiday List Assignment</h3>
+    <p class="sub-def">The official calendar of non-working days. Every leave calculation, attendance record, and payroll working-days count reads from this.</p>
+    <div class="card">
+      <div class="card-def">Holiday List contains the public holidays and weekly off days for a given period, linked to a company and optionally a country. Holiday List Assignment is the record that attaches a specific Holiday List to a specific employee for a specific period.</div>
+      <div class="card-grid">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Creating the Holiday List</div>
+          <p>Set the year, company, and weekly off days. Add each public holiday with its date and description. A country-level Holiday List can be generated automatically using Frappe's built-in country holidays import for supported countries.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Assigning and Submitting</div>
+          <p>Holiday List Assignment must be Submitted, not just Saved. A Draft assignment is invisible to every downstream process. Set the Holiday List on the Assignment, set the Effective From date, link it to the employee, and Submit.</p>
+        </div>
+      </div>
+    </div>
+    <div class="fnote">
+      <div class="fnote-label">Field note, the most repeated mistake in leave setup</div>
+      <p>A Holiday List Assignment left in Draft looks complete in the list view. Holiday List appears correctly on the Assignment form. The employee appears to have a holiday calendar. But every downstream process, payroll working-days calculation, leave balance counting, and Auto Attendance processing, ignores Draft records entirely. This is the same Draft versus Submit pattern from Part 00 in its most operationally consequential form. The fix after the fact is Submit, but if payroll has already run without the correct working-days count, the salary calculation for that period is wrong and has to be corrected through a Payroll Correction, covered in Part 12.</p>
+    </div>
+    <div class="tip">
+      <div class="tip-label">Company-level fallback</div>
+      <p>In Frappe HR v15 and above, a Holiday List can be set at the company level in HR Settings, acting as a fallback for any employee who has no individual Holiday List Assignment. This reduces the overhead of individually assigning holiday lists to every employee, but it does not replace per-employee assignment where an employee observes different regional holidays from the company default.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Leave Type</h3>
+    <p class="sub-def">The category of leave: what it is called, whether it is paid or unpaid, whether it carries forward, and whether it can be encashed.</p>
+    <div class="sub-body">
+      <p>Every Leave Application references a Leave Type. Creating them before employees try to apply for leave is the minimum. The configuration on each Leave Type determines what actually happens when leave is taken.</p>
+    </div>
+    <div class="card">
+      <div class="card-grid" style="border-top:none;margin-top:0">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Is Paid Leave</div>
+          <p>Ticked for annual, sick, and most approved leave types. Unticked for Leave Without Pay. If unticked, Frappe HR deducts salary proportionally when the LWP flag is active on a Salary Component.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Allow Carry Forward</div>
+          <p>Whether unused balance at the end of a Leave Period rolls over into the next. Carry-forward is bounded by Max Carry Forwarded Leaves.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Allow Encashment</div>
+          <p>Whether unused leave can be paid out as salary at leave period end. Requires the Leave Structure to carry a Leave Encashment Amount Per Day value.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Is Earned Leave</div>
+          <p>Accrued progressively through the period rather than allocated upfront. Frappe HR accrues earned leaves monthly via a background job.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Leave Period</h3>
+    <p class="sub-def">The accounting year for leave. Leave allocations, carry-forwards, and encashments all belong to a Leave Period.</p>
+    <div class="sub-body">
+      <p>Leave Period defines a start and end date for leave entitlements, linked to a company. It is the container that Leave Allocations sit inside. At the end of a Leave Period, carry-forward leave is calculated and rolled into the next period's allocation. Leave Period does not have to align with the financial year, though for most businesses it does. Create the next Leave Period before the current one ends, so new allocations can be made without a gap.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Leave Policy and Leave Policy Assignment</h3>
+    <p class="sub-def">The template that specifies how many days of each Leave Type an employee is entitled to per period.</p>
+    <div class="card">
+      <div class="card-def">Leave Policy is a named set of Leave Type entitlements: 21 days annual leave, 10 days sick leave, unpaid leave as needed. Leave Policy Assignment links a specific Leave Policy to a specific Employee for a specific Leave Period, and when submitted, automatically creates the Leave Allocations for that employee for that period.</div>
+      <div class="card-grid">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Leave Policy Assignment</div>
+          <p>Set the Employee, Leave Policy, and Leave Period. Submit. Frappe HR creates one Leave Allocation per Leave Type in the policy automatically.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Employee Grade shortcut</div>
+          <p>A Leave Policy set on Employee Grade auto-applies when an employee is assigned that grade, removing the need to manually assign the policy to each new hire at the same level.</p>
+        </div>
+      </div>
+    </div>
+    <div class="fnote">
+      <div class="fnote-label">Field note, the allocation gap</div>
+      <p>If Leave Policy Assignment is not submitted before an employee files a Leave Application, the application saves but the employee's leave balance shows as zero. The leave is not deducted from any allocation because no allocation exists. The application looks approved. The balance remains wrong. The fix is to submit the Leave Policy Assignment, then re-open and re-save the Leave Application so it recalculates against the now-existing allocation. For a business with 20 employees hired in the same month, catching this before the first leave cycle saves re-work across all 20 records.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Leave Block List</h3>
+    <div class="sub-body">
+      <p>Leave Block List defines dates on which leave applications are restricted or blocked, typically peak operational periods when the business cannot afford staff absences, month-end close week, a major client delivery, a regulated filing deadline. It is assigned to a department or company. When an employee in a blocked department applies for leave on a blocked date, Frappe HR either warns or blocks the application depending on how the list is configured. It is not a leave type. It is an operational constraint layered on top of leave policy.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PART 03 -->
+<section class="part" id="part-3">
+  <div class="part-head">
+    <div class="part-eyebrow">Part 03 · Attendance &amp; Shifts</div>
+    <h2 class="part-title">Attendance &amp; Shifts</h2>
+    <p class="part-intro">Shift Type defines what a working schedule looks like. Employee Checkin captures when someone actually clocked in and out. Auto Attendance processes those checkins into formal Attendance records. The order matters: nothing in Auto Attendance works without Shift Type first, and nothing in Shift Type means anything unless the Holiday List from Part 02 already exists and is assigned.</p>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Shift Type</h3>
+    <p class="sub-def">The named working schedule: when the shift starts, when it ends, how late is too late, and how the system determines presence versus absence.</p>
+    <div class="card">
+      <div class="card-def">Shift Type is the master record that Auto Attendance processes checkins against. Every auto-generated Attendance record derives its status, Present, Absent, Half Day, Late, from the rules set here.</div>
+      <div class="card-grid">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Core timing fields</div>
+          <p>Start Time, End Time, Late Entry Grace Period (minutes before an employee is marked Late), Early Exit Grace Period, and Working Hours Threshold for Half Day.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Auto Attendance settings</div>
+          <p>Enable Auto Attendance on the Shift Type itself. Set the Process Attendance After date and the Last Sync of Checkin field, which tells Frappe HR from when to begin processing checkin records.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Shift Location</div>
+          <p>An optional linked record that ties a Shift Type to a physical GPS location, enabling geolocation-gated checkins from the Frappe HR mobile app. Required only if the business needs location-verified attendance.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Shift Assignment and the Shift Schedule path</h3>
+    <div class="card">
+      <div class="card-grid" style="border-top:none;margin-top:0">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Shift Request</div>
+          <p>An employee-initiated request to be assigned to or swapped from a specific shift. Approved by a manager before it takes effect.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Shift Assignment</div>
+          <p>Manager or HR-created assignment linking one employee to one Shift Type for a specific date range. The working record that Auto Attendance reads.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Shift Schedule</div>
+          <p>A reusable rotation pattern, day-on/day-off, rotating shifts, alternating weeks, that can be assigned to employees instead of creating individual Shift Assignments manually.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Shift Assignment Tool</div>
+          <p>A bulk tool for assigning a shift to many employees at once rather than creating one Shift Assignment per person. Useful at system setup or when rotating shift patterns change.</p>
+        </div>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="tip-label">Roster</div>
+      <p>Roster is a visual scheduling view that shows which employees are assigned to which shifts on which days. It does not create new assignments. It reads existing Shift Assignments and displays them in a calendar grid. For a manager overseeing shift workers, Roster is the daily operational view; Shift Assignment is the administrative record underneath it.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Employee Checkin and Auto Attendance</h3>
+    <div class="sub-body">
+      <p>Employee Checkin is the raw record of a clock-in or clock-out event. It carries a timestamp, a Log Type (IN or OUT), a device ID, and optionally GPS coordinates. Checkin records can be created manually, imported via CSV upload, or pushed automatically from a biometric device integration. They are the input, not the output. An Attendance record is the output.</p>
+      <p>Auto Attendance is the background process that reads Employee Checkin records and converts them into Attendance records based on the rules defined in the employee's Shift Type. Run daily as a scheduled job or triggered manually. For each employee-shift-date combination, it finds the first checkin of the day, the last checkout, calculates worked hours, applies the grace period and half-day rules, and creates a single Attendance record with the appropriate status.</p>
+    </div>
+    <div class="fnote">
+      <div class="fnote-label">Field note, the Auto Attendance preconditions</div>
+      <p>Auto Attendance only processes checkins for employees who have a Shift Assignment covering that date. An employee with a valid checkin but no Shift Assignment on that date produces no Attendance record. The checkin exists. The attendance does not. If a batch of employees shows absent in reports despite having clocked in, the first check is always whether their Shift Assignment covers the relevant dates, not whether the biometric device worked.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Attendance Request and Upload Attendance</h3>
+    <div class="sub-body">
+      <p>Attendance Request is the document an employee submits to correct or retroactively record attendance that was missed, a forgotten checkout, a field visit with no checkin device, work from a remote site. It requires manager approval. Once approved and submitted, it creates or corrects the Attendance record for the specified dates. Upload Attendance is a CSV-based bulk tool for importing attendance data from an external system or spreadsheet, useful during initial migration from a legacy attendance system or when biometric device integration is not yet live.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Biometric Device Integration</h3>
+    <div class="sub-body">
+      <p>Frappe HR integrates with ZKTeco and compatible biometric devices through a two-part setup. The device pushes raw attendance logs to a middleware script or API endpoint configured to create Employee Checkin records in Frappe HR. Each employee in the system must have a matching Attendance Device ID set on their Employee record, linking their biometric template in the device to their Frappe HR record. Without this match, checkins arrive from the device with an unrecognized ID and are orphaned, present in the system but attached to no employee. The detailed integration guide at docs.frappe.io/hr covers the full middleware configuration.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Timesheet and Activity Type</h3>
+    <p class="sub-def">Time logged against projects and tasks. The basis for project-based payroll and the Employee Hours Utilization report.</p>
+    <div class="card">
+      <div class="card-grid" style="border-top:none;margin-top:0">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Activity Type</div>
+          <p>The named category of work: Development, Consulting, Design, Site Visit. Created once, referenced on every Timesheet row. Acts as a cost rate carrier: each Activity Type can carry a billing rate and costing rate, which Frappe HR uses to value logged hours for project profitability calculations.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Timesheet</div>
+          <p>A weekly or period-level record where an employee logs hours against Projects and Tasks, with one row per Activity Type per day. Submitted Timesheets are what the Project Profitability report reads. For payroll, a Payroll Entry can be created directly from Timesheets when the Salary Structure has "Salary Slip Based on Timesheet" enabled.</p>
+        </div>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="tip-label">Timesheet-based payroll</div>
+      <p>For consultants or contractors paid by hours worked rather than a fixed monthly salary, enable "Salary Slip Based on Timesheet" on the Salary Structure. Set an Hour Rate on the timesheet-linked Salary Component. When Payroll Entry runs for that employee, it reads their submitted Timesheets for the period, multiplies total hours by the Hour Rate, and generates the Salary Slip from that calculation rather than a fixed base. This requires Timesheets to be submitted before the Payroll Entry is created for that period, not after.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Overtime Type and Overtime Slip</h3>
+    <p class="sub-def">The two DocTypes Frappe HR actually uses for overtime, as distinct from the simple Overtime module name visible in the sidebar.</p>
+    <div class="card">
+      <div class="card-grid" style="border-top:none;margin-top:0">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Overtime Type</div>
+          <p>The named overtime category with its rate multiplier: Standard Overtime at 1.5x, Holiday Overtime at 2x, and so on. Create all Overtime Types before any Overtime Slips can reference them.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Overtime Slip</div>
+          <p>The transaction document for one employee's overtime in one period. Links to an Overtime Type, records hours worked, and calculates the overtime pay. Once submitted, creates an Additional Salary entry for the relevant payroll period, picked up automatically when salary slips are generated.</p>
+        </div>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="tip-label">Employee Attendance Tool</div>
+      <p>Employee Attendance Tool is a bulk attendance-marking interface: select a date, select a list of employees, and mark all as Present, Absent, or Half Day in one action. It creates individual Attendance records for each selected employee. Useful for a single-shift business that does not use biometric checkins, where an HR manager marks attendance from a physical register each morning.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PART 04 -->
+<section class="part" id="part-4">
+  <div class="part-head">
+    <div class="part-eyebrow">Part 04 · Payroll Foundation</div>
+    <h2 class="part-title">Payroll Foundation</h2>
+    <p class="part-intro">The configuration that has to exist before a Salary Structure can be submitted or a Salary Structure Assignment can be created. Build this in the order it appears here. Building it in any other order produces errors that are either immediate and obvious, or silent and discovered during the first payroll run.</p>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">The payroll setup sequence</h3>
+    <div class="card">
+      <div class="card-steps">
+        <ol>
+          <li><strong>Payroll Period</strong> (optional but required for tax slabs and flexible benefits). Defines the fiscal period payroll is calculated against.</li>
+          <li><strong>Income Tax Slab</strong> (required if tax is calculated automatically). Defines the bracket structure for the jurisdiction.</li>
+          <li><strong>Salary Component</strong> (required). Each earning and deduction line configured individually.</li>
+          <li><strong>Salary Structure</strong> (required). Assembles components into a payable formula. Must be Submitted before it can be assigned.</li>
+          <li><strong>Salary Structure Assignment</strong> (required per employee). Links one employee to one Salary Structure with a base salary and effective date. Must include Payroll Payable Account.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Payroll Period</h3>
+    <p class="sub-def">The fiscal period payroll is calculated against. Required if flexible benefits or automatic income tax slabs are used.</p>
+    <div class="sub-body">
+      <p>Payroll Period defines a named start and end date, linked to a company. Income Tax Slabs reference a Payroll Period to determine which tax brackets apply. Flexible Benefits accrue against the Payroll Period. If neither automatic tax calculation nor flexible benefits is in scope, the Payroll Period is optional and payroll can run on a simple monthly cycle without it. Create the next Payroll Period before the current one ends. A gap between periods causes tax slab lookups to fail silently.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Income Tax Slab</h3>
+    <p class="sub-def">The bracket-based tax calculation rule for a given jurisdiction and payroll period.</p>
+    <div class="sub-body">
+      <p>Income Tax Slab defines the tax rates and the income thresholds they apply to, linked to the Payroll Period it covers. Each row in the slab specifies a From amount, a To amount, and a tax percentage for that band. A standard progressive tax structure with multiple brackets requires one row per bracket. The slab is linked to the Salary Component marked "Variable Based on Taxable Salary," which is the standard tax deduction component. Only one tax slab can be active per payroll period per company.</p>
+    </div>
+    <div class="tip">
+      <div class="tip-label">Kenya PAYE, a worked setup</div>
+      <p>Kenya's PAYE uses a progressive monthly bracket structure. Each bracket row in the Income Tax Slab carries a "From" income, a "To" income, and a percentage. The first band is taxed at 10%, the next at 25%, and income above a threshold at 30%, with applicable personal relief deducted from the computed tax. The slab is linked to a Salary Component named "PAYE" or equivalent, typed as Variable Based on Taxable Salary. The formula on that component references the slab rather than hard-coding a rate, so rate changes only require updating the slab, not re-editing every salary structure.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Salary Component</h3>
+    <p class="sub-def">The individual earning or deduction line. The building block of every Salary Structure.</p>
+    <div class="card">
+      <div class="card-def">Salary Component is the most configuration-dense record in payroll setup. Every option on it affects downstream payroll behavior. Get these right before building any Salary Structure.</div>
+      <div class="card-grid">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Component Type</div>
+          <p>Earning or Deduction. Earnings increase gross pay. Deductions reduce net pay. There is no third type.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Depends on Leave Without Pay</div>
+          <p>If ticked, this component is prorated by the ratio of LWP days to total working days. Enable on Basic Salary and any component that should reduce when an employee takes unpaid leave.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Is Tax Applicable</div>
+          <p>Whether this earning is included in taxable income calculations. Tick for Basic Salary and taxable allowances. Leave unticked for genuinely exempt components.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Variable Based on Taxable Salary</div>
+          <p>For deductions only. Marks this as the standard tax component. Frappe HR calculates the deduction amount from the Income Tax Slab against the employee's taxable income. Only one component per structure should have this ticked.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Is Additional Component</div>
+          <p>Marks the component as one that can only be paid through Additional Salary, not embedded in the base structure. Use for performance bonuses and one-off payments that are not part of the standard monthly calculation.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Is Payable</div>
+          <p>Allows the component to be booked against a separate payable account. Used for deductions that go to a third party, NHIF, NSSF, pension, rather than staying on the company's books as a generic payroll liability.</p>
+        </div>
+      </div>
+    </div>
+    <div class="fnote">
+      <div class="fnote-label">Field note, the LWP flag oversight</div>
+      <p>If "Depends on Leave Without Pay" is not set on Basic Salary, an employee who takes five days of unpaid leave in a month receives a full month's salary. Frappe HR does not warn. The salary slip calculates correctly against its own rules, which say this component is not LWP-sensitive. The business problem is invisible in the payslip and only surfaces when someone compares the salary paid against the leave record and notices no deduction was made. Set this flag on every component that should reduce for LWP at Salary Component creation time, not after the first wrong payslip has been submitted.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Salary Structure</h3>
+    <p class="sub-def">The template that assembles Salary Components into a complete compensation formula. Must be Submitted before any Salary Structure Assignment can reference it.</p>
+    <div class="sub-body">
+      <p>Salary Structure carries a name, a company, a payroll frequency (monthly, weekly, fortnightly), and two tables: Earnings and Deductions. Each row in those tables is a Salary Component, with the condition and formula that determines the amount for an employee assigned to this structure. The formula references "base" for the employee's base salary set in the Salary Structure Assignment, and component abbreviations for other components in the same structure.</p>
+    </div>
+    <div class="card">
+      <div class="card-steps">
+        <div class="card-grid-label" style="margin-bottom:8px">Formula examples, in the Earnings table</div>
+        <ol>
+          <li><strong>Basic Salary:</strong> <code>base * 0.4</code> 40% of the base salary amount set on the SSA.</li>
+          <li><strong>Housing Allowance:</strong> <code>base * 0.2</code> 20% of base.</li>
+          <li><strong>Transport Allowance:</strong> a fixed amount entered directly, not a formula.</li>
+          <li><strong>PAYE (deduction):</strong> left empty with "Variable Based on Taxable Salary" ticked; Frappe HR calculates it from the Income Tax Slab.</li>
+          <li><strong>NHIF (deduction):</strong> <code>gross_pay * 0.0275</code> Kenya SHIF 2023 rate applied to gross pay.</li>
+        </ol>
+      </div>
+    </div>
+    <div class="fnote">
+      <div class="fnote-label">Field note, Submitted is not the same as Saved</div>
+      <p>A Salary Structure that is Saved but not Submitted shows in the list with a Draft badge. When someone tries to select it in a Salary Structure Assignment, it appears in the dropdown. The SSA saves. Nothing errors. The structure simply does not process correctly when payroll runs against it, because Draft structures are excluded from payroll calculations. Submit every Salary Structure before assigning it to a single employee.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PART 05 -->
+<section class="part" id="part-5">
+  <div class="part-head">
+    <div class="part-eyebrow">Part 05 · Payroll Processing</div>
+    <h2 class="part-title">Payroll Processing</h2>
+    <p class="part-intro">From Salary Structure Assignment through Payroll Entry, Salary Slip, and bank booking. This part contains the most critical field note in this entire reference. Read the Payroll Payable Account section before touching a single SSA.</p>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Salary Structure Assignment (SSA)</h3>
+    <p class="sub-def">The record that links one employee to one Salary Structure, with a base salary and an effective date. Every payroll calculation for that employee reads from here.</p>
+    <div class="card">
+      <div class="card-def">SSA is the record Payroll Entry's "Get Employees" button reads. An employee with no valid SSA for the payroll period is not returned. An employee with an SSA missing the Payroll Payable Account is also not returned, silently.</div>
+      <div class="card-grid">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Fields that must be set</div>
+          <ul>
+            <li>Employee</li>
+            <li>Salary Structure (must be Submitted)</li>
+            <li>From Date (effective date)</li>
+            <li>Base (the monthly base salary the structure formulas calculate against)</li>
+            <li><strong>Payroll Payable Account</strong> (see below)</li>
+          </ul>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Salary revisions</div>
+          <p>When an employee's salary changes, do not edit the existing SSA. Create a new SSA with a new From Date and a new Base amount. The previous SSA remains valid for historical payrolls. Frappe HR uses the most recent SSA effective on or before the payroll period's start date.</p>
+        </div>
+      </div>
+    </div>
+    <div class="fnote">
+      <div class="fnote-label">Field note, the Payroll Payable Account the single most dangerous silent failure in Frappe HR</div>
+      <p>Payroll Payable Account on the SSA is the accounting bridge between HR and Finance. It tells Frappe HR which liability account to credit when booking the salary for this employee. Without it, Frappe HR's Payroll Entry silently excludes the employee from its Get Employees results. No error. No badge. No warning. The payroll runs, submits, creates journal entries, and looks completely correct. The excluded employee's salary is never calculated, never posted, and never paid. The error is discovered when the employee reports being unpaid.</p>
+    </div>
+    <div class="card">
+      <div class="card-steps">
+        <div class="card-grid-label" style="margin-bottom:8px">The correction sequence after a payroll has already been submitted with an excluded employee</div>
+        <ol>
+          <li>Cancel the submitted Payroll Entry. The Journal Entry it created must be reversed before any correction takes effect.</li>
+          <li>Open the excluded employee's Salary Structure Assignment. The Payroll Payable Account field will be empty. This is where the error lives.</li>
+          <li>Amend the SSA. Add the Payroll Payable Account. Amending creates a new version of the record with the field populated.</li>
+          <li>Submit the amended SSA.</li>
+          <li>Create a new Payroll Entry for the same period. Do not resubmit the cancelled one.</li>
+          <li>Click Get Employees and count the result. Verify the previously excluded employee now appears.</li>
+          <li>Submit the new Payroll Entry. The corrected Journal Entry posts to the General Ledger.</li>
+        </ol>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="tip-label">The pre-payroll audit, every time</div>
+      <p>Before every payroll run: navigate to Salary Structure Assignment list, filter by company, check every record has a populated Payroll Payable Account. After clicking Get Employees on the Payroll Entry, count the employees returned against the headcount expected. If the count is lower than expected, stop. Do not submit. Identify who is missing and check their SSA. This check costs two minutes. The correction costs two hours.</p>
+    </div>
+    <div class="tip">
+      <div class="tip-label">Salary Structure Assignment Tool</div>
+      <p>Frappe HR includes a bulk tool that creates SSAs for multiple employees at once. Select a Salary Structure, set a From Date, set a Base, and select a list of employees. The tool creates one SSA per employee. It does not populate the Payroll Payable Account, because that field may differ by employee or company. Run the bulk tool, then open each generated SSA individually to set the Payroll Payable Account before submission.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Payroll Entry</h3>
+    <p class="sub-def">The master document that generates salary slips for a batch of employees, submits them, and creates the Journal Entry that posts payroll cost to the General Ledger.</p>
+    <div class="card">
+      <div class="card-steps">
+        <div class="card-grid-label" style="margin-bottom:8px">Payroll Entry, in order</div>
+        <ol>
+          <li>Set Company, Posting Date, Payroll Frequency, and the Start and End dates for the pay period.</li>
+          <li>Optionally filter by Branch, Department, Designation, Project, or Employee Group to process a subset of the workforce.</li>
+          <li>Click "Get Employees". Count the result against the expected headcount.</li>
+          <li>If the count is wrong, stop. Investigate missing employees' SSAs before proceeding.</li>
+          <li>Save the Payroll Entry as Draft. Click "Create Salary Slips". This generates one Salary Slip per employee in the list.</li>
+          <li>Review the salary slips via "View Salary Slips". Correct any anomalies at the slip level.</li>
+          <li>Submit all salary slips by clicking "Submit Salary Slip".</li>
+          <li>From the Payroll Entry, click Make > Bank Entry to generate the Journal Entry that books the payroll in the General Ledger.</li>
+        </ol>
+      </div>
+    </div>
+    <div class="fnote">
+      <div class="fnote-label">Field note, the bank entry step is mandatory</div>
+      <p>Submitting salary slips books the accrual: salary expense is debited, Payroll Payable is credited. The payroll cost appears on the Profit and Loss statement. But the actual payment, the bank account being debited as salaries are transferred, only posts when the Bank Entry Journal Voucher is submitted. A business that submits salary slips but does not complete the bank entry step has correct expenses on its P&amp;L but a Payroll Payable liability that never clears, growing larger every month. The Bank Entry completes the cycle: Payroll Payable is debited, Bank is credited, and the liability is settled.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Salary Slip</h3>
+    <p class="sub-def">The individual payroll record for one employee for one period. Generated by Payroll Entry in bulk, or manually for a single employee.</p>
+    <div class="sub-body">
+      <p>Each Salary Slip shows the employee's earnings table, deductions table, gross pay, total deductions, and net pay for the period. It also shows working days, leave without pay days if applicable, and the payment account. Once submitted, a Salary Slip is locked. Corrections require cancelling and re-processing the individual slip, or amending and reprocessing through a Payroll Correction for historical periods.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Additional Salary, Employee Incentive, and Retention Bonus</h3>
+    <div class="card">
+      <div class="card-grid" style="border-top:none;margin-top:0">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Additional Salary</div>
+          <p>A one-time payment or deduction for a specific employee in a specific payroll period. References a Salary Component marked "Is Additional Component". Attached to the payroll period, it is picked up automatically when salary slips are generated for that period.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Employee Incentive</div>
+          <p>A structured incentive payment linked to an employee, incentive amount, and pay date. Converts to an Additional Salary when submitted, visible to payroll in the relevant period.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Retention Bonus</div>
+          <p>A scheduled bonus tied to a retention contract date. Converts to an Additional Salary on the configured payment date. Useful for deferred compensation arrangements where a bonus is promised but only paid if the employee remains at a future date.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PART 06 -->
+<section class="part" id="part-6">
+  <div class="part-head">
+    <div class="part-eyebrow">Part 06 · Leave Operations</div>
+    <h2 class="part-title">Leave Operations</h2>
+    <p class="part-intro">The transaction layer of leave management. Every document here depends on the foundation from Part 02 existing first. An employee cannot apply for leave before they have a Leave Allocation, and they cannot have a Leave Allocation before a Leave Policy is assigned and the Assignment is submitted.</p>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Leave Allocation and Earned Leaves</h3>
+    <p class="sub-def">The entitlement record: how many days of a specific Leave Type this employee has for this Leave Period.</p>
+    <div class="sub-body">
+      <p>Leave Allocation is created automatically when a Leave Policy Assignment is submitted, one allocation per Leave Type in the policy. It can also be created manually for adjustments. Each allocation carries a total allocated days, any carry-forward days from the prior period, and the net available balance. Leave Allocation is what Leave Application deducts from. If the allocation does not exist, the application saves but shows a zero or negative balance.</p>
+      <p>Earned Leaves is a separate mechanism for leave types marked "Is Earned Leave". Instead of allocating the full entitlement upfront, Frappe HR accrues earned leaves monthly via a scheduled background job. On the first of each month, the system adds the monthly accrual rate (annual entitlement divided by 12) to the Leave Allocation for each eligible employee. The accrual only runs if the "Earned Leave Frequency" is set on the Leave Type.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Leave Application</h3>
+    <p class="sub-def">The document an employee submits to request time off. Submitted and approved, it deducts from Leave Allocation and, if the Leave Type is unpaid, feeds into the next payroll's LWP calculation.</p>
+    <div class="sub-body">
+      <p>Leave Application carries the employee, leave type, from date, to date, and reason. Frappe HR calculates the working days in the range against the employee's Holiday List, excluding public holidays and weekly offs. A five-calendar-day application across a week with a public holiday deducts four leave days, not five. This calculation only works correctly if the Holiday List is assigned and submitted per Part 02. If it is not, Frappe HR counts all calendar days, and the deduction is wrong.</p>
+    </div>
+    <div class="tip">
+      <div class="tip-label">Half-day applications</div>
+      <p>Leave Application supports a Half Day option. A half-day application deducts 0.5 leave days from the allocation. The date entered is the specific half-day date, and the half-day position (morning or afternoon) is selectable. Payroll reads the LWP count from submitted leave applications for the payroll period, so a half-day LWP application results in 0.5 LWP days deducted from the salary calculation if the LWP flag is set on the relevant Salary Component.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Compensatory Leave Request</h3>
+    <div class="sub-body">
+      <p>A Compensatory Leave Request records that an employee worked on a holiday or weekly off day and is therefore entitled to a compensatory day off. Once approved and submitted, Frappe HR creates a Leave Allocation of one day for the Compensatory Off Leave Type for that employee. The employee can then file a Leave Application against that allocation. This mechanism only functions if a Leave Type named "Compensatory Off" or equivalent exists with the correct configuration, and only if the worked date falls on a day marked as a holiday in the employee's Holiday List.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Leave Encashment</h3>
+    <div class="sub-body">
+      <p>Leave Encashment allows an employee to convert unused leave balance into a cash payment, either at period end or on separation. It requires the Leave Type to have "Allow Encashment" ticked and the Salary Structure to carry a "Leave Encashment Amount Per Day" value. A Leave Encashment document records the number of days to encash, calculates the payout using the daily rate from the structure, and when submitted, creates an Additional Salary for the employee in the relevant payroll period. The Additional Salary then appears on the employee's next Salary Slip automatically.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Leave Control Panel, Leave Adjustment, and Leave Ledger</h3>
+    <div class="card">
+      <div class="card-grid" style="border-top:none;margin-top:0">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Leave Control Panel</div>
+          <p>A bulk tool for creating Leave Allocations for multiple employees at once: select a Leave Type, a period, and a list of employees, and the tool creates all allocations in one action. Replaces manually opening each employee's Leave Allocation record when onboarding a large group at the same time.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Leave Adjustment</div>
+          <p>Corrects an existing Leave Allocation without cancelling and re-creating it. Adds or subtracts a specific number of days from the allocation balance with an explanation. Audit-safe: the adjustment is recorded separately from the original allocation.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Leave Ledger Entry</div>
+          <p>The backend audit trail of every leave movement: allocations, applications, adjustments, encashments. Read-only. Every event that touches a leave balance creates a Leave Ledger Entry. The Leave Ledger Report derives from these entries.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PART 07 -->
+<section class="part" id="part-7">
+  <div class="part-head">
+    <div class="part-eyebrow">Part 07 · Tax &amp; Benefits</div>
+    <h2 class="part-title">Tax &amp; Benefits</h2>
+    <p class="part-intro">Income tax deductions, employee-declared exemptions, flexible benefits, and end of service gratuity. This part is where Frappe HR connects to the tax authority's rules, and where most jurisdictional customization sits.</p>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Setting Up Income Tax Deduction</h3>
+    <div class="sub-body">
+      <p>Automatic income tax deduction in Frappe HR requires three things working together: a Payroll Period, an Income Tax Slab linked to that period, and a Salary Component on the Salary Structure marked "Variable Based on Taxable Salary". When all three are in place, Frappe HR calculates the tax deduction each month by projecting the employee's annual taxable income (based on current month's taxable earnings multiplied by remaining months in the payroll period), locating the applicable slab rates, calculating annual tax, dividing by months, and crediting the resulting amount to the PAYE or tax deduction component on the Salary Slip. Nothing about this projection needs to be set up manually on each payslip: it is fully automatic once the three prerequisites exist.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Employee Tax Exemption Declaration and Proof Submission</h3>
+    <div class="card">
+      <div class="card-grid" style="border-top:none;margin-top:0">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Employee Tax Exemption Declaration</div>
+          <p>An employee's self-declared tax exemptions at the start of a payroll period: housing loan interest, rent paid, children's education fees, approved investments. Filed by the employee, Frappe HR uses the declared amounts to reduce the projected taxable income for tax calculation purposes. Reduces monthly PAYE deductions based on the employee's expected annual exemptions.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Employee Tax Exemption Proof Submission</div>
+          <p>The year-end document where the employee submits actual documentary proof for every exemption declared earlier. If proof is insufficient, Frappe HR taxes the shortfall. The Payroll Entry carries a "Deduct Tax For Unsubmitted Tax Exemption Proof" flag that forces catch-up tax deduction for employees who declared exemptions but have not yet submitted proof.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Employee Other Income</h3>
+    <div class="sub-body">
+      <p>Records income an employee receives from sources outside their salary: rental income, freelance earnings, dividends, investment income. This income is added to the employee's taxable income pool for PAYE projection purposes, increasing their monthly deduction without adding to their gross salary. Filed by the employee or HR at the start of the payroll period.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Flexible Benefits</h3>
+    <p class="sub-def">Earning components that employees choose to receive as a lump sum claim rather than monthly, typically tax-advantaged.</p>
+    <div class="sub-body">
+      <p>Flexible Benefits are Salary Components with "Is Flexible Benefit" ticked and a maximum annual amount set. Frappe HR does not include flexible benefit amounts in the standard monthly payroll calculation. Instead, the employee submits an Employee Benefit Application, choosing which flexible components they want and in what amounts, up to the annual maximum on each. A separate Employee Benefit Claim document records the actual claim, supported by receipts if required.</p>
+    </div>
+    <div class="card">
+      <div class="card-grid" style="border-top:none;margin-top:0">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Employee Benefit Application</div>
+          <p>The employee's election of which flexible benefits to opt into for the period, and at what amounts. Submitted once per payroll period or annually.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Employee Benefit Claim</div>
+          <p>The individual claim against an elected flexible benefit, supported by receipts. Creates an Additional Salary for payment. If "Pay Against Benefit Claim" is ticked on the component, the amount is only disbursed when the claim is submitted, not as part of the regular salary run.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Gratuity Rule and Gratuity</h3>
+    <p class="sub-def">End of Service Benefit: the lump sum an employee is entitled to upon separation after a minimum period of service.</p>
+    <div class="card">
+      <div class="card-def">Gratuity Rule defines the formula: minimum service years for eligibility, the calculation basis (last drawn salary, average salary), and the multiplier (days of pay per year of service). Gratuity is the transaction document created when an employee actually separates, calculating the specific amount owed to that individual based on their years of service and the applicable rule.</div>
+      <div class="card-grid">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Creating the Gratuity Rule</div>
+          <p>Set minimum years of service for eligibility. Set the calculation slab: for example, 21 days of last basic salary per year for the first 5 years, and 30 days per year beyond that. This matches UAE Federal Decree Law No. 33 of 2021. Other jurisdictions will have different tables.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Monthly accrual, not native</div>
+          <p>Frappe HR does not accrue gratuity monthly by default. The Gratuity document calculates the total amount at the point of separation. For jurisdictions where gratuity must be accrued monthly and shown as a liability on the Balance Sheet, a recurring Journal Entry is the workaround: debit Gratuity Expense, credit EOSB Payable, monthly, for each eligible employee.</p>
+        </div>
+      </div>
+    </div>
+    <div class="fnote">
+      <div class="fnote-label">Field note, Gulf Medica LLC, UAE</div>
+      <p>UAE mainland MOHRE requires WPS (Wages Protection System) compliance: a Salary Information File (SIF) submitted to the bank every payroll cycle. Frappe HR does not generate a SIF file natively. This has to be documented as a known gap at implementation handover, with a manual export procedure using the Salary Register report data. Do not discover this the first time a bank rejects a payroll submission and asks for the file. Raising it explicitly with the client in the scoping conversation protects both the consultant and the client from a compliance surprise.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PART 08 -->
+<section class="part" id="part-8">
+  <div class="part-head">
+    <div class="part-eyebrow">Part 08 · Expenses &amp; Loans</div>
+    <h2 class="part-title">Expenses &amp; Loans</h2>
+    <p class="part-intro">Employee Advance and Expense Claim handle out-of-pocket business spending. Travel Request is the pre-authorization step before travel happens. Loans manage employer-extended credit to employees, with repayment deducted from salary.</p>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Employee Advance and Expense Claim</h3>
+    <div class="card">
+      <div class="card-grid" style="border-top:none;margin-top:0">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Employee Advance</div>
+          <p>Money paid to an employee before an expense is incurred: a travel float, a petty cash disbursement. Creates a receivable from the employee. Once expenses are claimed against it, the advance is settled. Any unspent amount is returned by the employee or deducted from salary.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Expense Claim</div>
+          <p>The document an employee submits after incurring an approved business expense, with receipts. Approved and submitted, it creates an ERPNext Accounts Payable entry for the reimbursable amount. Payment clears the liability via a Payment Entry in ERPNext.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Expense Claim Type</div>
+          <p>The category template for an Expense Claim line: Travel, Meals, Accommodation, Office Supplies. Each type carries a default expense account in the Chart of Accounts. Create Expense Claim Types before any claims can be filed, because the type is what drives the accounting entry. A claim filed without a Type, or against a Type with no linked account, will not post correctly.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Accounting links from Expenses</div>
+          <p>The Expenses workspace provides direct access to Payment Entry, Journal Entry, and Additional Salary for situations where a payment or adjustment needs to be made outside the standard claim flow. Accounts Receivable, Accounts Payable, and General Ledger are also surfaced here, so an expense auditor can move between the claim record and its accounting entry without switching modules.</p>
+        </div>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="tip-label">Multi-currency advances</div>
+      <p>Frappe HR supports multi-currency Employee Advances and Expense Claims. An advance disbursed in USD can be settled by an expense claim submitted in KES, with the exchange rate captured at settlement time. The exchange gain or loss posts automatically to the configured exchange difference account. This is particularly relevant for businesses that advance travel money in USD but employees incur local currency expenses during the trip.</p>
+    </div>
+    <div class="tip">
+      <div class="tip-label">Unpaid Expense Claim report</div>
+      <p>The Unpaid Expense Claim report lists all submitted and approved claims that have not yet been reimbursed. It is the Finance team's primary tool for prioritizing expense reimbursement batches and ensuring no approved claim is forgotten. An expense claim that is approved but sits unpaid for more than a pay cycle is a payroll trust issue, not an accounting anomaly.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Travel Request and Purpose of Travel</h3>
+    <div class="sub-body">
+      <p>Travel Request is the pre-authorization document: where the employee is going, when, why, what the estimated cost is, and who is approving it. Submitted and approved, it creates a formal record that a trip was sanctioned before money was spent. When the employee returns and files an Expense Claim, it can reference the approved Travel Request, making the approval chain complete and auditable.</p>
+      <p>Purpose of Travel is a simple lookup record: a named category for the business reason behind a trip, Conference, Client Meeting, Site Inspection, Training. It appears as a field on the Travel Request, and is used in the Travel Expense reports to classify spending by trip purpose rather than just by date or employee. Create the standard travel purpose categories before any Travel Requests are filed.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Fleet Management</h3>
+    <div class="card">
+      <div class="card-grid" style="border-top:none;margin-top:0">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Vehicle</div>
+          <p>The asset record: make, model, year, registration, fuel type, insurance policy and expiry, last odometer reading. Linked to an employee if it is a dedicated vehicle.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Driver</div>
+          <p>A separate record for the person driving a vehicle, which may or may not be an employee in the Frappe HR system. Carries licence details, licence number, and licence expiry. Linked to a Vehicle. Useful where a company employs dedicated drivers whose compliance records need to be tracked independently from their payroll status.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Vehicle Service Item</div>
+          <p>A named maintenance item: Oil Change, Tyre Rotation, Brake Service. Acts as a service catalog for Vehicle Logs. Each Vehicle Service Item can carry an expected service interval, enabling the system to flag when a service is overdue based on the last log entry for that item.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Vehicle Log</div>
+          <p>A dated entry for fuel purchase, service, or mileage. Each log adds the fuel cost or service cost to the Vehicle's running expense total and updates the odometer. The Vehicle Expenses report aggregates these logs.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Loans</h3>
+    <p class="sub-def">Employer-extended credit to an employee, repaid through salary deductions over a defined schedule.</p>
+    <div class="card">
+      <div class="card-grid" style="border-top:none;margin-top:0">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Loan Type</div>
+          <p>The template: maximum loan amount, interest rate, repayment method (EMI or based on salary), and which accounts the loan and repayment post to. Create Loan Types before any Loan Application can reference them.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Loan Application</div>
+          <p>The employee's request for a loan of a specific amount, referencing a Loan Type. Approved and submitted, it creates the Loan record.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Loan</div>
+          <p>The disbursement and repayment ledger. Once disbursed, Frappe HR generates a repayment schedule. Each payroll period, the EMI amount is automatically deducted from the employee's Salary Slip as a deduction component, reducing the outstanding principal.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PART 09 -->
+<section class="part" id="part-9">
+  <div class="part-head">
+    <div class="part-eyebrow">Part 09 · Recruitment</div>
+    <h2 class="part-title">Recruitment</h2>
+    <p class="part-intro">From workforce planning through job offer. The sequence runs in one direction: Staffing Plan proves budget exists before a Job Requisition is raised; the Requisition exists before a Job Opening is published; the Opening is visible before applicants apply. Moving steps out of order produces positions with no funding, openings with no approval, and hires with no documentation.</p>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Staffing Plan and Job Requisition</h3>
+    <div class="card">
+      <div class="card-grid" style="border-top:none;margin-top:0">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Staffing Plan</div>
+          <p>A budgeted headcount plan at company or subsidiary level for a defined period: how many people in which roles, at what estimated cost. Every Job Opening created during the period is validated against the Staffing Plan. If the plan is set and the vacancy count for a role is exhausted, Frappe HR blocks new openings for that role.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Job Requisition</div>
+          <p>An internal request for a new hire, raised by a department manager before any public posting. Carries department, designation, number of positions, justification, and expected CTC. The approval of the Job Requisition is what authorizes the Job Opening. Without it, any opening published has no documented internal approval.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Job Opening and Job Portal</h3>
+    <div class="sub-body">
+      <p>Job Opening is the record of a published vacancy: role, department, description, and status (Open or Closed). It can reference a Job Requisition and a Staffing Plan. Job Portal is Frappe HR's built-in public careers page, embedded in the ERPNext website module, that lists all Open Job Openings automatically. A Job Opening set to Open appears on the portal. Applicants submit from the portal, and their submission creates a Job Applicant record in Frappe HR without anyone entering data manually. For organizations that prefer to publish on LinkedIn or other external boards, Job Opening still needs to exist as the internal record even if applicants come through a different channel.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Job Applicant and Interview Management</h3>
+    <div class="card">
+      <div class="card-def">The sequence from application to offer: Job Applicant carries status flags (Open, Replied, Holding, Accepted, Rejected) that should move as the process actually moves, not remain at Open until someone eventually converts the applicant to an employee.</div>
+      <div class="card-grid">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Interview Type</div>
+          <p>A named stage: HR Screening, Technical Round, Director Panel. Created once, referenced by every Interview in that category. Create all types before scheduling any interviews.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Interview Round</div>
+          <p>Links an Interview Type to a specific Job Opening, defining the scheduled sequence of interview stages for that role.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Interview</div>
+          <p>The individual session: linked to a Job Applicant, an Interview Round, a date, and interviewers. Completed interviews receive an Interview Feedback from each interviewer.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Interview Feedback</div>
+          <p>One per interviewer per interview. Carries a rating and written assessment. The aggregate of Interview Feedbacks is what informs the hiring decision, not a verbal summary passed along informally after the session.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Job Offer, Appointment Letter, and Employee Referral</h3>
+    <div class="card">
+      <div class="card-grid" style="border-top:none;margin-top:0">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Job Offer</div>
+          <p>The formal offer document: role, salary, joining date, terms. Linked to the Job Applicant. When the applicant accepts and the Job Offer is marked Accepted, Frappe HR can create an Employee record directly from the offer, pre-filling all the role and salary details that would otherwise be entered manually.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Appointment Letter Template</div>
+          <p>The reusable document structure behind every Appointment Letter: the legal language, the greeting, the role and salary insertion points, the signature block. Frappe HR provides Jinja template variables, {{ doc.employee_name }}, {{ doc.designation }}, {{ doc.date_of_joining }}, which merge actual offer data into the template when an Appointment Letter is generated. Create at least one Appointment Letter Template before the first Job Offer is accepted, or the letter generation step will have no template to render against.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Appointment Letter</div>
+          <p>A printable letter generated from the Job Offer, using the selected Appointment Letter Template. Carries the legally binding employment terms. Generated from the Job Offer once it is accepted.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Employee Referral</div>
+          <p>Records an existing employee's referral of a candidate, linked to the Job Opening and the referring employee. If the referred candidate is hired, a referral bonus can be processed through Additional Salary against the referring employee's record.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PART 10 -->
+<section class="part" id="part-10">
+  <div class="part-head">
+    <div class="part-eyebrow">Part 10 · Employee Lifecycle</div>
+    <h2 class="part-title">Employee Lifecycle</h2>
+    <p class="part-intro">The events that change an employee's status, role, or employment: onboarding when they join, promotions and transfers while they work, separation when they leave. All of these have formal document trails in Frappe HR, which turn processes that usually live in email and memory into auditable records.</p>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Employee Onboarding</h3>
+    <p class="sub-def">A checklist-driven onboarding process linked to a new employee, ensuring every action is tracked from the moment a Job Offer is accepted.</p>
+    <div class="sub-body">
+      <p>Employee Onboarding uses an Onboarding Template: a named list of tasks with assigned roles, due dates relative to the joining date, and required completion status. When an Employee Onboarding document is created from a Job Offer or manually, it creates tasks in Frappe's task system, assigned to the responsible people. IT access provisioning, equipment setup, bank details collection, system training, and policy sign-offs can all be tracked here rather than managed through a shared spreadsheet that lives in someone's downloads folder and is forgotten by week two.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Employee Promotion and Employee Transfer</h3>
+    <div class="card">
+      <div class="card-grid" style="border-top:none;margin-top:0">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Employee Promotion</div>
+          <p>Records a change in designation, department, or grade for an existing employee, with an effective date. Submitting the Promotion updates the Employee record's relevant fields and creates a history entry. Does not update the Salary Structure Assignment: a new SSA with the new salary is required separately.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Employee Transfer</div>
+          <p>Records a move from one company to another (within a group) or from one branch or department to another, with an effective date. Can carry a new employment contract or new terms. The employee's history is maintained across the transfer.</p>
+        </div>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="tip-label">Promotions and salary changes are two steps, not one</div>
+      <p>An Employee Promotion document updates the role. A new Salary Structure Assignment updates the pay. Submitting a promotion does not automatically update the SSA, and the SSA is what payroll reads. Forgetting to create the new SSA after a promotion means the employee's new role is recorded correctly in HR but their old salary continues to be paid, with no error produced anywhere in the system.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Employee Separation</h3>
+    <p class="sub-def">The formal record of an employee leaving the organization, triggering the final documentation sequence.</p>
+    <div class="sub-body">
+      <p>Employee Separation uses a Separation Template analogous to the Onboarding Template: a list of offboarding tasks assigned to responsible parties, from collecting equipment and revoking system access to settling outstanding advances and completing the exit interview. The Separation document status tracks the completion of each task. Once separation is complete, the Employee record's status should be set to Left, which removes them from all active transaction filters.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Employee Skill Map</h3>
+    <div class="sub-body">
+      <p>A proficiency register attached to an employee, listing skills and self-assessed or manager-assessed proficiency levels. Used in workforce planning to identify skill gaps, succession planning to find internal candidates for roles, and learning and development to target training where it is actually needed rather than scheduling generic programs. The Skill Map is reference data, not a calculation driver. It is most valuable when consistently maintained rather than filled once at onboarding and never updated.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Exit Interview and Full and Final Statement</h3>
+    <div class="card">
+      <div class="card-grid" style="border-top:none;margin-top:0">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Exit Interview</div>
+          <p>A structured conversation record: reasons for leaving, satisfaction with various aspects of the role and organization, suggestions. Linked to the departing employee. Provides HR with aggregated departure data for pattern analysis: are people leaving due to compensation, management, growth, or culture? Only useful if consistently completed for every departure, not selectively for voluntary resignations.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Full and Final Statement</div>
+          <p>The financial settlement document at separation: outstanding salary, leave encashment, pending expense claims, loan balance to be deducted, and any other financial obligations. Submitted and processed, it creates the relevant Additional Salary and deduction entries for the final payslip. The employee's financial relationship with the employer is fully settled when this document is closed.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PART 11 -->
+<section class="part" id="part-11">
+  <div class="part-head">
+    <div class="part-eyebrow">Part 11 · Performance &amp; Training</div>
+    <h2 class="part-title">Performance &amp; Training</h2>
+    <p class="part-intro">Structured appraisal cycles, goal tracking, 360-degree feedback, and formal training records. Employee Promotion also lives in the Performance module sidebar in Frappe HR, linking role changes to the performance context that drove them.</p>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Employee Promotion, from the Performance sidebar</h3>
+    <div class="sub-body">
+      <p>Employee Promotion appears in both the Lifecycle module and the Performance module sidebar. This reflects its dual nature in Frappe HR's information architecture: a promotion is a lifecycle event in the administrative sense, but it is also a consequence of a performance cycle, and placing it in the Performance workspace keeps the link visible. The document and its behavior are the same regardless of which sidebar entry creates it. What matters, covered in Part 10, is that the Salary Structure Assignment must be updated separately after a promotion is submitted.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Appraisal Template, Appraisal Cycle, and Appraisal</h3>
+    <div class="card">
+      <div class="card-grid" style="border-top:none;margin-top:0">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Appraisal Template</div>
+          <p>The evaluation form: a named list of KRAs (Key Result Areas), each with a weightage. Templates are reusable across cycles and can vary by department, role level, or function. Create templates before opening any Appraisal Cycle.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Appraisal Cycle</div>
+          <p>The named review period: start date, end date, an Appraisal Template, and the list of employees to be reviewed. Submitting the Cycle creates individual Appraisal records for each employee linked to it.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Appraisal</div>
+          <p>The individual evaluation document for one employee in one cycle. Carries self-ratings, manager ratings, and the KRA scores derived from the template. The final score is calculated by Frappe HR from the component ratings and their weightages.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Appraisal Overview Report</div>
+          <p>A consolidated view of all appraisals in a cycle, showing score distributions, rating outliers, and department averages. Designed for HR and management to review calibration across the organization before scores are finalized.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Goal and Employee Performance Feedback</h3>
+    <div class="card">
+      <div class="card-grid" style="border-top:none;margin-top:0">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Goal</div>
+          <p>An individual objective linked to an employee and a KRA on their Appraisal Template. Progress is tracked through the year. Goals feed into the Appraisal score at review time, connecting what was planned at the start of the period with what was achieved by the end.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Employee Performance Feedback</div>
+          <p>360-degree or manager-initiated feedback outside the formal appraisal cycle. Carries ratings and written comments. Visible on the employee's profile and can be referenced during the appraisal conversation. Useful for capturing feedback in real time rather than reconstructing a year's worth of performance from memory at review season.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Training</h3>
+    <div class="card">
+      <div class="card-grid" style="border-top:none;margin-top:0">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Training Program</div>
+          <p>The named program: topic, provider, duration, and cost. The master record that Training Events are created under.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Training Event</div>
+          <p>A specific scheduled instance of a Training Program: date, location, attendees. Multiple Training Events can be created under one Program for recurring sessions.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Training Result</div>
+          <p>The outcome record for each attendee: pass/fail, score, remarks. Linked to the Training Event. Visible on the employee's profile as part of their development history.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Training Feedback</div>
+          <p>The attendee's structured assessment of the training itself: content quality, delivery, relevance. Feeds into the Training Program's effectiveness record for decisions about future delivery.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PART 12 -->
+<section class="part" id="part-12">
+  <div class="part-head">
+    <div class="part-eyebrow">Part 12 · Overtime &amp; Payroll Correction</div>
+    <h2 class="part-title">Overtime &amp; Payroll Correction</h2>
+    <p class="part-intro">Overtime Type and Overtime Slip handle hours worked beyond the standard shift. Payroll Correction and Arrears fix payroll after something has gone wrong or a decision was made retroactively.</p>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Overtime Type and Overtime Slip</h3>
+    <div class="sub-body">
+      <p>These are the actual DocTypes behind what the sidebar labels "Overtime." Overtime Type is the rate template: Standard Overtime at 1.5x normal hourly rate, Weekend Overtime at 2x, Holiday Overtime at 2.5x. Create all Overtime Types before any Overtime Slip can reference them. Overtime Slip is the transaction: one per employee per overtime event, referencing an Overtime Type and recording the hours worked. Once submitted, it creates an Additional Salary for the relevant payroll period, picked up automatically when salary slips are generated. Configure the base overtime rate on the Salary Component that the Overtime Type references, marked as an Additional Component so it only appears via Overtime Slip and never shows in the base structure.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Payroll Correction and Arrears</h3>
+    <div class="card">
+      <div class="card-grid" style="border-top:none;margin-top:0">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Payroll Correction</div>
+          <p>Corrects a Salary Slip for a period that has already been submitted and paid. Used when a submitted payslip contains an error, a missed deduction, an incorrect LWP count. Payroll Correction creates a revised Salary Slip and reverses the original, generating the differential Journal Entry to correct the General Ledger.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Arrears</div>
+          <p>Handles retroactive salary increases where the decision was made after payroll for earlier periods had already been processed. Arrears calculates the difference between what was paid under the old salary and what should have been paid under the new one, for each of the affected historical periods, and creates an Additional Salary in the current period for the total arrears amount.</p>
+        </div>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="tip-label">Daily Work Summary Group</div>
+      <p>Daily Work Summary Group is a setup record that configures automated end-of-day email prompts to a group of employees, asking them to submit their work summary for the day. Summaries are collected and compiled into a digest emailed to the manager. It surfaces in Setup because it requires configuration before it functions, but it belongs in the context of team communication habits, not HR data management.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PART 13 -->
+<section class="part" id="part-13">
+  <div class="part-head">
+    <div class="part-eyebrow">Part 13 · Reports</div>
+    <h2 class="part-title">Reports</h2>
+    <p class="part-intro">The standard reports available across all Frappe HR modules. Every report reads from submitted documents only. A salary slip in Draft, an attendance record not yet posted, a leave application pending approval: none of these appear in any report. The accuracy of a report is a direct function of the submission discipline applied to the records that feed it.</p>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Payroll reports</h3>
+    <table class="dl-table">
+      <thead>
+        <tr><th>Report</th><th>What it shows</th><th>Primary use case</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Salary Register</td><td>Net pay and each component for every employee in a selected period</td><td>Finance month-end payroll reconciliation and variance check</td></tr>
+        <tr><td>Employee CTC Break-Up</td><td>Total cost to company per employee, broken down by component</td><td>HR budgeting and cost per headcount reporting to management</td></tr>
+        <tr><td>Income Tax Deduction Summary</td><td>PAYE or income tax deducted per employee per period</td><td>Tax authority filing preparation and per-employee tax certificate generation</td></tr>
+        <tr><td>Provident Fund Report</td><td>Employee and employer provident fund contributions per period</td><td>PF authority compliance filing, relevant in India, Kenya (NSSF), and similar jurisdictions</td></tr>
+        <tr><td>Gratuity Report</td><td>Accrued gratuity liability per employee based on years of service</td><td>Financial reporting of EOSB liability for balance sheet disclosure</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Attendance and leave reports</h3>
+    <table class="dl-table">
+      <thead>
+        <tr><th>Report</th><th>What it shows</th><th>Primary use case</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Monthly Attendance Sheet</td><td>Day-by-day attendance status per employee for a selected month. Shows shift-wise breakdown if shifts are assigned.</td><td>Operations manager's daily view and exception-based absence tracking</td></tr>
+        <tr><td>Shift Attendance</td><td>Attendance grouped by shift type: early arrivals, on-time, late, absent, per shift per period</td><td>Shift supervisors reviewing team punctuality by shift name</td></tr>
+        <tr><td>Attendance Summary</td><td>Totals of present days, absent days, leave days, and LWP per employee per period</td><td>Payroll input verification before running the Payroll Entry</td></tr>
+        <tr><td>Employee Hours Utilization Based on Timesheet</td><td>Hours logged per employee per project or activity type, versus expected billable hours</td><td>Project managers and HR checking whether timesheet-tracked employees are meeting utilization targets</td></tr>
+        <tr><td>Employees Working on a Holiday</td><td>Employees who have an Attendance or Checkin record on a day their Holiday List marks as a public holiday</td><td>HR identifying who is owed a Compensatory Leave day after working on a gazetted holiday</td></tr>
+        <tr><td>Employee Leave Balance</td><td>Remaining leave balance per Leave Type per employee as of today</td><td>Year-end carry-forward calculation and encashment eligibility review</td></tr>
+        <tr><td>Employee Leave Balance Summary</td><td>Consolidated view of all leave balances across all employees in one table</td><td>HR manager's dashboard for leave liability and planning before a peak period</td></tr>
+        <tr><td>Leave Ledger Report</td><td>Every leave movement for an employee: allocations, applications, adjustments, encashments</td><td>Auditing discrepancies between what an employee claims their balance should be and what the system shows</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">HR and workforce reports</h3>
+    <table class="dl-table">
+      <thead>
+        <tr><th>Report</th><th>What it shows</th><th>Primary use case</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Employee Information</td><td>Full employee master data in tabular form: department, designation, date of joining, contact, grade</td><td>HR data exports, audit readiness, and bulk data validation after an import</td></tr>
+        <tr><td>Employee Birthday</td><td>Upcoming employee birthdays in a date range</td><td>HR team's people-care calendar for timely recognition</td></tr>
+        <tr><td>Employee Analytics</td><td>Headcount trends over time, broken down by department, designation, or branch</td><td>Management reporting on workforce growth, attrition, and composition changes over a period</td></tr>
+        <tr><td>Employee Exits</td><td>Employees who have left within a date range, with exit reason and date</td><td>Attrition analysis, exit reason pattern tracking, and compliance with notice period documentation</td></tr>
+        <tr><td>Employee Advance Summary</td><td>Outstanding advance balances per employee: disbursed, claimed, and remaining</td><td>Finance team's tool for identifying advances that have not been settled within the policy period</td></tr>
+        <tr><td>Unpaid Expense Claim</td><td>Submitted and approved expense claims that have not yet been reimbursed</td><td>Finance team prioritising reimbursement batches and ensuring no approved claim ages beyond policy</td></tr>
+        <tr><td>Recruitment Analytics</td><td>Applications per job opening, interview to offer conversion rates, time to hire by department</td><td>HR leadership reviewing hiring pipeline efficiency and sourcing channel effectiveness</td></tr>
+        <tr><td>Appraisal Overview</td><td>Score distribution across all appraisals in a cycle</td><td>Calibration review before finalizing cycle ratings</td></tr>
+        <tr><td>Project Profitability</td><td>Payroll cost allocated to projects via Timesheets, compared to project revenue</td><td>Finance calculating whether a project was actually profitable once labour cost is included</td></tr>
+        <tr><td>Vehicle Expenses</td><td>Fuel and service costs per vehicle over a period, derived from Vehicle Logs</td><td>Fleet manager reviewing operating costs and scheduling maintenance decisions</td></tr>
+        <tr><td>Daily Work Summary Replies</td><td>Summary of which employees submitted their daily work summary and which did not</td><td>Managers checking team participation in the Daily Work Summary workflow</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- PART 14 -->
+<section class="part" id="part-14">
+  <div class="part-head">
+    <div class="part-eyebrow">Part 14 · Field Notes</div>
+    <h2 class="part-title">Field Notes</h2>
+    <p class="part-intro">Every critical failure across Gulf Medica LLC (UAE), Covenant Education Network (Uganda), and general implementation experience, indexed in one place. Full detail lives in the Part cited. This is the map.</p>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Gulf Medica LLC, UAE</h3>
+    <table class="dl-table">
+      <thead><tr><th>Part</th><th>Failure</th><th>What actually happened</th></tr></thead>
+      <tbody>
+        <tr><td>Part 05</td><td>Payroll Payable Account missing on 67 SSAs</td><td>67 employees invisible to Payroll Entry with no error produced. All 67 required the seven-step correction sequence: cancel Payroll Entry, amend each SSA, resubmit, create new Payroll Entry.</td></tr>
+        <tr><td>Part 07</td><td>WPS SIF file not generated by Frappe HR</td><td>UAE MOHRE mainland employers must submit a Salary Information File to the bank each payroll cycle. Frappe HR does not generate this natively. Discovered at first payroll, not at scoping. Now documented as a known gap in every UAE engagement scope.</td></tr>
+        <tr><td>Part 07</td><td>End of Service Gratuity not accrued monthly</td><td>Frappe HR calculates gratuity only at point of separation. UAE balance sheet requires monthly accrual of EOSB liability. Workaround: recurring Journal Entry per eligible employee each month.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Cross-implementation</h3>
+    <table class="dl-table">
+      <thead><tr><th>Part</th><th>Failure</th><th>What actually happened</th></tr></thead>
+      <tbody>
+        <tr><td>Part 02</td><td>Holiday List Assignment left in Draft</td><td>Looks complete in the list view. Payroll working-days calculation and leave balance counting both ignore Draft assignments. Leave balances wrong. Payroll calculations wrong. Fix: Submit the Assignment, then re-process affected documents.</td></tr>
+        <tr><td>Part 02</td><td>Leave Policy Assignment not submitted</td><td>Employee files a Leave Application. Balance shows zero. Leave is not deducted from any allocation because no valid allocation exists. Fix: Submit the Leave Policy Assignment, then reopen and re-save the Leave Application.</td></tr>
+        <tr><td>Part 04</td><td>Salary Structure saved but not submitted</td><td>The SSA accepts the Draft structure. Payroll Entry runs. The structure's formulas do not process. Salary amounts are incorrect or zero. Fix: Submit the Salary Structure, then re-process the SSA and Payroll Entry.</td></tr>
+        <tr><td>Part 04</td><td>LWP flag not set on Basic Salary component</td><td>Employee takes 5 days unpaid leave. Full month's salary paid with no deduction. No error produced. Only caught at leave-to-salary reconciliation review.</td></tr>
+        <tr><td>Part 03</td><td>No Shift Assignment covering the checkin date</td><td>Employee clocks in via biometric device. Checkin record exists in Frappe HR. Auto Attendance produces no Attendance record. Employee shows as absent in reports. First check: Shift Assignment date range, not device connectivity.</td></tr>
+        <tr><td>Part 10</td><td>Promotion submitted without creating a new SSA</td><td>Employee's new designation is recorded. Their old salary continues to be paid with no system warning. The error is only caught when someone compares the new offer letter to the current salary slip.</td></tr>
+        <tr><td>Part 05</td><td>Payroll period dates wrong on Payroll Entry</td><td>Running one month's payroll with adjacent month's dates either drops employees whose SSA effective date falls outside the window, or includes employees who should not be in that run. Always confirm start and end dates before Get Employees.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Kenya statutory rates, current as of 2025</h3>
+    <table class="dl-table">
+      <thead><tr><th>Deduction</th><th>Rate</th><th>Basis</th><th>Configured as</th></tr></thead>
+      <tbody>
+        <tr><td>PAYE</td><td>Progressive brackets</td><td>Taxable income per month</td><td>Salary Component, Variable Based on Taxable Salary, Income Tax Slab required</td></tr>
+        <tr><td>NHIF / SHIF</td><td>2.75%</td><td>Gross salary, under SHIF 2023 Act</td><td>Salary Component, formula: <code>gross_pay * 0.0275</code></td></tr>
+        <tr><td>NSSF</td><td>6%</td><td>Gross salary, under 2022 Act</td><td>Salary Component, formula: <code>gross_pay * 0.06</code></td></tr>
+        <tr><td>Housing Levy</td><td>1.5%</td><td>Gross salary (employer matches)</td><td>Two components: employee deduction and employer contribution</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">UAE compliance notes, current as of 2025</h3>
+    <table class="dl-table">
+      <thead><tr><th>Item</th><th>Rule</th><th>Frappe HR status</th></tr></thead>
+      <tbody>
+        <tr><td>Income Tax</td><td>No employee income tax in the UAE</td><td>No PAYE component required on UAE salary structures</td></tr>
+        <tr><td>End of Service Gratuity</td><td>Federal Decree Law 33 of 2021: 21 days basic pay per year for first 5 years, 30 days per year thereafter, capped at 2 years total annual basic</td><td>Gratuity Rule can implement this formula. Monthly accrual requires a manual Journal Entry.</td></tr>
+        <tr><td>WPS SIF File</td><td>Mandatory for mainland MOHRE employers each payroll cycle</td><td>Not natively generated by Frappe HR. Export from Salary Register and reformat manually or via a custom script.</td></tr>
+        <tr><td>Pension (UAE nationals only)</td><td>GPSSA: 5% employee, 12.5% employer for UAE nationals</td><td>Configured as two Salary Components: one deduction, one Additional Earning type for employer contribution</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<div class="foot">Kuwa Advisory. Frappe HR Reference. All fifteen parts built, Part 00 through Part 14. Source: docs.frappe.io/hr and live implementation experience.</div>
+
+</main>
+</div>
+
+<script>
+function filterRef(q){
+  q=q.trim().toLowerCase();
+  document.querySelectorAll('.sub').forEach(function(el){
+    if(!q){el.classList.remove('hidden-by-search');return;}
+    var t=el.textContent.toLowerCase();
+    el.classList.toggle('hidden-by-search', t.indexOf(q)===-1);
+  });
+}
+var navItems=document.querySelectorAll('.nav-item');
+var sections=document.querySelectorAll('.part[id]');
+if('IntersectionObserver' in window){
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        navItems.forEach(function(n){n.classList.remove('active')});
+        var match=document.querySelector('.nav-item[href="#'+entry.target.id+'"]');
+        if(match) match.classList.add('active');
+      }
+    });
+  },{rootMargin:'-20% 0px -70% 0px'});
+  sections.forEach(function(s){obs.observe(s)});
+}
+</script>
+</body>
+</html>

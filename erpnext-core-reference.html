@@ -1,0 +1,1693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ERPNext Core Reference | Kuwa Advisory</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23E63815'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0A0A0A;--ink-2:#1A1A1A;
+  --red:#E63815;--red-soft:#FDECE8;
+  --teal:#005B50;--teal-deep:#004238;--teal-soft:#E8F0EE;
+  --amber:#F79F1B;--amber-soft:#FFF7E6;
+  --parchment:#FAFAF8;--stone:#F2F2EE;--stone-2:#E8E8E2;
+  --line:#DEDEDA;--muted:#6B6B66;--muted-2:#9A9A95;--white:#FFFFFF;
+  --font:'Instrument Sans',-apple-system,BlinkMacSystemFont,sans-serif;
+  --sidebar-w:288px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--ink);background:var(--parchment);line-height:1.6;font-size:15.5px;-webkit-font-smoothing:antialiased}
+.app{display:grid;grid-template-columns:var(--sidebar-w) 1fr;min-height:100vh}
+
+/* SIDEBAR */
+.sidebar{position:sticky;top:0;height:100vh;background:var(--ink);color:var(--parchment);padding:26px 20px 20px;overflow-y:auto;border-right:1px solid rgba(255,255,255,.06);z-index:50}
+.brand{margin-bottom:26px}
+.brand-mark{font-weight:700;font-size:21px;letter-spacing:-.02em;color:var(--white);line-height:1}
+.brand-sub{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);font-weight:600;margin-top:5px}
+.brand-tag{font-size:11px;color:rgba(250,250,248,.4);margin-top:8px;line-height:1.5}
+.sb-search{margin-bottom:22px}
+.sb-search input{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#fff;padding:9px 12px;border-radius:6px;font-family:var(--font);font-size:13px;outline:none}
+.sb-search input::placeholder{color:rgba(255,255,255,.32)}
+.sb-search input:focus{border-color:rgba(255,255,255,.35)}
+.nav-group{margin-bottom:22px}
+.nav-label{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(250,250,248,.32);font-weight:700;margin-bottom:10px;padding-left:10px}
+.nav-item{display:flex;align-items:baseline;gap:9px;padding:7px 10px;border-radius:5px;color:rgba(250,250,248,.68);text-decoration:none;font-size:13px;font-weight:500;transition:.14s}
+.nav-item:hover{background:rgba(255,255,255,.05);color:#fff}
+.nav-item.active{background:rgba(230,56,21,.2);color:#fff;font-weight:600}
+.nav-num{font-size:10.5px;color:rgba(250,250,248,.4);min-width:16px}
+.nav-item.planned{opacity:.42}
+.nav-item.planned .nav-num{color:rgba(250,250,248,.3)}
+
+/* MAIN */
+.main{min-width:0}
+.hero{padding:64px 56px 48px;background:var(--ink);color:var(--white)}
+.hero-eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--red);font-weight:700;margin-bottom:14px}
+.hero h1{font-size:34px;font-weight:700;line-height:1.15;letter-spacing:-.01em;margin-bottom:16px}
+.hero p{font-size:15.5px;color:rgba(250,250,248,.7);max-width:640px;line-height:1.75}
+.hero-sources{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.src-chip{font-size:11px;padding:5px 11px;border-radius:20px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);color:rgba(250,250,248,.65);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+
+.part{padding:52px 56px;border-bottom:1px solid var(--line)}
+.part-head{margin-bottom:32px}
+.part-eyebrow{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--red);font-weight:700;margin-bottom:8px}
+.part-title{font-size:27px;font-weight:700;letter-spacing:-.01em;margin-bottom:10px}
+.part-intro{font-size:15px;color:#3A3A36;max-width:680px;line-height:1.75}
+
+.sub{margin-bottom:38px}
+.sub-title{font-size:19px;font-weight:700;margin-bottom:6px}
+.sub-def{font-size:14.5px;color:var(--muted);font-style:italic;margin-bottom:16px;max-width:640px}
+.sub-body p{font-size:14.75px;color:#2A2A28;line-height:1.8;margin-bottom:12px;max-width:700px}
+.sub-body p:last-child{margin-bottom:0}
+
+/* CONCEPT CARD */
+.card{background:var(--white);border:1px solid var(--line);border-radius:10px;margin-bottom:20px;overflow:hidden}
+.card-head{padding:18px 24px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.card-name{font-size:18px;font-weight:700}
+.card-tag{font-size:9.5px;text-transform:uppercase;letter-spacing:1.4px;font-weight:700;padding:4px 9px;border-radius:3px;background:var(--red-soft);color:var(--red);white-space:nowrap}
+.card-def{padding:16px 24px 4px;font-size:14px;color:#3A3A36;line-height:1.7}
+.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--line);margin-top:14px}
+.card-grid-cell{padding:14px 24px;border-right:1px solid var(--line)}
+.card-grid-cell:last-child{border-right:none}
+.card-grid-label{font-size:9.5px;text-transform:uppercase;letter-spacing:1.4px;color:var(--muted-2);font-weight:700;margin-bottom:6px}
+.card-grid-cell p,.card-grid-cell li{font-size:13.5px;color:#2A2A28;line-height:1.65}
+.card-grid-cell ul{padding-left:16px}
+.card-steps{padding:16px 24px;border-top:1px solid var(--line)}
+.card-steps ol{padding-left:18px}
+.card-steps li{font-size:13.75px;color:#2A2A28;line-height:1.75;margin-bottom:4px}
+
+/* FIELD NOTE */
+.fnote{margin:0 24px 20px;background:rgba(230,56,21,.07);border:1px solid rgba(230,56,21,.24);border-radius:10px;padding:14px 18px;backdrop-filter:blur(6px) saturate(150%);-webkit-backdrop-filter:blur(6px) saturate(150%);box-shadow:0 2px 12px rgba(230,56,21,.05)}
+.fnote-label{font-size:9.5px;text-transform:uppercase;letter-spacing:1.6px;color:var(--red);font-weight:700;margin-bottom:7px}
+.fnote p{font-size:13.75px;color:#3A2420;line-height:1.72}
+.fnote code{background:rgba(230,56,21,.09);padding:1px 5px;border-radius:3px;font-size:12.5px}
+
+/* TIP */
+.tip{margin:0 24px 20px;background:rgba(247,159,27,.11);border:1px solid rgba(247,159,27,.3);border-radius:10px;padding:14px 18px;backdrop-filter:blur(6px) saturate(150%);-webkit-backdrop-filter:blur(6px) saturate(150%);box-shadow:0 2px 12px rgba(247,159,27,.06)}
+.tip-label{font-size:9.5px;text-transform:uppercase;letter-spacing:1.6px;color:#8A5A00;font-weight:700;margin-bottom:7px}
+.tip p{font-size:13.75px;color:#3A2E10;line-height:1.72}
+
+code,.mono{font-family:'SF Mono',Consolas,monospace;background:var(--stone);padding:1px 6px;border-radius:4px;font-size:13px}
+
+/* DEPENDENCY MAP */
+.dmap{display:flex;flex-direction:column;align-items:center;gap:2px;margin:28px 0 8px}
+.dmap-row{display:flex;gap:10px;width:100%;max-width:720px;justify-content:center;flex-wrap:wrap}
+.dmap-box{background:var(--white);border:1.5px solid var(--ink);border-radius:8px;padding:11px 16px;font-size:12.5px;font-weight:600;text-align:center;flex:1;min-width:130px}
+.dmap-box.done{border-color:var(--teal);background:var(--teal-soft);color:var(--teal-deep)}
+.dmap-box.future{border-style:dashed;border-color:var(--muted-2);color:var(--muted);font-weight:500}
+.dmap-arrow{font-size:16px;color:var(--muted-2);line-height:1;margin:2px 0}
+
+/* ROADMAP (unbuilt parts) */
+.roadmap{display:flex;flex-direction:column;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.rm-item{background:var(--white);padding:16px 22px;display:flex;align-items:center;gap:16px}
+.rm-num{font-size:13px;font-weight:700;color:var(--muted-2);min-width:52px}
+.rm-body{flex:1}
+.rm-title{font-size:14.5px;font-weight:700;margin-bottom:2px}
+.rm-desc{font-size:13px;color:var(--muted)}
+.rm-status{font-size:9.5px;text-transform:uppercase;letter-spacing:1.2px;font-weight:700;color:var(--muted-2);border:1px solid var(--line);padding:4px 9px;border-radius:20px;white-space:nowrap}
+
+.foot{padding:40px 56px;font-size:12.5px;color:var(--muted-2)}
+
+@media(max-width:900px){
+  .app{grid-template-columns:1fr}
+  .sidebar{position:relative;height:auto}
+  .card-grid{grid-template-columns:1fr}
+  .card-grid-cell{border-right:none;border-bottom:1px solid var(--line)}
+  .part,.hero{padding:36px 22px}
+}
+@media print{
+  .sidebar{display:none}
+  .app{display:block}
+  .part{break-inside:avoid;padding:20px 10px}
+}
+.hidden-by-search{display:none !important}
+.search-empty{display:none;padding:32px 56px;color:var(--muted);font-size:14.5px}
+.search-empty.vis{display:block}
+
+.skip-link{position:absolute;top:-100px;left:12px;z-index:10000;background:var(--ink);color:var(--parchment);padding:10px 18px;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;transition:top .15s ease}
+.skip-link:focus{top:12px}
+.main:focus{outline:none}
+#kw-prog{position:fixed;top:0;left:0;right:0;height:3px;background:var(--red);transform-origin:left;transform:scaleX(0);z-index:9999;transition:transform .08s linear}
+
+/* FLOATING ACTIONS */
+.kw-fab{position:fixed;z-index:9999;display:flex;align-items:center;justify-content:center;border-radius:50%;text-decoration:none;cursor:pointer;border:none;font-family:var(--font);transition:transform .15s ease,box-shadow .15s ease,opacity .2s ease}
+#kw-wa-btn{bottom:24px;right:24px;width:52px;height:52px;background:#25D366;box-shadow:0 6px 20px rgba(37,211,102,.4),0 2px 8px rgba(0,0,0,.18)}
+#kw-wa-btn:hover{transform:translateY(-2px) scale(1.05);box-shadow:0 10px 26px rgba(37,211,102,.5),0 3px 10px rgba(0,0,0,.22)}
+#kw-top-btn{bottom:88px;right:24px;width:44px;height:44px;background:rgba(10,10,10,.82);color:#FAFAF8;font-size:18px;font-weight:700;opacity:0;pointer-events:none;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 6px 18px rgba(0,0,0,.25)}
+#kw-top-btn.vis{opacity:1;pointer-events:auto}
+#kw-top-btn:hover{background:var(--red);transform:translateY(-2px)}
+@media(max-width:600px){
+  #kw-wa-btn{width:46px;height:46px;bottom:18px;right:18px}
+  #kw-top-btn{width:38px;height:38px;bottom:72px;right:18px;font-size:16px}
+}
+</style>
+</head>
+<body>
+<a href="#main-content" class="skip-link">Skip to content</a>
+<div id="kw-prog"></div>
+<div class="app">
+
+<nav class="sidebar">
+  <div class="brand">
+    <div class="brand-mark">Kuwa</div>
+    <div class="brand-sub">ERPNext Core Reference</div>
+    <div class="brand-tag">Fourteen parts, ordered by dependency. Built from the official documentation and four live implementations.</div>
+  </div>
+  <div class="sb-search">
+    <input type="text" id="searchInput" placeholder="Search this reference..." oninput="filterRef(this.value)">
+  </div>
+  <div class="nav-group">
+    <div class="nav-label">Start Here</div>
+    <a href="#part-0" class="nav-item"><span class="nav-num">00</span> Orientation</a>
+    <a href="#part-1" class="nav-item"><span class="nav-num">01</span> Foundation</a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-label">Core Modules</div>
+    <a href="#part-2" class="nav-item"><span class="nav-num">02</span> Accounting</a>
+    <a href="#part-3" class="nav-item"><span class="nav-num">03</span> Master Data</a>
+    <a href="#part-4" class="nav-item"><span class="nav-num">04</span> Buying</a>
+    <a href="#part-5" class="nav-item"><span class="nav-num">05</span> Selling</a>
+    <a href="#part-6" class="nav-item"><span class="nav-num">06</span> Stock</a>
+    <a href="#part-7" class="nav-item"><span class="nav-num">07</span> Manufacturing &amp; Quality</a>
+    <a href="#part-8" class="nav-item"><span class="nav-num">08</span> Assets</a>
+    <a href="#part-9" class="nav-item"><span class="nav-num">09</span> HR &amp; Payroll</a>
+    <a href="#part-10" class="nav-item"><span class="nav-num">10</span> CRM &amp; Projects</a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-label">Systems &amp; Context</div>
+    <a href="#part-11" class="nav-item"><span class="nav-num">11</span> Cross-Cutting Systems</a>
+    <a href="#part-12" class="nav-item"><span class="nav-num">12</span> Regional</a>
+    <a href="#part-13" class="nav-item"><span class="nav-num">13</span> Field Notes</a>
+    <a href="#part-14" class="nav-item"><span class="nav-num">14</span> Appendix</a>
+  </div>
+</nav>
+
+<main class="main" id="main-content" tabindex="-1">
+
+<section class="hero" id="top">
+  <div class="hero-eyebrow">Kuwa Advisory</div>
+  <h1>The ERPNext Core Reference</h1>
+  <p>This is a reference for running ERPNext, not just clicking through it. Fourteen parts, ordered the way dependency actually works in the system: what has to exist before the next thing will function. Built from the official Frappe documentation and from real implementations across four companies. Where the documentation and the real system disagreed, the real system won, and that disagreement is written down, not smoothed over.</p>
+  <div class="hero-sources">
+    <span class="src-chip">docs.frappe.io/erpnext</span>
+    <span class="src-chip">Lagowood, Nigeria</span>
+    <span class="src-chip">Savanna Trade Co., Kenya</span>
+    <span class="src-chip">Gulf Medica, UAE</span>
+    <span class="src-chip">Aurelius Group, Netherlands</span>
+  </div>
+</section>
+
+<div id="search-empty" class="search-empty">No matches found. Try a different term, or clear the search to see everything again.</div>
+
+<!-- PART 0 -->
+<section class="part" id="part-0">
+  <div class="part-head">
+    <div class="part-eyebrow">Part 00 · Start Here</div>
+    <h2 class="part-title">Orientation</h2>
+    <p class="part-intro">Five ideas you need before any of the rest of this reference will make sense. Skip this part only if you can already explain the difference between saving and submitting a document without looking it up.</p>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Frappe and ERPNext</h3>
+    <p class="sub-def">Frappe is the framework. ERPNext is the application built on it.</p>
+    <div class="sub-body">
+      <p>Every screen you open in ERPNext, every form, every list, every button, is rendered by Frappe. Frappe is a full stack web framework written in Python and JavaScript. It supplies the database layer, the authentication system, the REST API, and the Desk UI shell you work in all day. ERPNext supplies none of that. What ERPNext supplies is the business logic on top of it: what a Sales Invoice is, what happens when a Purchase Order gets submitted, how depreciation gets calculated on an Asset.</p>
+      <p>You will spend nearly all your time inside ERPNext. But when something breaks in a way ERPNext's own documentation cannot explain, the answer is usually sitting in the Frappe layer underneath, not in ERPNext itself. Knowing that distinction exists is often enough to know where to look next.</p>
+    </div>
+    <div class="tip">
+      <div class="tip-label">Worth knowing early</div>
+      <p>Two other Frappe apps sit alongside ERPNext in most real implementations: Frappe HR (payroll, leave, recruitment) and Frappe CRM (the newer, standalone pipeline tool). Both look like they belong inside ERPNext. Neither does. They are separate apps installed on the same bench, and both are covered in this reference because your own implementations depend on them, even though technically they live outside core ERPNext.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">The Desk</h3>
+    <p class="sub-def">The admin interface every internal user works in, separate from the public-facing Website.</p>
+    <div class="sub-body">
+      <p>The Desk has three views you will live in. The Workspace is the home screen for a module, a curated set of shortcuts and charts. The List View shows every record of one doctype, with filters, sort, and bulk actions along the top. The Form View is a single record, opened for editing.</p>
+      <p>The fastest way to move between all three is the Awesomebar at the top of the screen. Type a few letters of any record name, or the name of a doctype itself, and it jumps straight there. Once you know what you are looking for, the Awesomebar is faster than any menu.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">The DocType</h3>
+    <p class="sub-def">The one concept everything else in this reference depends on.</p>
+    <div class="sub-body">
+      <p>A DocType is simultaneously three things: a database table, a form layout, and a set of permission rules and server-side logic. When someone says "the Sales Invoice doctype," they mean all three at once.</p>
+      <p>DocTypes come in four kinds, and knowing which kind you are looking at explains why it behaves the way it does.</p>
+    </div>
+    <div class="card">
+      <div class="card-grid" style="border-top:none;margin-top:0">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Master</div>
+          <p>Created once, referenced often, rarely deleted. Item, Customer, Supplier, Warehouse.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Transaction</div>
+          <p>Records something that happened. Usually submittable. Sales Order, Purchase Invoice, Stock Entry.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Child Table</div>
+          <p>Lives inside a parent transaction, has no existence on its own. Sales Invoice Item, Purchase Order Item.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Single</div>
+          <p>Exactly one record ever exists. It is a settings page, not a list. Selling Settings, Stock Settings.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Draft, Submit, Cancel</h3>
+    <p class="sub-def">The distinction that quietly breaks more implementations than any single feature.</p>
+    <div class="sub-body">
+      <p>Every submittable document carries a docstatus. Zero is Draft: saved, editable, but invisible to the General Ledger and the Stock Ledger. One is Submitted: final, posted, and mostly locked against editing. Two is Cancelled: voided, with reversing entries created automatically, while the original stays visible for audit.</p>
+      <p>A document sitting at Draft can look, in a list view, almost identical to one that is Submitted. This is the exact shape of the most common silent failure across every implementation in this reference: a record that appears finished, is not, and raises no error to tell you so.</p>
+    </div>
+    <div class="fnote">
+      <div class="fnote-label">Field note</div>
+      <p>Holiday List Assignment has to be submitted, not merely saved, before Salary Structure Assignment will recognize it. A saved-but-not-submitted Holiday List Assignment looks complete in the list view. It is not, and nothing tells you that until payroll runs and something is quietly wrong. Part 09 covers the fuller pattern this belongs to.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Naming Series</h3>
+    <p class="sub-def">How every record gets the ID you see in lists and on printed documents.</p>
+    <div class="sub-body">
+      <p>Most transaction doctypes generate an ID from a naming series, a prefix plus a running number, commonly reset by fiscal year. SINV-2026-00001 is a naming series in action. These are configurable per company and per doctype. Deciding on a convention before hundreds of records exist under the default one is far easier than renaming series later.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">The whole system, one map</h3>
+    <p class="sub-def">How the remaining thirteen parts of this reference actually depend on each other.</p>
+    <div class="dmap">
+      <div class="dmap-row"><div class="dmap-box done">01 Foundation</div></div>
+      <div class="dmap-arrow">↓</div>
+      <div class="dmap-row"><div class="dmap-box done">02 Accounting</div></div>
+      <div class="dmap-arrow">↓</div>
+      <div class="dmap-row"><div class="dmap-box done">03 Master Data</div></div>
+      <div class="dmap-arrow">↓</div>
+      <div class="dmap-row">
+        <div class="dmap-box done">04 Buying</div>
+        <div class="dmap-box done">05 Selling</div>
+        <div class="dmap-box done">06 Stock</div>
+      </div>
+      <div class="dmap-arrow">↓</div>
+      <div class="dmap-row">
+        <div class="dmap-box done">07 Manufacturing &amp; Quality</div>
+        <div class="dmap-box done">08 Assets</div>
+      </div>
+      <div class="dmap-arrow">↓</div>
+      <div class="dmap-row">
+        <div class="dmap-box done">09 HR &amp; Payroll</div>
+        <div class="dmap-box done">10 CRM &amp; Projects</div>
+      </div>
+      <div class="dmap-arrow">↓</div>
+      <div class="dmap-row"><div class="dmap-box done">11 Cross-Cutting Systems</div></div>
+      <div class="dmap-arrow">↓</div>
+      <div class="dmap-row">
+        <div class="dmap-box done">12 Regional</div>
+        <div class="dmap-box done">13 Field Notes</div>
+      </div>
+      <div class="dmap-arrow">↓</div>
+      <div class="dmap-row"><div class="dmap-box done">14 Appendix</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PART 1 -->
+<section class="part" id="part-1">
+  <div class="part-head">
+    <div class="part-eyebrow">Part 01 · Foundation</div>
+    <h2 class="part-title">Foundation</h2>
+    <p class="part-intro">Nothing else in ERPNext works until this exists. Every module downstream, Accounting, Buying, Selling, Stock, HR, reads back to a decision made here. Get Company and Chart of Accounts wrong on day one and you are restructuring live data later, not fixing a setting.</p>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Company</h3>
+    <p class="sub-def">The root record every account, warehouse, and transaction in ERPNext ultimately belongs to.</p>
+    <div class="card">
+      <div class="card-def">Nothing in ERPNext exists outside a Company. It is usually the first record created after installation, and every module downstream requires it.</div>
+      <div class="card-grid">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Depends on</div>
+          <p>Nothing. This is the starting point.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Enables</div>
+          <p>Fiscal Year, Chart of Accounts, Warehouse, every transaction doctype in every module.</p>
+        </div>
+      </div>
+      <div class="card-steps">
+        <div class="card-grid-label" style="margin-bottom:8px">Creation, in order</div>
+        <ol>
+          <li>Company Name and Abbreviation. The abbreviation becomes a permanent suffix on every account name created under this company.</li>
+          <li>Default Currency and Country.</li>
+          <li>Chart of Accounts template, selected once at this step.</li>
+          <li>If this entity has subsidiaries: mark "Is Group" on the parent, and set "Parent Company" on each subsidiary, before any accounting data is entered anywhere in the structure.</li>
+        </ol>
+      </div>
+    </div>
+    <div class="fnote">
+      <div class="fnote-label">Field note, Aurelius Group, Netherlands</div>
+      <p>Do not create Chart of Accounts entries through the parent company expecting them to cascade to subsidiaries. ERPNext's group company behavior tries to mirror new accounts across every subsidiary automatically, and it fails the moment a subsidiary's own Chart of Accounts does not already have an identically named parent account to nest the new one under. The error reads as a missing parent account and does not explain the mirroring behavior behind it. The fix: create each account directly inside each company's own Chart of Accounts. Do not rely on the automatic mirroring for anything you actually need to exist correctly.</p>
+    </div>
+    <div class="tip">
+      <div class="tip-label">Decide now, not later</div>
+      <p>If subsidiaries will invoice each other, a management fee from a holding company, inventory transfers between entities, that relationship is not configured on Company itself. It lives on the Customer and Supplier records, using the "Is Internal Customer" or "Is Internal Supplier" flags, "Represents Company", and "Allowed To Transact With". The mechanics belong in Part 05. It is flagged here because the decision to treat two entities as internally connected has to be made when the Company structure is decided, not discovered three phases later.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Fiscal Year</h3>
+    <p class="sub-def">The accounting period every dated transaction in ERPNext posts against.</p>
+    <div class="card">
+      <div class="card-def">A Fiscal Year record defines a start and end date. Every Sales Invoice, Purchase Invoice, Journal Entry, and Stock Entry checks its posting date against an active Fiscal Year before it can be saved.</div>
+      <div class="card-grid">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Depends on</div>
+          <p>Company must already exist.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Blocks if missing</div>
+          <p>Any transaction dated outside an active Fiscal Year simply will not save, for any company.</p>
+        </div>
+      </div>
+    </div>
+    <div class="fnote">
+      <div class="fnote-label">Field note, Aurelius Group, Netherlands</div>
+      <p>For a group of companies, a Fiscal Year record is not automatically active for every subsidiary. Each Company has to be explicitly added to that Fiscal Year's own Companies table. A subsidiary left off that table cannot post a single dated transaction against that year, and the error you see does not point back to this table at all. If one specific entity in a multi-company structure suddenly cannot save anything dated correctly, check the Fiscal Year's Companies list before looking anywhere else.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Country and Currency</h3>
+    <p class="sub-def">Country drives default field visibility and regional feature availability. Currency sets what the Company's books are kept in.</p>
+    <div class="sub-body">
+      <p>Country is set once, at Company creation, and determines which regional compliance fields ERPNext surfaces automatically. A small number of markets get built-in regional modules. Most do not, and the difference matters more than it first appears.</p>
+    </div>
+    <div class="fnote">
+      <div class="fnote-label">Field note, cross-implementation</div>
+      <p>Every currency exchange rate in ERPNext reads in one direction: From is the foreign currency, To is the base currency. This reads backward to most people's intuition the first several times they set one. Get it backward and every foreign currency transaction revalues in the wrong direction. The error does not surface immediately. It surfaces weeks later, when someone reconciles the bank account and the numbers do not match.</p>
+    </div>
+    <div class="tip">
+      <div class="tip-label">Rwanda, specifically</div>
+      <p>ERPNext ships country-specific Chart of Accounts templates and regional compliance modules for a handful of markets: India, France, Italy, the UAE, South Africa. Rwanda is not among them. Starting a Rwanda engagement means selecting the generic Standard template at Company creation and building the Rwanda-specific structure, RRA-aligned account naming, VAT accounts, by hand from that base. Part 12 covers this in full. It is worth knowing at Foundation stage, because it changes how much time this step actually takes.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Chart of Accounts Template</h3>
+    <p class="sub-def">Chosen once, at Company creation, this defines the account skeleton the entire Accounting module posts against.</p>
+    <div class="card">
+      <div class="card-def">ERPNext offers a generic Standard template, several country-specific templates, and an import path for a client's existing accounts. Whichever is chosen becomes the starting tree; it can be extended but not swapped without significant rework.</div>
+      <div class="card-grid">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Group accounts</div>
+          <p>Organize the tree. Cannot be posted to directly. Exist to hold other accounts.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Leaf accounts</div>
+          <p>The actual posting targets. If the closest existing account is a group, you create a new leaf underneath it. You never post to the group.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Core Settings</h3>
+    <p class="sub-def">The small, easy-to-skip configuration that shapes how the rest of the system behaves by default.</p>
+    <div class="sub-body">
+      <p>Global Defaults sets the default company and default item settings new records inherit. System Settings controls date format, timezone, and session behavior, worth setting correctly before staff start entering data on the wrong date format. Show or Hide Modules controls which module sidebar entries a client's staff actually see. For adoption, hiding modules a client is not using is not cosmetic. A cleaner sidebar is fewer places for a confused new user to click the wrong thing in week one.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Users and Roles, the minimum before moving on</h3>
+    <p class="sub-def">Enough of a user structure to keep configuring without staying logged in as Administrator.</p>
+    <div class="sub-body">
+      <p>Create at least one named System Manager user beyond the Administrator account before proceeding further. Full role design, the permissions that decide what a Warehouse Manager can see versus what a Finance Officer can see, belongs in Part 11, once there is enough of the system built for those roles to mean something. At Foundation stage, the goal is only a real, traceable login for whoever is doing the configuration work.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PART 2 -->
+<section class="part" id="part-2">
+  <div class="part-head">
+    <div class="part-eyebrow">Part 02 · Accounting</div>
+    <h2 class="part-title">Accounting</h2>
+    <p class="part-intro">What the five account types actually mean, what happens on the ledger the moment a document is submitted, and the logic behind Cost Centers, Tax Templates, and Payment Terms. This is the part that turns ERPNext from a system that records transactions into a system a Finance Officer can actually trust.</p>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">The five account types</h3>
+    <p class="sub-def">Universal across any business, in any country, regardless of size or industry.</p>
+    <div class="card">
+      <div class="card-grid" style="border-top:none;margin-top:0">
+        <div class="card-grid-cell"><div class="card-grid-label">Assets</div><p>Things the business owns or is owed. Cash, stock, and money customers owe.</p></div>
+        <div class="card-grid-cell"><div class="card-grid-label">Liabilities</div><p>Things the business owes to others. Supplier balances, tax obligations, salaries due.</p></div>
+        <div class="card-grid-cell"><div class="card-grid-label">Equity</div><p>The owner's stake. Share capital and retained earnings from prior years.</p></div>
+        <div class="card-grid-cell"><div class="card-grid-label">Income</div><p>Money earned through operations. Revenue from what the business actually sells.</p></div>
+        <div class="card-grid-cell"><div class="card-grid-label">Expenses</div><p>Money spent to run the business. Cost of goods, salaries, rent, fuel.</p></div>
+      </div>
+    </div>
+    <div class="sub-body">
+      <p>Within each type, accounts form a hierarchy, the same leaf-versus-group structure from Part 01. A parent account named Cash and Bank might contain two children, a current account and a petty cash float. Every account created anywhere in this reference belongs to exactly one of these five types, and that type is not cosmetic. It determines what the account is allowed to do.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Double-entry, and what actually posts</h3>
+    <p class="sub-def">Every transaction touches two accounts at once. ERPNext enforces this automatically on every submission. It cannot be turned off.</p>
+    <div class="sub-body">
+      <p>Debits must equal credits, on every single document, without exception. Nobody configuring ERPNext needs to memorise which side a Sales Invoice debits and which it credits. The system decides that. What is worth understanding is the shape of what happens, since it explains why some documents affect the Profit and Loss statement and others do not.</p>
+    </div>
+    <div class="card">
+      <div class="card-grid" style="border-top:none;margin-top:0">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Sales Invoice submitted</div>
+          <p>Debit Accounts Receivable, Credit Sales Income, Credit Tax Payable. The customer now owes the full amount including tax. Revenue lands on the P&amp;L immediately.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Purchase Invoice submitted</div>
+          <p>Debit Cost of Goods Sold or Expense, Debit Tax Recoverable, Credit Accounts Payable. The expense lands on the P&amp;L immediately, before any cash has moved.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Payment Entry submitted, incoming</div>
+          <p>Debit Bank, Credit Accounts Receivable. The customer's balance drops. Nothing new hits the P&amp;L, since the revenue was already recognised at invoice submission.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Payment Entry submitted, outgoing</div>
+          <p>Debit Accounts Payable, Credit Bank. The supplier's balance drops. Again, no new P&amp;L impact.</p>
+        </div>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="tip-label">The distinction that trips up beginners</div>
+      <p>An invoice recognises revenue or expense. A payment only moves cash against a balance that already exists. Confusing the two leads to double-counting revenue, once at invoice and again at payment, or to a P&amp;L that looks fine while the bank account tells a different story.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Accounts Receivable and Accounts Payable</h3>
+    <p class="sub-def">Opposite sides of the same idea: money that has changed hands in agreement but not yet in cash.</p>
+    <div class="sub-body">
+      <p>Accounts Receivable is what customers owe the business, sitting there from the moment a Sales Invoice is submitted until a Payment Entry clears it. Accounts Payable is the mirror: what the business owes suppliers, from Purchase Invoice submission until payment. The Accounts Receivable report answers how much is owed to the business, by whom, and for how long. The Accounts Payable report answers the same questions in reverse.</p>
+      <p>The relationship between the two is what actually determines whether a growing business can pay its bills. A business collecting from customers on 45-day terms while paying suppliers on 30-day terms is paying cash out before it comes in. Sales can be genuinely growing and the business can still run short of cash, because the gap between AR and AP is a timing problem, not a profitability one. Watching both reports together, not just the P&amp;L, is how that gets managed.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Payment Entry and Journal Entry</h3>
+    <p class="sub-def">The two documents that touch the General Ledger directly, without being a sale or a purchase.</p>
+    <div class="card">
+      <div class="card-grid" style="border-top:none;margin-top:0">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Payment Entry</div>
+          <p>Records actual money movement. Clears a specific Sales or Purchase Invoice, in full or in part. The standard tool for anything that is genuinely a payment.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Journal Entry</div>
+          <p>A manual, flexible posting for anything that does not fit a standard transaction: month-end accruals, corrections, depreciation, and the Payroll Entry postings covered in Part 09. Requires knowing which accounts to debit and credit directly.</p>
+        </div>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="tip-label">One boundary worth repeating</div>
+      <p>Stock accounts cannot be posted to through a Journal Entry, per Part 05 and Part 06. Reach for a Journal Entry for anything accrual or correction-shaped that does not touch stock. Reach for Stock Reconciliation the moment stock quantity or value is involved.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Cost Center</h3>
+    <p class="sub-def">Answers where or who the money moved through. The Account answers what kind of money it was. Every transaction needs both.</p>
+    <div class="sub-body">
+      <p>It is easy to conflate Cost Center with Account, since both sit on nearly every transaction line. They are not the same question. An Account tells you a payment was Salary Expense. A Cost Center tells you it was the Warehouse team's salary expense, not the Sales team's. Strip out Cost Center and a Profit and Loss statement can still balance perfectly while being useless for deciding which part of the business is actually profitable.</p>
+      <p>Cost Centers form a tree, one per company, using the identical group-versus-leaf logic already covered for Chart of Accounts in Part 01. Group Cost Centers organize the structure. Leaf Cost Centers are the only ones a transaction can actually post against.</p>
+    </div>
+    <div class="tip">
+      <div class="tip-label">Concrete example</div>
+      <p>One implementation assigned a single Cost Centre per department directly on each Employee record: Distribution, Retail, Service, Admin. That one field, set correctly at HR setup, is what let payroll cost report automatically by business unit later, with no extra reporting work built afterward. The alternative, leaving Cost Centre blank and trying to reconstruct department-level payroll cost from the General Ledger months later, is a real exercise, not a hypothetical one.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Tax Templates and Tax Rules</h3>
+    <p class="sub-def">Three related but distinct records, easy to confuse, each doing a different job.</p>
+    <div class="card">
+      <div class="card-grid" style="border-top:none;margin-top:0">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Item Tax Template</div>
+          <p>A default tax rate attached to an Item or Item Group. Sets what the item usually costs to tax.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Sales / Purchase Taxes and Charges Template</div>
+          <p>The actual tax line that prints on the transaction. Multiple rows, each pointing to a Chart of Accounts liability account.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Tax Rule</div>
+          <p>An automatic selector. Picks the correct Taxes and Charges Template based on customer, supplier, item, or address, so staff never choose manually.</p>
+        </div>
+      </div>
+    </div>
+    <div class="fnote">
+      <div class="fnote-label">Field note, the most consequential error in this module</div>
+      <p>A tax template's account head has to be a leaf account. Point it at a Group account by mistake and ERPNext saves the template without complaint. Every Sales Invoice using it submits cleanly, calculates the tax correctly, and displays it correctly on the printed invoice. What does not happen is the posting. Group accounts cannot receive direct entries, so the tax amount is silently excluded from the General Ledger. No error, no warning, an invoice that looks entirely correct. The gap surfaces during a tax filing review, at which point every invoice submitted against the misconfigured template has to be cancelled, the account head corrected to an actual leaf account, and every one of those invoices resubmitted. Verify the account head's Is Group field before a single invoice goes out against a new tax template, not after.</p>
+    </div>
+    <div class="fnote">
+      <div class="fnote-label">Field note, Aurelius Group, Netherlands</div>
+      <p>The correct tax template for non-EU fabric imports was Purchase BTW 0% Import, not the default Netherlands VAT 21% template most purchase transactions used. Getting this wrong does not throw an error. The Purchase Invoice saves and submits cleanly. It simply overcharges import VAT on every affected purchase until someone reconciles the VAT return and catches the pattern, by which point it is a correction across several invoices, not one.</p>
+    </div>
+    <div class="fnote">
+      <div class="fnote-label">Field note, Aurelius Group, account type</div>
+      <p>An account named Loonheffing Payable, Dutch payroll withholding tax, was typed simply as Payable in the Chart of Accounts. That account type requires a Party, a Customer or Supplier, to post against. A payroll tax liability has no party. The fix was reclassifying the account type to match what it actually is, a tax liability, not a generic payable. The lesson generalizes: an account's type has to match how it will actually be used, not just what its name suggests.</p>
+    </div>
+    <div class="tip">
+      <div class="tip-label">Kenya, Withholding Tax</div>
+      <p>Withholding Tax Category thresholds in ERPNext apply per transaction, not cumulatively across everything a given supplier has been paid in a period. If a Kenyan engagement's WHT compliance requires tracking a cumulative threshold across a supplier relationship, that tracking has to happen outside the built-in per-transaction logic, not inside it. Part 12 covers the full Kenya compliance picture.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Payment Terms Template</h3>
+    <p class="sub-def">Reusable due-date and split-payment rules, attached to a Sales or Purchase document instead of typed by hand each time.</p>
+    <div class="sub-body">
+      <p>A template might read fifty percent advance, fifty percent on delivery, or simply Net 30. Once created, it attaches to a Quotation, Sales Order, or Invoice with one field selection, and the correct due dates and split amounts calculate on their own. It costs nothing structurally to skip this and type terms manually on every document. It costs real time once dozens of invoices are already raised the manual way and someone decides the standard terms should have been consistent from the first one.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">The General Ledger, the single source of truth</h3>
+    <div class="sub-body">
+      <p>Every submitted Sales Invoice, Purchase Invoice, Payment Entry, and Journal Entry creates entries in the General Ledger, and nowhere else. The Accounts Receivable report, the Accounts Payable report, and the Profit and Loss statement are not separately maintained records. They are views computed from the General Ledger. If a transaction does not appear there, it does not exist financially, regardless of how correct it looks on a printed document sitting in Draft.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Profit and Loss, and the month-end close</h3>
+    <div class="card">
+      <div class="card-def">Revenue minus Cost of Goods Sold equals Gross Profit. Gross Profit minus Operating Expenses, salaries, rent, fuel, and everything else that keeps the business running, equals Net Profit. Every figure on this statement is built from submitted documents, in the period they were submitted.</div>
+      <div class="card-steps">
+        <div class="card-grid-label" style="margin-bottom:8px">Month-end close, in order</div>
+        <ol>
+          <li>Confirm every Sales Invoice for the period is submitted. Anything left in Draft is invisible to revenue.</li>
+          <li>Confirm every Purchase Invoice for the period is recorded. Missing purchase invoices understate expenses and overstate profit.</li>
+          <li>Post every Payment Entry for money received and money paid during the period.</li>
+          <li>Generate the Accounts Receivable and Accounts Payable reports and verify the outstanding balances make sense.</li>
+          <li>Generate the Profit and Loss statement.</li>
+        </ol>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="tip-label">Why this is not paperwork</div>
+      <p>A director deciding whether the business can afford to hire, or whether supplier terms need renegotiating, is deciding from this statement. Every decision made from a close that skipped step one or two is a decision made from a number that is quietly wrong in a direction nobody chose on purpose.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PART 3 -->
+<section class="part" id="part-3">
+  <div class="part-head">
+    <div class="part-eyebrow">Part 03 · Master Data</div>
+    <h2 class="part-title">Master Data</h2>
+    <p class="part-intro">The nouns of the system. Item, Item Group, UOM, Warehouse, Customer, Supplier, Price List. Every transaction in every module downstream references one or more of these. Get a default wrong here and it does not fail loudly, it just quietly repeats itself on every transaction that touches it.</p>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Item Group</h3>
+    <p class="sub-def">The category tree items belong to, and the source of defaults that flow down onto every item created under it.</p>
+    <div class="card">
+      <div class="card-def">Item Group carries Default Warehouse, Default Price List, Default Income Account, Default Expense Account, and Item Tax Template. Set correctly once at the group, every item created after inherits it automatically.</div>
+      <div class="card-grid">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Depends on</div>
+          <p>Quality Inspection Templates should exist first if any item in this group will require inspection.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Enables</div>
+          <p>Every Item created under it. Correct defaults here save touching every individual item record later.</p>
+        </div>
+      </div>
+    </div>
+    <div class="fnote">
+      <div class="fnote-label">Field note, sequencing</div>
+      <p>Item Group defaults are inherited only at the moment an item is created under that group. If the tax template, price list, or income and expense accounts are set on the group after items already exist under it, those existing items do not retroactively update. Each one has to be corrected by hand, on its own Item Tax table or Item Defaults tab. This is why Quality Inspection Templates, then Item Groups with their defaults fully set, then Items, is the order that avoids rework, not a preference.</p>
+    </div>
+    <div class="fnote">
+      <div class="fnote-label">Field note, Lagowood, Nigeria, caught in review</div>
+      <p>Default Expense Account and Default Income Account were swapped on a finished-goods item group before any transactions were run against it. Left uncorrected, every sale of an item in that group would have posted revenue into Cost of Goods Sold and cost into a Sales account, silently inverting that portion of the Profit and Loss statement. Nothing in the interface flags a swap like this. It only surfaces when someone reads the financial reports closely enough to notice numbers that do not make sense.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Item</h3>
+    <p class="sub-def">The master record for anything bought, sold, stocked, or manufactured.</p>
+    <div class="fnote">
+      <div class="fnote-label">Field note, cross-implementation</div>
+      <p>Has Batch No, Has Serial No, and Has Expiry Date have to be decided before an item's first stock movement, not after. Once Stock Ledger Entries already reference the item, these flags resist clean changes. Deciding them at item creation, even for an item that will not move stock for weeks, costs nothing. Deciding them after the first Purchase Receipt costs a data correction.</p>
+    </div>
+    <div class="fnote">
+      <div class="fnote-label">Field note, Gulf Medica, UAE</div>
+      <p><code>Inspection Required Before Purchase</code> and <code>Inspection Required Before Delivery</code> are two separate flags on the Item's Quality tab, and neither has a global switch. Each has to be enabled per item. Set it correctly across nine items in a shipment of ten and the tenth receives with no inspection prompt at all, no warning that it was skipped.</p>
+    </div>
+    <div class="tip">
+      <div class="tip-label">Service items</div>
+      <p>An item that is purely a service, freight handling, installation, consulting hours, needs Maintain Stock unticked. This removes the warehouse requirement and stops the item from generating Stock Ledger Entries it has no business generating. A service item left with Maintain Stock ticked will eventually throw a confusing warehouse-related error the first time someone tries to transact it.</p>
+    </div>
+    <div class="tip">
+      <div class="tip-label">Kenya, perishables</div>
+      <p>Fresh produce needs Has Batch No and Has Expiry Date both set, paired with FIFO valuation rather than Moving Average. Kenyan agri-trading compliance assumes traceable, dated stock moving in the order it arrived, and the valuation method has to match that reality, not just the item flags.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Reorder Level</h3>
+    <p class="sub-def">The stock quantity that should trigger a new purchase, not the quantity at which stock runs out.</p>
+    <div class="sub-body">
+      <p>Setting this correctly requires two numbers: how fast the item sells, the consumption rate, and how long the supplier takes to deliver, the lead time. An item selling 50 units a week from a supplier with a two-week lead time needs its reorder level set at 100 units or higher. At that point, an order placed today arrives just as the last of the current stock is consumed. Set too low, or left unset entirely, the business experiences a stockout, and the cost of a stockout is rarely just the one lost sale. It is a client who found a competitor able to supply on the day they actually needed it.</p>
+      <p>Reorder Level lives on the Item Master, per warehouse. Once set, a stock balance dropping below it can automatically generate a Material Request, handing the alert to Procurement without anyone needing to remember to check stock levels manually.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">UOM, Unit of Measure</h3>
+    <p class="sub-def">What quantities on a transaction are counted in.</p>
+    <div class="sub-body">
+      <p>Stock UOM is effectively fixed once stock exists for an item. A Purchase or Sales UOM can still differ from Stock UOM, connected by a UOM Conversion Factor, buying in cartons of twenty four while stocking and selling as single units, for instance. Get that conversion factor wrong once, at setup, and every valuation calculation and every reorder level built on top of it is wrong by that same factor, silently, in every report that touches the item afterward.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Warehouse</h3>
+    <p class="sub-def">Where stock physically or logically sits, structured as a tree, one per company.</p>
+    <div class="sub-body">
+      <p>Warehouse follows the same group-versus-leaf pattern as Chart of Accounts and Cost Center. A Default Warehouse can be set at Item Group or Item level, and it is what pre-fills the moment someone opens a new Purchase Receipt or Delivery Note. Left to whatever ERPNext defaults to rather than set deliberately, staff end up correcting the warehouse field by hand on every single transaction, a small friction that compounds fast at real transaction volume.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Customer, Supplier, and their Groups</h3>
+    <p class="sub-def">The parties on the other side of every Buying and Selling transaction.</p>
+    <div class="sub-body">
+      <p>Create the Group before the individual record where possible, the same supporting-records-before-dependent-records principle that governs Item Group and Item. Customer Group and Supplier Group can each carry their own default price list and territory, with the identical inheritance behavior already covered for Item Group: set at the group before records exist under it, or correct each record by hand afterward.</p>
+      <p>If any customer or supplier will also represent an internal, related entity for intercompany transactions, that is the "Is Internal Customer" or "Is Internal Supplier" flag introduced in Part 01 and covered in full in Part 05.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Price List</h3>
+    <p class="sub-def">A named set of Item Prices, one list per currency, market, or customer segment.</p>
+    <div class="card">
+      <div class="card-def">A Price List by itself is just a name. The rates live in Item Price records underneath it. What matters operationally is not the list itself, but which list a given transaction actually pulls from, and that is decided by a strict fallback order.</div>
+    </div>
+    <div class="fnote">
+      <div class="fnote-label">Field note, Lagowood, Nigeria</div>
+      <p>The rate that lands on a transaction follows a fixed hierarchy. The Customer's own assigned Price List is checked first and wins if it exists. If the customer has none set, ERPNext falls back to the Item Group's Default Price List. If that is also unset, it falls back to the Company's Default Price List as a last resort. Each level is a genuine fallback, not a soft suggestion. Leaving the top of that chain blank does not produce an error. It silently pushes every affected transaction down to a less specific, possibly wrong, rate list, and the rate looks legitimate enough that nobody questions it until a customer disputes an invoice.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Pricing Rule and Product Bundle</h3>
+    <div class="sub-body">
+      <p>Pricing Rule sits above Price List and applies conditional adjustments on top of it: a percentage discount past a quantity threshold, a markdown for a specific Customer Group, a margin override for a Territory. Promotional Scheme is the packaged version of the same idea, bundling a Pricing Rule with the specific Items and Price Lists it should apply to into one reusable offer, faster to set up than building the equivalent Pricing Rule by hand when the offer is simple. Multiple rules can apply to one transaction, and ERPNext resolves conflicts by priority, so a deliberate priority order matters the moment more than one promotional rule could plausibly apply to the same line. Product Bundle groups several individual Items into one sellable unit, a furniture set sold as one SKU that under the surface still moves each component item's stock separately. The bundle is what the customer sees on the invoice. The Stock Ledger still tracks every component.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PART 4 -->
+<section class="part" id="part-4">
+  <div class="part-head">
+    <div class="part-eyebrow">Part 04 · Buying</div>
+    <h2 class="part-title">Buying</h2>
+    <p class="part-intro">Material Request through Purchase Invoice, in that order, and the three-way match that keeps them honest: what was ordered, what actually arrived, and what gets paid for should be checked against each other automatically, not trusted on faith.</p>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">The sequence, and why it does not skip steps</h3>
+    <div class="sub-body">
+      <p>Material Request is the internal ask: someone needs something, no supplier chosen yet, no money committed. Request for Quotation and Supplier Quotation are the optional price discovery step, comparing what different suppliers would charge before anything is locked in. Purchase Order is the actual commitment, the document a supplier can act on. Purchase Receipt records that goods physically arrived, and this is the document that updates the Stock Ledger. Purchase Invoice records the financial obligation, and by default is capped at whatever quantity has actually been received.</p>
+      <p>That last point is a real control, not a limitation. If a Purchase Order is raised for 100 units and only 80 have been received, the Purchase Invoice can only bill 80 units by default. Billing the full 100 requires deliberately enabling "Bill for Purchase Order Quantity" in settings. Left at default, the system will not let anyone pay for what has not shown up yet.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Purchase Order and Purchase Receipt</h3>
+    <div class="fnote">
+      <div class="fnote-label">Field note, Gulf Medica, UAE</div>
+      <p>A Purchase Order in a foreign currency will not save its exchange rate if a Currency Exchange record for that currency pair does not already exist. The fix is created before the Purchase Order, not on it: a Currency Exchange record with From and To set correctly and a current rate, saved first, so the Purchase Order simply picks it up.</p>
+    </div>
+    <div class="tip">
+      <div class="tip-label">Quality Inspection at receipt</div>
+      <p>If "Inspection Required Before Purchase" is set on the item, per Part 03, a Quality Inspection record is prompted at Purchase Receipt and has to be completed before the receipt can submit. One implementation tried submitting a Quality Inspection by selecting the overall status as Accepted without filling in the individual numeric parameters the template required, and the record was still marked Rejected. The system checks the parameters, not the summary dropdown. Rated as a genuine feature: it makes the acceptance status actually mean something, rather than a box anyone can tick regardless of what was measured.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Landed Cost Voucher</h3>
+    <p class="sub-def">Re-prices received stock to reflect what it actually cost, not just what the supplier invoiced.</p>
+    <div class="card">
+      <div class="card-def">A Purchase Order price is rarely the true cost of an item once freight, customs, and clearing charges are added. Landed Cost Voucher takes those additional charges and distributes them across the items on an already-submitted Purchase Receipt, by amount or by quantity, updating the valuation rate the Stock Ledger actually uses.</div>
+      <div class="card-grid">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Depends on</div>
+          <p>The Purchase Receipt must already be submitted. Against a draft receipt, the Distribute Charges action does nothing.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Verify</div>
+          <p>Check the Stock Ledger valuation rate after submitting, and review the resulting journal entry: it should debit the stock account and credit the freight or customs expense account used.</p>
+        </div>
+      </div>
+    </div>
+    <div class="fnote">
+      <div class="fnote-label">Field note, Aurelius Group, Netherlands, worked example</div>
+      <p>500 metres of cotton jersey fabric purchased at EUR 4.50 per metre, EUR 2,250.00 total. Freight from the logistics supplier: EUR 180.00. Customs clearance: EUR 65.00. After the Landed Cost Voucher is submitted against the Purchase Receipt, the item's valuation rate becomes (2,250 plus 180 plus 65) divided by 500, EUR 4.99 per metre, not the original EUR 4.50. Every unit of finished goods made from that fabric now costs more than the purchase price alone suggested, and margin calculations downstream are only correct if this step actually happened.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Request for Quotation and Supplier Quotation</h3>
+    <p class="sub-def">The price discovery step between deciding something is needed and committing to a specific supplier.</p>
+    <div class="sub-body">
+      <p>Request for Quotation goes out to several suppliers at once for the same Material Request. Each supplier's response comes back as its own Supplier Quotation, comparable side by side on price, lead time, and terms before a Purchase Order commits to any one of them. Skipping straight to a Purchase Order because there is already a preferred supplier is a legitimate shortcut for a repeat, low-risk purchase. For anything large, new, or price-sensitive, the comparison step is what actually produces a negotiating position rather than accepting the first number offered.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Supplier Scorecard</h3>
+    <p class="sub-def">Turns supplier performance from an opinion into a tracked number.</p>
+    <div class="sub-body">
+      <p>Supplier Scorecard Criteria defines what gets measured, on-time delivery, price consistency, quality rejection rate. Supplier Scorecard Variable pulls the underlying data ERPNext already has from Purchase Receipts and Quality Inspections. Supplier Scorecard Standing sets the bands, above this score a supplier is Excellent, below this threshold they are flagged for review. Once configured, every supplier's Scorecard updates itself from transactions already happening, rather than depending on someone's memory of how a supplier performed last quarter.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Buying Settings and Reports</h3>
+    <div class="sub-body">
+      <p>Buying Settings controls defaults that apply across every purchase transaction: whether a Purchase Order requires a linked Material Request, whether Items can be purchased from a Supplier not yet linked to that Item, and the default Buying Price List. Purchase Taxes and Charges Template is the Buying-side counterpart to the Sales template from Part 02, the actual tax lines that print on a Purchase Order or Purchase Invoice. Terms and Conditions Template holds the standard legal or commercial text, delivery terms, warranty language, payment default, attached to a transaction by selecting it once rather than pasting the same paragraph into every Purchase Order by hand.</p>
+    </div>
+    <div class="card">
+      <div class="card-grid" style="border-top:none;margin-top:0">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Spend and trend reports</div>
+          <p>Purchase Analytics, Purchase Order Analysis, Purchase Order Trends, Purchase Invoice Trends, and Item-wise Purchase History, for understanding what is being spent, with whom, and whether that is changing over time.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Operational reports</div>
+          <p>Items to Order and Receive, Items To Be Requested, Item Wise Consumption, and the Procurement Tracker, for the day-to-day question of what needs to be bought next and what is already on the way.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PART 5 -->
+<section class="part" id="part-5">
+  <div class="part-head">
+    <div class="part-eyebrow">Part 05 · Selling</div>
+    <h2 class="part-title">Selling</h2>
+    <p class="part-intro">Quotation through Sales Invoice, the credit control that can stop a sale before it starts, and the full mechanics of billing one of your own entities the way you would bill an outside customer.</p>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">The sequence, and the one rule that protects it</h3>
+    <div class="sub-body">
+      <p>Quotation is a non-binding proposal. Sales Order is the customer's binding commitment. Delivery Note records goods physically leaving and updates the Stock Ledger. Sales Invoice records the financial claim on the customer. Each document in that chain should be created from the one before it using ERPNext's own "Create" action, never built manually from a blank form. Manually creating a Sales Order that happens to match a Quotation looks identical on the surface, but it breaks the document linkage that lets anyone trace an invoice back to the order, and the order back to the original quote. That linkage is the entire audit trail. It is worth protecting even when the manual route feels faster.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Point of Sale</h3>
+    <p class="sub-def">A separate transaction path for over-the-counter sales, still posting to the same Stock Ledger and General Ledger as everything else.</p>
+    <div class="sub-body">
+      <p>POS Profile sets the defaults a specific till or location uses: which Warehouse it sells from, which Price List, which payment methods are accepted. A cashier's day starts with a POS Opening Entry, declaring the starting cash float, and ends with a POS Closing Entry, reconciling what the system expected against what is actually in the till. Every sale in between still creates a Sales Invoice underneath, POS is a faster entry screen, not a different accounting path. Loyalty Program and Loyalty Point Entry sit on top of this, accumulating points per qualifying sale and tracking redemption, for any business running a repeat-customer rewards scheme at the counter.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Blanket Order, Sales Partner, and Sales Person</h3>
+    <div class="sub-body">
+      <p>Blanket Order covers a customer commitment to buy a set quantity over a period, drawn down through individual Sales Orders as actual deliveries are scheduled, useful for a wholesale buyer who commits to a season's volume without wanting one enormous upfront order. Sales Partner and Sales Person answer different questions and are easy to conflate. A Sales Partner is an external agent, a distributor or reseller, who carries a commission liability the business owes them. A Sales Person is internal staff, carrying a sales target rather than a commission the business is contractually on the hook for. Assigning a deal to the wrong one of the two either creates a phantom commission liability or fails to credit a real one.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Territory, Campaign, and Selling Settings</h3>
+    <div class="sub-body">
+      <p>Territory is a geographic or market segment attached to Customers and Leads, and it is what territory-based reports and target variance analysis are built on. Campaign tracks a specific marketing push, a trade show or an email push, tagged onto the Leads and Opportunities it generated, with UTM Source capturing which specific channel a web enquiry actually came from. Shipping Rule calculates delivery charges by weight, value, or destination automatically rather than a manually typed freight line, and Coupon Code applies a Pricing Rule only when a customer actually enters the code, the mechanism behind any promotional discount that should not apply to everyone by default. Selling Settings holds the cross-cutting defaults: whether a Sales Order is required before a Delivery Note, the default Customer Group and Territory for new records, and whether selling below the Item's set price is allowed at all or blocked outright.</p>
+    </div>
+    <div class="card">
+      <div class="card-grid" style="border-top:none;margin-top:0">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Pipeline and revenue reports</div>
+          <p>Sales Analytics, Sales Order Analysis, Sales Funnel, Sales Order Trends, and Quotation Trends, for whether the pipeline is actually converting and where it stalls.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Customer and fulfilment reports</div>
+          <p>Customer Acquisition and Loyalty, Customer Credit Balance, Inactive Customers, Item-wise Sales History, and Pending SO Items, for who is buying, who has stopped, and what is still owed to a customer in goods rather than money.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Credit Limit</h3>
+    <p class="sub-def">A control that can stop a Sales Order before it is ever submitted.</p>
+    <div class="sub-body">
+      <p>Credit Limit is set per Customer or per Customer Group, and behaves as either Stop, a hard block on submission, or Warn, an alert that still allows the transaction through. A user holding the Credit Controller role can override a Stop where the business decides that is appropriate.</p>
+    </div>
+    <div class="fnote">
+      <div class="fnote-label">Field note, Gulf Medica, UAE</div>
+      <p>A Sales Order blocked on a credit limit exceeded warning is not a bug to work around. It means the customer's outstanding balance plus the new order together exceed their configured limit. The correct response is either a Finance-approved increase to the credit limit on the Customer master, or collecting enough of the outstanding balance to bring it back under the limit before the order proceeds. Nothing about this should be solved by disabling the control.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Delivery Note, Serial, and Batch</h3>
+    <div class="fnote">
+      <div class="fnote-label">Field note, Gulf Medica, UAE</div>
+      <p>A Delivery Note that cannot find a batch number means either the batch was never created at goods receipt, or the batch it found has expired, in which case that stock is blocked from moving until it is resolved through a Quality Inspection rejection or a formal write-off. A Delivery Note that cannot find a serial number means the item was never serialised at receipt. If the specific unit exists in a different warehouse, a stock transfer resolves it. If it does not exist at all, the original goods receipt was posted without serialisation and has to be corrected at that level, not patched at delivery.</p>
+    </div>
+    <div class="tip">
+      <div class="tip-label">Field note, Lagowood, Nigeria</div>
+      <p>"Inspection Required before Delivery" is the counterpart to "Inspection Required before Purchase" from Part 03, and it is the more commonly used one for anything manufactured rather than bought. Ticked on finished furniture items, it forces a Quality Inspection to be submitted before a Delivery Note can be created at all, giving a QC team a genuine gate before goods leave the building, not a step someone can quietly skip when a delivery is running late.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Intercompany Invoicing</h3>
+    <p class="sub-def">Billing one of your own entities the same way you would bill an outside customer, referenced back in Part 01 and Part 03.</p>
+    <div class="card">
+      <div class="card-def">When two companies under the same group structure trade with each other, a Sales Invoice raised by one entity can auto-generate the matching Purchase Invoice on the other, instead of both being entered by hand and reconciled manually.</div>
+      <div class="card-steps">
+        <div class="card-grid-label" style="margin-bottom:8px">Setup, per pair of entities</div>
+        <ol>
+          <li>On the selling entity's side, create an Internal Customer record: tick "Is Internal Customer", set "Represents Company" to the entity it actually is, and list every company it is allowed to invoice under "Allowed To Transact With".</li>
+          <li>On the buying entity's side, mirror this with an Internal Supplier record: tick "Is Internal Supplier", set "Represents Company", and list the companies it can be invoiced by.</li>
+          <li>Transact normally. Raise and submit a Sales Invoice from the selling entity to the internal customer.</li>
+          <li>A "Make Inter Company Invoice" button appears on the submitted Sales Invoice. Selecting it auto-creates the corresponding Purchase Invoice on the buying entity, with the line items and amounts already matched.</li>
+        </ol>
+      </div>
+    </div>
+    <div class="fnote">
+      <div class="fnote-label">Field note, Aurelius Group, Netherlands</div>
+      <p>For a four-entity structure, this means an Internal Customer and Internal Supplier record for every pair of entities that actually trades with each other, not just one pair. A holding company charging a management fee to three subsidiaries needs three Internal Customer records on its own side, one per subsidiary, each with "Allowed To Transact With" naming that specific subsidiary. There is no single switch that makes an entire group intercompany-ready at once. It is configured pair by pair, deliberately.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Opening Balances via Sales and Purchase Invoice</h3>
+    <div class="fnote">
+      <div class="fnote-label">Field note, cross-implementation</div>
+      <p>The Opening Invoice Creation Tool, built specifically to bulk-load opening AR and AP balances, has failed silently on more than one v16 build, tied to a missing column in that version. Where it fails, the reliable path is a standard Sales Invoice or Purchase Invoice with "Is Opening" set to Yes, entered one at a time if necessary. What will not work, for anything involving stock, is a Journal Entry: stock accounts cannot be posted to through a Journal Entry at all. Opening stock balances always go through Stock Reconciliation, covered next in Part 06, never through Accounts.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PART 6 -->
+<section class="part" id="part-6">
+  <div class="part-head">
+    <div class="part-eyebrow">Part 06 · Stock</div>
+    <h2 class="part-title">Stock</h2>
+    <p class="part-intro">Stock Entry types, valuation, and Stock Reconciliation, the tool that declares physical reality to the system. This is also where the single most expensive lesson in this entire reference lives: a document that looks stuck and a document that is quietly queued look identical, and chasing the wrong explanation is what makes that expensive.</p>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Stock Entry Types</h3>
+    <div class="sub-body">
+      <p>One doctype, several purposes selected at the top of the form. Material Receipt brings stock in without a Purchase Receipt, typically for non-purchased inputs. Material Issue takes stock out without a Delivery Note, typically for internal consumption. Material Transfer moves stock between warehouses with no change in quantity or ownership. Manufacture consumes raw materials and produces finished goods in one entry, generated from a Work Order. Repack converts one item into different items, useful when a single purchased unit is broken down into multiple sellable ones.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Stock Reconciliation</h3>
+    <p class="sub-def">The tool that tells ERPNext what is physically true right now, correcting the system to match it.</p>
+    <div class="card">
+      <div class="card-def">Stock Reconciliation has two Purposes. Opening Stock loads the very first stock position at go-live, before any purchase or sale has run through the system. Stock Reconciliation, the second option with the same name as the doctype, corrects the system after a physical count finds a discrepancy against what the ledger claims.</div>
+      <div class="card-grid">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Opening Stock, account requirement</div>
+          <p>The Difference Account must be an Asset or Liability type account, never the Expense-type Stock Adjustment account ERPNext defaults to. Use the company's Temporary Opening account, an Asset type built for exactly this. Opening Balance Equity is explicitly rejected here.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Posting time, opening stock</div>
+          <p>Set the posting date to go-live day and the posting time as early as possible, so the opening position is the first thing that happened that day, before any real transaction.</p>
+        </div>
+      </div>
+    </div>
+    <div class="fnote">
+      <div class="fnote-label">Field note, the most expensive lesson in this reference</div>
+      <p>Past a certain item count, Stock Reconciliation silently defers to a background worker instead of processing immediately, even when submitted from the console. A confirmed boundary in practice: 72 items submitted instantly, roughly 1,862 items in one document did not, and stayed at docstatus 0 indefinitely with no visible error. A queued document and a genuinely stuck one look identical from the console. Both simply return without confirming submission. Chasing the wrong explanation here, assuming Redis is down, a second session is open, or bench needs a restart, is what makes this expensive. In practice, none of those were ever the actual cause.</p>
+    </div>
+    <div class="tip">
+      <div class="tip-label">Diagnose before assuming an infrastructure problem</div>
+      <p>Read docstatus directly and print it explicitly, since a bare expression returning nothing prints nothing at all in a console, which looks exactly like a hang. Check whether the worker process is alive and check its CPU time specifically, not just whether the process exists, since a worker sitting at the same CPU time for several minutes is not processing anything. If a document is confirmed stuck with no active worker time against it, the sanctioned release is the document's own unlock method, the same mechanism Frappe itself uses once a background job legitimately finishes. Once diagnosed, the actual fix is chunking the batch. Fifty items per document runs reliably clear of the deferral threshold in practice, comfortably under the confirmed 72-item instant boundary.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Valuation</h3>
+    <div class="sub-body">
+      <p>FIFO assumes the oldest stock moves first, which is the correct assumption for anything with a shelf life and the mandatory choice for Kenyan perishables, per Part 03. Moving Average recalculates a blended cost with every receipt, and is the more common default for goods without an expiry concern. The valuation method is set at the item level, and changing it after transactions already exist is a correction, not a preference update.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Expiry Date Management</h3>
+    <div class="sub-body">
+      <p>Recording an expiry date at the point of receipt does three concrete things that a shelf-life estimate in someone's head cannot. It makes FIFO dispatch verifiable, since the batch closest to expiry can be confirmed as the one that actually shipped first, not assumed. It surfaces stock approaching expiry early enough to run a clearance push or redirect it to a client who will use it quickly, instead of discovering the loss after the fact. And it turns an eventual write-off into a specific, costed batch rather than an unexplained gap in a valuation report. The alternative, expired and fresh stock sitting on the same shelf with no system distinction between them, risks the one outcome no distribution business recovers from quickly: shipping expired goods to a client who was never told to expect the risk.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">The Stock Ledger, and where to actually look</h3>
+    <div class="sub-body">
+      <p>The Stock Ledger is to physical goods what the General Ledger from Part 02 is to money: the complete record of every movement, item, warehouse, quantity, valuation rate, batch, and timestamp, all in one place. Every Purchase Receipt, Delivery Note, and Stock Entry writes to it, and every stock report reads from it. As with the General Ledger, only submitted documents count. A Delivery Note sitting in Draft has not reduced stock, no matter how final it looks on screen.</p>
+    </div>
+    <div class="card">
+      <div class="card-grid" style="border-top:none;margin-top:0">
+        <div class="card-grid-cell"><div class="card-grid-label">Stock Balance</div><p>Current quantity and value of every item in every warehouse. The report for a Monday-morning stock check before orders are confirmed for the week.</p></div>
+        <div class="card-grid-cell"><div class="card-grid-label">Stock Ledger report</div><p>Every movement with its document reference and timestamp. The report for tracing a discrepancy between a physical count and what the system claims.</p></div>
+        <div class="card-grid-cell"><div class="card-grid-label">Stock Ageing</div><p>How long each batch or item has sat in the warehouse. The report for catching stock approaching expiry before it becomes a write-off.</p></div>
+        <div class="card-grid-cell"><div class="card-grid-label">Item-wise Stock Levels, with reorder</div><p>Items currently below their Reorder Level from Part 03. Procurement's daily trigger list, rather than a manual check of every item.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PART 7 -->
+<section class="part" id="part-7">
+  <div class="part-head">
+    <div class="part-eyebrow">Part 07 · Manufacturing &amp; Quality</div>
+    <h2 class="part-title">Manufacturing &amp; Quality</h2>
+    <p class="part-intro">Every layer between a Bill of Materials and a finished good: the workstations and routings production runs across, the Production Plan that turns demand into Work Orders at scale, Subcontracting when part of the process happens outside the building, and the full Quality module, which is a management system, not just an inspection checkbox.</p>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Workstation, Operation, and Routing</h3>
+    <div class="sub-body">
+      <p>Workstation is a physical production resource, a specific machine or work area, carrying its own hourly operating cost and capacity. Operation is a named production step, cutting, assembly, finishing, that happens at a Workstation. Routing sequences a set of Operations across Workstations into a reusable production path, built once and referenced by every BOM that follows the same process, rather than re-describing the same sequence of steps on every Bill of Materials that needs it.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Bill of Materials</h3>
+    <p class="sub-def">The recipe: which raw material Items, in what quantity, and which Operations, produce one unit of a finished good.</p>
+    <div class="sub-body">
+      <p>A BOM references Items that must already exist, both the raw materials consumed and the finished good produced, and optionally a Routing that carries the Operations and Workstations the production run will actually use. It cannot be submitted until every component item is real. This is why Item and Item Group, from Part 03, sit upstream of Manufacturing in the dependency map.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Production Plan</h3>
+    <p class="sub-def">Turns demand, from Sales Orders or entered manually, into Work Orders and Material Requests at scale, instead of creating each Work Order by hand.</p>
+    <div class="sub-body">
+      <p>Production Plan pulls in demand across multiple Sales Orders or a manually specified quantity, explodes each item's BOM to calculate total raw material need, checks that against current stock, and generates the Work Orders and, where raw material is short, the Material Requests to cover the gap. For a business running more than a handful of Work Orders a week, this is the difference between planning production and reacting to whichever order happened to be raised first.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Work Order, and the two Stock Entries</h3>
+    <div class="card">
+      <div class="card-def">A Work Order is created against a submitted BOM for a target quantity. It does not move stock by itself. It generates two Stock Entries, in sequence, that do the actual physical work.</div>
+      <div class="card-steps">
+        <div class="card-grid-label" style="margin-bottom:8px">The two-stage flow</div>
+        <ol>
+          <li>Material Transfer: raw materials move from the source warehouse into Work in Progress, in the exact quantities the BOM specifies for the target output.</li>
+          <li>Manufacture: once production is physically complete, this entry consumes the Work in Progress stock and creates the finished good in the destination warehouse, at its actual production cost.</li>
+        </ol>
+      </div>
+    </div>
+    <div class="fnote">
+      <div class="fnote-label">Field note, Aurelius Group, Netherlands, worked example</div>
+      <p>A Work Order for 50 units of a finished cotton tee, against a BOM specifying 1.5 metres of fabric per unit, consumes 75 metres of raw fabric (50 multiplied by 1.5) from the Material Transfer entry, and produces 50 units of finished goods from the Manufacture entry. The finished goods valuation in the Stock Ledger reflects the BOM component cost plus any configured overhead, not a guess.</p>
+    </div>
+    <div class="tip">
+      <div class="tip-label">The accounting behind Manufacture</div>
+      <p>The Manufacture entry debits the Finished Goods account for the produced quantity at production cost, credits Work in Progress for the raw materials consumed, and credits a wages or operations account for any labour cost carried on the BOM's operations. Running a BOM cost comparison report afterward, actual production cost against BOM standard cost, is worth doing periodically. A consistent variance usually means inefficiency, waste, or a standard cost that has gone stale.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Job Card</h3>
+    <p class="sub-def">The shop-floor execution record: one per Operation per Work Order, where what actually happened gets logged.</p>
+    <div class="sub-body">
+      <p>Where the Work Order is the instruction, Job Card is the record of it actually being carried out. Each Operation on the BOM's Routing generates its own Job Card, and the Workstation operator logs actual time started, time completed, and quantity produced or rejected against it. This is the data the BOM cost comparison from the previous section actually draws on: without Job Cards logging real time against real Workstations, "actual production cost" is not actually being measured, only assumed to match the standard.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Downtime, planning, and tools</h3>
+    <div class="sub-body">
+      <p>Downtime Entry logs when a Workstation was not producing, and why, a breakdown, a changeover, a material shortage, and the Downtime Analysis report is built entirely from these entries. Left unrecorded, downtime is invisible in every efficiency report even though it was the actual cause of a missed deadline. Master Production Schedule and Sales Forecast feed longer-horizon planning above the Production Plan, useful for a business that needs to commit capacity weeks or months ahead rather than reacting order by order. BOM Update Tool mass-updates costs across every BOM referencing a component whose price just changed, rather than opening each BOM individually. Item Lead Time records how long an item actually takes to become available, whether purchased or manufactured, and is what Material Requirements Planning uses to decide how far ahead of need an order actually has to be placed. Manufacturing Settings holds the module-wide defaults underneath all of this: whether a Job Card is mandatory before a Work Order can close, and how work-in-progress warehouses default across new Work Orders.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Subcontracting</h3>
+    <p class="sub-def">Sending raw materials to an external supplier who returns a finished or semi-finished good, rather than manufacturing the step in-house.</p>
+    <div class="card">
+      <div class="card-grid" style="border-top:none;margin-top:0">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Subcontracting BOM</div>
+          <p>Defines what raw material goes out for a given finished component to come back, the subcontracting equivalent of a standard BOM.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Subcontracting Order</div>
+          <p>The commitment to the subcontractor, specifying the finished item expected back and the raw materials being supplied to make it.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Subcontracting Receipt</div>
+          <p>Records the finished goods actually returned, consuming the transferred raw material and receiving the completed item, mirroring a Purchase Receipt.</p>
+        </div>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="tip-label">Where the raw material actually sits</div>
+      <p>Material sent to a subcontractor is transferred to a Supplier-type Warehouse, not written off. It remains company-owned stock on the books, physically located at a third party, right up until the Subcontracting Receipt converts it into the finished item. The Subcontracted Raw Materials To Be Transferred and Subcontracted Item To Be Received reports, visible in both Buying and Manufacturing, are what keep that in-transit position visible rather than invisible between the two documents.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Quality Inspection, the transactional trigger point</h3>
+    <div class="sub-body">
+      <p>Parts 04 and 05 covered inspection triggered at Purchase Receipt and at Delivery Note. Manufacturing adds a third trigger: inspection at Work Order completion, checking the finished good itself rather than incoming materials or outgoing shipments. All three use the same Quality Inspection Template mechanism from Part 03. Items that fail route to a rejection warehouse for rework or disposal rather than sitting in general stock. Quality Inspection is transactional, tied to one specific document. What follows is different: a management system that operates above any single transaction.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">The Quality module</h3>
+    <p class="sub-def">Not inspection. A continuous improvement system: what the business is trying to achieve, whether it is achieving it, and what happens when it is not.</p>
+    <div class="card">
+      <div class="card-grid" style="border-top:none;margin-top:0">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Quality Goal and Quality Procedure</div>
+          <p>Quality Goal states a measurable target, a rejection rate under a set percentage, for instance. Quality Procedure documents how a process is actually meant to be performed, and a Tree of Procedures shows how narrower procedures nest under broader ones.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Non Conformance and Quality Action</div>
+          <p>Non Conformance documents one specific deviation from a Procedure or Goal when it happens. Quality Action is the corrective task assigned in response, with an owner and a due date, so a documented problem does not just sit documented.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Quality Review</div>
+          <p>A scheduled assessment of actual performance against a Quality Goal, the record that turns "we think quality is fine" into a periodic, evidenced check.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Quality Feedback and Quality Meeting</div>
+          <p>Quality Feedback, built from a reusable Quality Feedback Template, captures structured input from customers or internal staff. Quality Meeting records the cadence where Reviews, Non Conformances, and Actions actually get discussed, rather than living unread in a list view.</p>
+        </div>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="tip-label">Why this module gets skipped, and what that costs</div>
+      <p>Quality Inspection alone answers whether one shipment passed. The Quality module answers whether the business is getting better or worse over time, and whether the same Non Conformance keeps recurring because a Quality Action was assigned but never actually closed. A configuration-only implementation with limited timeline pressure often ships Quality Inspection and skips the rest. That is a defensible scoping decision. It should be a deliberate one, not an oversight discovered when a client asks where their corrective action log lives.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PART 8 -->
+<section class="part" id="part-8">
+  <div class="part-head">
+    <div class="part-eyebrow">Part 08 · Assets</div>
+    <h2 class="part-title">Assets</h2>
+    <p class="part-intro">Asset Category through disposal. The Accumulated Depreciation account, the one that quietly does the most work on the Balance Sheet while never appearing to do anything at all.</p>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Asset Category</h3>
+    <p class="sub-def">Sets the depreciation defaults and the exact accounts every asset created under it will post against.</p>
+    <div class="card">
+      <div class="card-grid" style="border-top:none;margin-top:0">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Finance Book table</div>
+          <p>Depreciation Method, Total Number of Depreciations, and Frequency of Depreciation, set once per category.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Accounts table, per company</div>
+          <p>Fixed Asset Account, Accumulated Depreciation Account, and Depreciation Expense Account, mapped for each company that will use this category.</p>
+        </div>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="tip-label">Worked example, Aurelius Group</div>
+      <p>A Machinery and Equipment category configured with Straight Line depreciation, seven total depreciations, yearly frequency. Every asset purchased under that category, until changed at the individual asset record, depreciates on exactly that schedule with no further decisions required.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Depreciation</h3>
+    <div class="sub-body">
+      <p>ERPNext supports Straight Line, Declining Balance, also called Written Down Value, and Double Declining Balance. Straight Line is the simplest and most common: the same amount every period. The other two front-load depreciation into earlier years, appropriate where an asset genuinely loses most of its value early.</p>
+      <p>Accumulated Depreciation is a contra-asset account: it lives on the asset side of the Balance Sheet but carries a credit balance, growing every time depreciation posts, and it never resets on its own. Net Book Value is always Gross Cost minus Accumulated Depreciation, never a number typed in directly.</p>
+    </div>
+    <div class="fnote">
+      <div class="fnote-label">Field note, Lagowood, Nigeria, worked example</div>
+      <p>A Panel Saw purchased at a gross cost of 2,800,000. After 24 months of straight line depreciation at 46,667 per month, Accumulated Depreciation stands at 1,120,008. Net Book Value is 2,800,000 minus 1,120,008, equal to 1,679,992. Both figures sit on the Balance Sheet, gross cost and accumulated depreciation shown separately, exactly as IAS 16 requires, rather than one shrinking asset number that erases its own purchase history.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Location and Asset Movement</h3>
+    <div class="sub-body">
+      <p>Location is where a fixed asset physically sits, a distinct concept from Warehouse, which tracks stock items rather than assets. Asset Movement records a transfer, between locations, between employees, or both, and it is what lets a business answer who currently has a specific laptop or vehicle without relying on memory. An asset with no Movement history and no custodian on record is an asset the business will eventually spend real time hunting for at year-end count.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Asset Maintenance</h3>
+    <p class="sub-def">Preventive maintenance, scheduled before something breaks, distinct from Asset Repair, which happens after.</p>
+    <div class="sub-body">
+      <p>Asset Maintenance Team assigns responsibility. Asset Maintenance itself holds the schedule, a service interval by date or by usage. Asset Maintenance Log records what was actually done at each visit, by whom, and at what cost. A maintenance schedule that exists only as a task on someone's calendar, outside the system, produces exactly the gap this subsystem is built to close: no record of whether a machine was actually serviced on schedule until it fails and someone asks when it was last checked.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Asset Value Adjustment, Repair, and Capitalization</h3>
+    <div class="card">
+      <div class="card-grid" style="border-top:none;margin-top:0">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Asset Value Adjustment</div>
+          <p>A manual revaluation outside the normal depreciation schedule, an impairment when an asset's real value has dropped faster than depreciation assumed, or a revaluation when it has not dropped as fast.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Asset Repair</div>
+          <p>An unplanned repair event. Cost is captured against the asset, and can either post as a straight expense or, where the repair genuinely extends useful life, increase the asset's value.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Asset Capitalization</div>
+          <p>Converts accumulated Capital Work In Progress, a self-built asset under construction, or costs incurred before an asset was operational, into a finished, depreciable Asset record.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Reports</h3>
+    <div class="sub-body">
+      <p>Asset Depreciation Ledger and Asset Depreciations and Balances show the schedule and the current Net Book Value position across the register. Asset Maintenance and Asset Activity together give the operational history: what has been serviced, what is due, and what has actually happened to an asset since it was purchased. Run these before a year-end audit, not during it.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Disposal</h3>
+    <div class="sub-body">
+      <p>Asset Sale and Asset Scrapping are the two disposal tools, and both handle the accounting automatically. On disposal, the asset's gross cost and its accumulated depreciation are both removed from the books together, and any gain or loss, proceeds received minus the remaining Net Book Value, posts to a configured gain or loss account without a manual journal entry. An asset scrapped rather than sold still needs this step. Leaving a disposed asset sitting in the register overstates the business's actual asset base indefinitely.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PART 9 -->
+<section class="part" id="part-9">
+  <div class="part-head">
+    <div class="part-eyebrow">Part 09 · HR &amp; Payroll</div>
+    <h2 class="part-title">HR &amp; Payroll</h2>
+    <p class="part-intro">Technically a separate app, Frappe HR, not core ERPNext, per Part 00. Practically, the sequence below is the single most dangerous stretch of configuration in this entire reference. One missing field on one record excludes a real person from getting paid, with nothing in the interface to say so.</p>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">The sequence, in the order that avoids rework</h3>
+    <div class="card">
+      <div class="card-steps">
+        <ol>
+          <li>Department and Designation, the organizational structure.</li>
+          <li>Salary Component, each individual earning or deduction line, basic pay, housing allowance, tax, pension.</li>
+          <li>Income Tax Slab, the bracket structure for the relevant jurisdiction.</li>
+          <li>Salary Structure, the template assembling components into a payable formula.</li>
+          <li>Employee record, linked to Department and Designation.</li>
+          <li>Holiday List, then Holiday List Assignment, linked to the employee, submitted.</li>
+          <li>Salary Structure Assignment, linking employee to Salary Structure, effective from a given date.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Leave Management</h3>
+    <div class="sub-body">
+      <p>Three records do the work. Leave Type defines the categories, annual, sick, unpaid. Leave Policy sets how many days of each type an employee is entitled to per year. Leave Application is what an employee actually submits to request time off, and once approved and submitted, the balance updates on its own. Leave counts against the Holiday List from the next section, not against a raw calendar: five days requested across a week that includes one public holiday deducts four days of leave, not five, which is exactly why the Holiday List has to be accurate and assigned before leave balances can be trusted.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Holiday List Assignment must be submitted</h3>
+    <div class="fnote">
+      <div class="fnote-label">Field note, the pattern flagged back in Part 00</div>
+      <p>A Holiday List Assignment sitting at Draft looks complete in the list view. It is not recognised by Salary Structure Assignment until it is Submitted. This is the draft-versus-submit distinction from Part 00, in its most consequential real form: a record that appears finished, and quietly is not.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Payroll Payable Account, the single most dangerous silent failure in this reference</h3>
+    <p class="sub-def">One field on Salary Structure Assignment. Missing it does not throw an error. It makes the employee disappear from Payroll Entry as if they do not exist.</p>
+    <div class="fnote">
+      <div class="fnote-label">Field note, Gulf Medica, UAE</div>
+      <p>Sixty seven Salary Structure Assignments were missing their Payroll Payable Account. Every one of those sixty seven employees was invisible to Payroll Entry, not flagged, not warned, simply absent from the list of employees eligible for that payroll run. Payroll Payable Account on the Salary Structure Assignment functions as a filter Payroll Entry applies silently. An employee without it does not fail to process. They are never considered in the first place.</p>
+    </div>
+    <div class="card">
+      <div class="card-steps">
+        <div class="card-grid-label" style="margin-bottom:8px">The correction sequence, once a Payroll Entry has already been submitted with an employee excluded</div>
+        <ol>
+          <li>Cancel the submitted Payroll Entry. Its Journal Entry has to be reversed before any correction beneath it can take effect.</li>
+          <li>Open the excluded employee's Salary Structure Assignment. This is where the error actually lives.</li>
+          <li>Amend the SSA and add the missing Payroll Payable Account. Amending creates a new version with the field populated.</li>
+          <li>Submit the amended SSA.</li>
+          <li>Create a new Payroll Entry for the same period. The old one stays cancelled; this is a fresh document, not a resubmission.</li>
+          <li>Click Get Employees and verify the headcount matches expectation before submitting anything.</li>
+          <li>Submit the new Payroll Entry. The corrected Journal Entry posts to the General Ledger.</li>
+        </ol>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="tip-label">Why this is worth a standing check</div>
+      <p>Nothing about a missing Payroll Payable Account looks wrong in the Salary Structure Assignment form itself. It only shows up as an absence, somewhere else, in a different document, days or weeks later. After clicking Get Employees on any Payroll Entry, count the number returned against the number expected before submitting anything. Any implementation running Payroll for the first time is worth a deliberate audit of every Salary Structure Assignment's Payroll Payable Account field before the first real payroll run, not after someone notices their salary never arrived.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Payroll's connection to Accounts</h3>
+    <div class="sub-body">
+      <p>A Payroll Entry is not purely an HR action. Submitting it generates a Salary Slip per included employee and one Journal Entry that posts to the General Ledger from Part 02, the same way a Sales Invoice or Purchase Invoice does. Salary Expense is debited for the full gross cost. Each statutory deduction, NHIF Payable, NSSF Payable, and so on, is credited for what is owed to that authority. Payroll Payable is credited for the net amount actually owed to employees. When the bank payment is later made through a Payment Entry, Payroll Payable is debited and the bank account is credited, settling the debt. This is why a payroll error is not just an HR problem: if it does not post correctly, the Profit and Loss statement understates expense and overstates profit, and the Director's monthly picture is wrong in a direction nobody chose.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Other common HR failures</h3>
+    <div class="card">
+      <div class="card-grid" style="border-top:none;margin-top:0">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Salary Structure not submitted</div>
+          <p>A Salary Structure saved but not submitted cannot be referenced by an SSA at all. The SSA errors the moment the structure is selected.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Employee record incomplete</div>
+          <p>A missing date of joining, department, designation, or a status other than Active can exclude an employee from Payroll Entry even with a correctly configured SSA.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Duplicate SSAs, overlapping dates</div>
+          <p>ERPNext uses the most recent SSA when two overlap. This is normal for a salary revision. It is a real problem when the duplicate was accidental and nobody meant to change the pay.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Payroll Entry, wrong period</div>
+          <p>Running one month's payroll with another month's dates produces wrong calculations or drops employees whose SSA effective date falls outside the specified window.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Kenya, statutory deductions</h3>
+    <div class="sub-body">
+      <p>NHIF, under the SHIF 2023 Act, calculates at 2.75 percent of gross salary. NSSF, under the 2022 Act, calculates at 6 percent, not a flat historical figure some older references still quote. Both are configured as Salary Components with the correct formula, not typed in manually per payslip. Part 12 covers the fuller Kenya compliance picture alongside Nigeria and the UAE.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PART 10 -->
+<section class="part" id="part-10">
+  <div class="part-head">
+    <div class="part-eyebrow">Part 10 · CRM &amp; Projects</div>
+    <h2 class="part-title">CRM &amp; Projects</h2>
+    <p class="part-intro">Everything that happens before a transaction, and everything that happens around one that bills by time instead of by item.</p>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Two CRMs, not one</h3>
+    <div class="sub-body">
+      <p>ERPNext ships an embedded CRM module, Lead, Opportunity, and the basics of a sales pipeline, inside core ERPNext itself. Frappe also publishes a separate, standalone Frappe CRM app with a more modern interface and deeper pipeline features, installed alongside ERPNext on the same bench rather than inside it. Both exist in the current ecosystem at once. Which one an implementation actually uses is a real decision, not a default, and it needs to be documented per engagement rather than assumed.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Lead, Opportunity, and why the sequence matters</h3>
+    <div class="card">
+      <div class="card-def">CRM is the pre-sales record. The transactional system, Part 05's Selling sequence, only starts once a Lead has actually become a Customer. Everything before that point lives in Lead and Opportunity, not in a spreadsheet or an inbox that leaves with whoever managed the relationship.</div>
+      <div class="card-grid">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Lead</div>
+          <p>First contact with no commitment yet. Carries Lead Source and Territory so pipeline origin is traceable later.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Opportunity</div>
+          <p>An active, valued deal in progress. Carries Expected Revenue, Close Date, and a Status that should move as the deal actually moves.</p>
+        </div>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="tip-label">Field note, Aurelius Group, Netherlands</div>
+      <p>A wholesale buyer for Aurelius Studio does not appear as a Customer on day one. Trade fair contact becomes a Lead. Interest and a samples request move it forward. Price negotiation on minimum order quantity and ex-works pricing happens as an Opportunity. Only when a purchase order actually arrives does the record convert to a Customer and the transactional system in Part 05 takes over. Without that pipeline recorded in the system, all of it lives in one salesperson's inbox and memory, and disappears the day that person is unavailable.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Projects</h3>
+    <div class="sub-body">
+      <p>Project and Task structure work, with Timesheet logging hours against a Task. Timesheets can bill directly to a Sales Invoice for time-based engagements, or feed Project Costing to compare actual cost, labour plus linked expenses, against the Project's budget. For any business billing by time rather than by item, Timesheet is the record that everything else, invoicing and profitability both, is built on. An engagement with no disciplined timesheet habit will have accurate item-based reporting everywhere else in the system and a genuine blind spot here.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PART 11 -->
+<section class="part" id="part-11">
+  <div class="part-head">
+    <div class="part-eyebrow">Part 11 · Cross-Cutting Systems</div>
+    <h2 class="part-title">Cross-Cutting Systems</h2>
+    <p class="part-intro">Permissions, Workflows, Print Formats, Reports, and Dashboards. None of these belong to one module. All of them sit on top of everything built in Parts 01 through 10.</p>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Permissions and Roles</h3>
+    <div class="sub-body">
+      <p>Part 01 deferred this deliberately, since role design before the system exists is guesswork. Now it is not. A Role is a named permission set, Warehouse Manager, Finance Officer, assigned to Users. Role Permission Manager controls what each Role can read, write, submit, or cancel, per doctype, and User Permissions can restrict a specific user to specific records, one Warehouse Manager confined to one warehouse's documents, for instance, on top of their Role. Design this once real modules exist and real staff are waiting to log in, not earlier.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Workflows and Print Formats</h3>
+    <div class="sub-body">
+      <p>Workflow adds an approval chain on top of a doctype's normal Draft and Submit states, a Purchase Order that must pass through a Manager's approval state before it can submit, for instance. Print Format controls what a document looks like on paper or as a PDF, and a client-facing invoice or proposal deserves a deliberately designed one, not the system default, the same discipline already applied to every piece of copy elsewhere in this reference.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Reports, before Dashboards</h3>
+    <div class="sub-body">
+      <p>Script Reports, custom queries with real logic, have to exist before the Dashboard Charts or Number Cards that will visualise them. Building the chart first and hoping to wire up the data source later is backward. Anything a Dashboard needs that a standard filtered list view cannot produce starts as a Script Report.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Dashboards</h3>
+    <p class="sub-def">Number Cards and Charts are built as independent records first. The Dashboard itself is only an assembly step.</p>
+    <div class="fnote">
+      <div class="fnote-label">Field note, cross-implementation, the workflow correction</div>
+      <p>Charts do not get built inside the Dashboard form. Dashboard Chart records and Number Card records are created first, on their own, each pointing at its own data source, and only then linked into a Dashboard container. Approaching it the other way round, trying to build a chart from inside the Dashboard screen, is the single most common point of confusion the first time anyone configures one.</p>
+    </div>
+    <div class="card">
+      <div class="card-def">The core mental model: one number at a time is a Number Card. Multiple numbers compared against each other, over time or across categories, is a Chart.</div>
+      <div class="card-grid">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Number Card fields worth knowing</div>
+          <p>Show Percentage Stats, Stats Time Interval, and Show Full Number control how the single figure is framed, not just what it shows.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Chart Type versus Type</div>
+          <p>Chart Type is how data is aggregated: Count, Sum, Average, Group By, Report, or Custom. Type is the visual shape: Line, Bar, Pie, Donut, Percentage, or Heatmap. They are two separate fields, easy to conflate.</p>
+        </div>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="tip-label">The three-layer filter framework</div>
+      <p>Status, whether the filter reads Draft, Submitted, or Cancelled as labels rather than the underlying 0, 1, 2 the database actually stores. Time, the period the chart or card covers. Scope, which company, warehouse, or other dimension it is narrowed to. Building any dashboard widget without deliberately setting all three tends to produce a number that is technically correct and practically misleading.</p>
+    </div>
+    <div class="fnote">
+      <div class="fnote-label">Field note, stock-related dashboards</div>
+      <p>For any stock-level widget, current quantity on hand, build it from the Bin doctype, not Stock Ledger Entry. Bin holds a live current balance per item per warehouse. Stock Ledger Entry is a transaction history, one row per movement, and aggregating it for a simple "how much is on the shelf right now" card produces a technically accurate but needlessly expensive and confusing query.</p>
+    </div>
+    <div class="tip">
+      <div class="tip-label">A real v16 limitation</div>
+      <p>The Timespan field on a Chart or Card only offers "Last X" options, last 7 days, last month, and so on. There is no built-in "current month to date" or "current quarter" option. Where that distinction actually matters to the business, it has to be solved with a Script Report carrying its own date logic, not with the Timespan field. Once dashboard needs grow past what native Charts, Cards, and Script Reports can comfortably express, particularly anything cross-document like an intercompany balance summary or an entity-level profit and loss rollup, that is the point to escalate to Frappe Insights rather than forcing it through the native dashboard tools.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PART 12 -->
+<section class="part" id="part-12">
+  <div class="part-head">
+    <div class="part-eyebrow">Part 12 · Regional</div>
+    <h2 class="part-title">Regional</h2>
+    <p class="part-intro">Kenya, Nigeria, and the UAE at full depth, each drawn from a live implementation. Rwanda, built honestly, from a base ERPNext does not officially support yet, not dressed up as equivalent to the other three.</p>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Kenya</h3>
+    <div class="card">
+      <div class="card-grid" style="border-top:none;margin-top:0">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">VAT</div>
+          <p>Standard rate, configured as a Sales and Purchase Taxes and Charges Template pair per Part 02.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">WHT</div>
+          <p>Per transaction, not cumulative across a supplier relationship, per Part 02's field note.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">NHIF, under SHIF 2023</div>
+          <p>2.75 percent of gross salary, as a Salary Component.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">NSSF, under the 2022 Act</div>
+          <p>6 percent, not the older flat figure some references still quote.</p>
+        </div>
+      </div>
+    </div>
+    <div class="fnote">
+      <div class="fnote-label">Field note, Savanna Trade Co., Kenya</div>
+      <p>Fresh produce and perishables need FIFO valuation, not Moving Average, paired with Has Batch No and Has Expiry Date on the item, per Part 03 and Part 06. This is not a preference. Kenyan agri-trading compliance assumes stock moves in the order it arrived, and the valuation method has to actually reflect that, not just the item flags.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Nigeria</h3>
+    <div class="card">
+      <div class="card-def">Nigeria's compliance shape has two features that catch people used to a single national tax authority: Withholding Tax remits federally, to FIRS, while PAYE remits by state, to whichever State Internal Revenue Service the employee actually works under.</div>
+      <div class="card-grid">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">VAT</div>
+          <p>7.5 percent standard rate.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">WHT on supplier payments</div>
+          <p>Commonly 5 percent, remitted to FIRS by the 21st of the following month. Missed remittance risks the full WHT amount plus a 10 percent penalty, interest, and FIRS disallowing the underlying expense deduction entirely.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">PAYE</div>
+          <p>Remitted to the employee's State Internal Revenue Service, not a federal body, by the 10th of the following month. A Lagos employee and an Ogun State employee on the same payroll run remit to two different authorities.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Tax template priority</div>
+          <p>Item-level override, then Customer-level default, then Company default. Setting the Company default correctly handles the large majority of transactions automatically.</p>
+        </div>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="tip-label">Where WHT properly belongs</div>
+      <p>WHT is more correctly configured through the Tax Withholding Category on the Supplier master than bundled into a tax template. The template approach works and is simpler to set up, but the Withholding Category is the mechanism actually built for this and handles rate and threshold logic more cleanly.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">United Arab Emirates</h3>
+    <div class="sub-body">
+      <p>The UAE payroll shape is fundamentally different from Kenya or Nigeria: there is no employee income tax at all. No PAYE-equivalent deduction component exists on a standard UAE payslip. What replaces that complexity is End of Service Gratuity and the Wages Protection System, and both have real gaps against what ERPNext does natively.</p>
+    </div>
+    <div class="card">
+      <div class="card-def">End of Service Gratuity, under UAE Federal Decree Law No. 33 of 2021, applies to any employee completing at least one year of continuous service. ERPNext does not accrue this automatically.</div>
+      <div class="card-grid">
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Calculation tiers</div>
+          <p>Under 1 year: no entitlement. 1 to 5 years: 21 days of Basic Pay per completed year. Over 5 years: 30 days of Basic Pay per completed year. Capped at 2 years of total annual Basic Pay.</p>
+        </div>
+        <div class="card-grid-cell">
+          <div class="card-grid-label">Workaround</div>
+          <p>A manual recurring Journal Entry, posted monthly: debit the gratuity expense account, credit an EOSB Payable liability account, for the pro-rated monthly accrual.</p>
+        </div>
+      </div>
+    </div>
+    <div class="fnote">
+      <div class="fnote-label">Field note, Gulf Medica, UAE</div>
+      <p>MOHRE requires mainland employers to pay salaries through the Wages Protection System, which requires a Salary Information File submitted to the bank every payroll cycle. ERPNext does not generate a WPS SIF file natively. This has to be documented as a known gap at handover, with a workaround procedure, rather than discovered by the client the first time a payroll cycle is due and the file does not exist.</p>
+    </div>
+    <div class="tip">
+      <div class="tip-label">Worth watching, not yet load-bearing</div>
+      <p>UAE e-invoicing requirements built on the Peppol PINT-AE standard are moving toward mandatory status for larger businesses first, with a full mandate expected to follow. None of the four implementations in this reference have needed to configure this yet. It belongs in this reference the moment one does, not before.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Rwanda, built from first principles</h3>
+    <div class="sub-body">
+      <p>ERPNext ships no official regional module for Rwanda, unlike Kenya's SHIF and NSSF Act alignment or the UAE's built-in VAT fields. Starting a Rwanda engagement means the generic Standard Chart of Accounts template, RRA-aligned account naming built by hand, and VAT configured as a standard Sales and Purchase Taxes and Charges Template pair rather than a native regional feature. The standard VAT rate is 18 percent. None of this is unusually difficult. It simply is not pre-built, and this reference should not pretend otherwise by presenting it with the same confidence as Kenya, Nigeria, or the UAE, each backed by an actual completed engagement. This section gets rewritten with real field notes the day a Rwanda implementation actually closes.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PART 13 -->
+<section class="part" id="part-13">
+  <div class="part-head">
+    <div class="part-eyebrow">Part 13 · Field Notes</div>
+    <h2 class="part-title">Field Notes</h2>
+    <p class="part-intro">Every silent failure from Parts 01 through 12, indexed by where it actually happened, in one scannable place. Full detail lives in the Part cited. This is the map, not the territory.</p>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Lagowood, Nigeria</h3>
+    <div class="roadmap">
+      <div class="rm-item"><div class="rm-num">Part 03</div><div class="rm-body"><div class="rm-title">Price List fallback silently under-serves</div><div class="rm-desc">Unset Customer or Item Group price list pushes every transaction to a less specific rate with no error.</div></div><div class="rm-status">Part 03</div></div>
+      <div class="rm-item"><div class="rm-num">Part 03</div><div class="rm-body"><div class="rm-title">Income and Expense accounts swapped</div><div class="rm-desc">Caught in review before go-live. Would have inverted part of the Profit and Loss statement silently.</div></div><div class="rm-status">Part 03</div></div>
+      <div class="rm-item"><div class="rm-num">Part 08</div><div class="rm-body"><div class="rm-title">Depreciation, worked example</div><div class="rm-desc">Panel Saw, gross cost to Net Book Value across 24 months, both figures disclosed separately per IAS 16.</div></div><div class="rm-status">Part 08</div></div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Savanna Trade Co., Kenya</h3>
+    <div class="roadmap">
+      <div class="rm-item"><div class="rm-num">Part 02</div><div class="rm-body"><div class="rm-title">WHT threshold is per transaction</div><div class="rm-desc">Not cumulative across a supplier relationship in a period. Cumulative tracking has to happen outside ERPNext.</div></div><div class="rm-status">Part 02</div></div>
+      <div class="rm-item"><div class="rm-num">Part 04</div><div class="rm-body"><div class="rm-title">Quality Inspection enforces parameters, not the summary status</div><div class="rm-desc">Selecting Accepted overall did not override a Rejected result on an unmeasured numeric parameter.</div></div><div class="rm-status">Part 04</div></div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Gulf Medica, UAE</h3>
+    <div class="roadmap">
+      <div class="rm-item"><div class="rm-num">Part 04</div><div class="rm-body"><div class="rm-title">Foreign currency PO needs the exchange rate to exist first</div><div class="rm-desc">A Currency Exchange record has to be created before the Purchase Order, not on it.</div></div><div class="rm-status">Part 04</div></div>
+      <div class="rm-item"><div class="rm-num">Part 04</div><div class="rm-body"><div class="rm-title">Landed Cost Voucher needs a submitted Purchase Receipt</div><div class="rm-desc">Distribute Charges does nothing against a draft receipt, with no explanatory error.</div></div><div class="rm-status">Part 04</div></div>
+      <div class="rm-item"><div class="rm-num">Part 05</div><div class="rm-body"><div class="rm-title">Credit limit blocks are a business signal, not a bug</div><div class="rm-desc">Resolved by a Finance-approved limit increase or partial payment, never by disabling the control.</div></div><div class="rm-status">Part 05</div></div>
+      <div class="rm-item"><div class="rm-num">Part 05</div><div class="rm-body"><div class="rm-title">Batch and serial gaps surface at Delivery, not before</div><div class="rm-desc">Both trace back to how the goods were received, not the delivery attempt itself.</div></div><div class="rm-status">Part 05</div></div>
+      <div class="rm-item"><div class="rm-num">Part 09</div><div class="rm-body"><div class="rm-title">Payroll Payable Account, 67 Salary Structure Assignments</div><div class="rm-desc">The single most dangerous silent failure in this reference. Missing employees, no error, no warning.</div></div><div class="rm-status">Part 09</div></div>
+      <div class="rm-item"><div class="rm-num">Part 12</div><div class="rm-body"><div class="rm-title">WPS SIF file is not native to ERPNext</div><div class="rm-desc">Documented as a known gap at handover, with a workaround procedure, not discovered mid-payroll-cycle.</div></div><div class="rm-status">Part 12</div></div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Aurelius Group, Netherlands</h3>
+    <div class="roadmap">
+      <div class="rm-item"><div class="rm-num">Part 01</div><div class="rm-body"><div class="rm-title">Group company accounts do not reliably auto-mirror</div><div class="rm-desc">Create accounts directly inside each subsidiary's own Chart of Accounts, never rely on the parent to cascade.</div></div><div class="rm-status">Part 01</div></div>
+      <div class="rm-item"><div class="rm-num">Part 01</div><div class="rm-body"><div class="rm-title">Fiscal Year needs every entity in its Companies table</div><div class="rm-desc">A subsidiary left off the table cannot post a single dated transaction, with no error pointing back to the cause.</div></div><div class="rm-status">Part 01</div></div>
+      <div class="rm-item"><div class="rm-num">Part 02</div><div class="rm-body"><div class="rm-title">Import tax template misclassification</div><div class="rm-desc">Wrong template overcharged import VAT silently, only caught at VAT return reconciliation.</div></div><div class="rm-status">Part 02</div></div>
+      <div class="rm-item"><div class="rm-num">Part 02</div><div class="rm-body"><div class="rm-title">Account type has to match real usage</div><div class="rm-desc">A payroll tax liability typed as a generic Payable demanded a Party it could never actually have.</div></div><div class="rm-status">Part 02</div></div>
+      <div class="rm-item"><div class="rm-num">Part 04</div><div class="rm-body"><div class="rm-title">Landed Cost, worked example</div><div class="rm-desc">EUR 4.50 per metre invoice price becomes EUR 4.99 once freight and customs are distributed.</div></div><div class="rm-status">Part 04</div></div>
+      <div class="rm-item"><div class="rm-num">Part 05</div><div class="rm-body"><div class="rm-title">Intercompany invoicing is configured pair by pair</div><div class="rm-desc">No single switch makes a whole group intercompany-ready. Every trading pair needs its own Internal Customer and Supplier records.</div></div><div class="rm-status">Part 05</div></div>
+      <div class="rm-item"><div class="rm-num">Part 07</div><div class="rm-body"><div class="rm-title">Manufacturing, worked example</div><div class="rm-desc">50 finished units consume 75 metres of fabric through Material Transfer, then Manufacture.</div></div><div class="rm-status">Part 07</div></div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Cross-implementation</h3>
+    <div class="roadmap">
+      <div class="rm-item"><div class="rm-num">Part 02</div><div class="rm-body"><div class="rm-title">A Group account as a tax template head silently excludes tax from the GL</div><div class="rm-desc">Invoices calculate and display the tax correctly. The posting itself never reaches the ledger. No error.</div></div><div class="rm-status">Part 02</div></div>
+      <div class="rm-item"><div class="rm-num">Part 03</div><div class="rm-body"><div class="rm-title">Stock item flags lock in after first movement</div><div class="rm-desc">Has Batch No, Has Serial No, Has Expiry Date resist clean changes once Stock Ledger Entries exist.</div></div><div class="rm-status">Part 03</div></div>
+      <div class="rm-item"><div class="rm-num">Part 05</div><div class="rm-body"><div class="rm-title">Opening Invoice Creation Tool fails silently in some v16 builds</div><div class="rm-desc">Fall back to a Sales or Purchase Invoice with Is Opening set to Yes, never a Journal Entry for anything involving stock.</div></div><div class="rm-status">Part 05</div></div>
+      <div class="rm-item"><div class="rm-num">Part 06</div><div class="rm-body"><div class="rm-title">Stock Reconciliation defers to a background worker past a real threshold</div><div class="rm-desc">72 items confirmed instant, roughly 1,862 confirmed deferred with no visible error. Chunk at 50.</div></div><div class="rm-status">Part 06</div></div>
+      <div class="rm-item"><div class="rm-num">Part 09</div><div class="rm-body"><div class="rm-title">The Payroll Payable Account correction is a seven-step sequence</div><div class="rm-desc">Cancel the Payroll Entry first. A new Payroll Entry, not a resubmission, is what carries the fix.</div></div><div class="rm-status">Part 09</div></div>
+      <div class="rm-item"><div class="rm-num">Part 11</div><div class="rm-body"><div class="rm-title">Dashboard Charts and Number Cards build as records first</div><div class="rm-desc">The Dashboard container is only an assembly step, not where the chart itself gets built.</div></div><div class="rm-status">Part 11</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PART 14 -->
+<section class="part" id="part-14">
+  <div class="part-head">
+    <div class="part-eyebrow">Part 14 · Appendix</div>
+    <h2 class="part-title">Appendix</h2>
+    <p class="part-intro">Glossary, external resources, and the full dependency chain in one printable list.</p>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Glossary</h3>
+    <div class="card">
+      <div class="card-grid" style="border-top:none;margin-top:0;grid-template-columns:1fr 1fr">
+        <div class="card-grid-cell"><div class="card-grid-label">DocType</div><p>Simultaneously a database table, a form, and a set of permission and logic rules. Covered in Part 00.</p></div>
+        <div class="card-grid-cell"><div class="card-grid-label">Docstatus</div><p>0 Draft, 1 Submitted, 2 Cancelled. The distinction behind most silent failures in this reference.</p></div>
+        <div class="card-grid-cell"><div class="card-grid-label">Leaf account</div><p>An account that can actually be posted to, as opposed to a Group account that only organizes the tree.</p></div>
+        <div class="card-grid-cell"><div class="card-grid-label">Naming Series</div><p>The prefix and running number pattern behind every document ID, such as SINV-2026-00001.</p></div>
+        <div class="card-grid-cell"><div class="card-grid-label">Three-way match</div><p>Purchase Order, Purchase Receipt, and Purchase Invoice checked against each other before payment.</p></div>
+        <div class="card-grid-cell"><div class="card-grid-label">Landed cost</div><p>An item's true cost once freight, customs, and clearing are distributed across it, not just the invoice price.</p></div>
+        <div class="card-grid-cell"><div class="card-grid-label">SSA</div><p>Salary Structure Assignment. Links an Employee to a Salary Structure, and carries the Payroll Payable Account.</p></div>
+        <div class="card-grid-cell"><div class="card-grid-label">Internal Customer / Supplier</div><p>The flags that make two entities in one group able to trade and auto-generate each other's invoices.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">External resources</h3>
+    <div class="sub-body">
+      <p>Frappe School, at frappe.school, for structured courses on ERPNext and the Frappe framework, taught by the maintainers and the wider community. The official documentation at docs.frappe.io, the primary source for this reference alongside real implementation experience. The Frappe Framework documentation, for anyone who needs to understand what ERPNext is built on rather than just what it does. The ERPNext source on GitHub, for reading the actual logic behind a behaviour this reference has not yet covered. The Frappe Community Forum at discuss.frappe.io, consistently the most useful place to troubleshoot a real, specific implementation question that a search of the documentation will not answer.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">The full dependency chain</h3>
+    <div class="card">
+      <div class="card-steps">
+        <ol>
+          <li>Company, before anything else exists.</li>
+          <li>Fiscal Year and Chart of Accounts template, both keyed to Company.</li>
+          <li>Cost Center and Tax Templates, keyed to the Chart of Accounts.</li>
+          <li>Quality Inspection Template, before any Item Group that will require inspection.</li>
+          <li>Item Group with its defaults fully set, before any Item created under it.</li>
+          <li>Item, Warehouse, Customer, Supplier, and Price List, the master data every transaction references.</li>
+          <li>Buying and Selling documents, each following its own internal sequence from request through invoice.</li>
+          <li>Stock Reconciliation, for opening balances, or ordinary Stock Entries, once master data exists.</li>
+          <li>Workstation, Operation, and Routing, before any Bill of Materials that will reference them.</li>
+          <li>Bill of Materials, before any Production Plan or Work Order, once every component Item exists.</li>
+          <li>Asset Category, before any individual Asset record.</li>
+          <li>The full HR sequence, Department through Salary Structure Assignment, before the first Payroll Entry.</li>
+          <li>Lead and Opportunity, feeding into Customer, feeding into the Selling sequence from Part 05.</li>
+          <li>Script Reports, before the Dashboard Charts and Number Cards built on top of them.</li>
+          <li>Permissions and Workflow, designed last, once the modules they will govern actually exist.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="foot">Kuwa Advisory. ERPNext Core Reference. All fourteen parts built, Part 00 through Part 14.</div>
+
+</main>
+</div>
+
+<a id="kw-wa-btn" class="kw-fab" href="https://wa.me/2347089167007?text=Hi%2C%20I%20have%20a%20question%20about%20the%20ERPNext%2FFrappe%20learning%20resources." target="_blank" rel="noopener" aria-label="Message on WhatsApp" title="Message me on WhatsApp">
+  <svg viewBox="0 0 24 24" width="24" height="24" fill="#fff"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 1.67c2.24 0 4.35.87 5.94 2.46a8.2 8.2 0 0 1 2.41 5.78c0 4.55-3.7 8.25-8.25 8.25a8.2 8.2 0 0 1-4.19-1.15l-.3-.17-3.12.82.83-3.04-.19-.31a8.18 8.18 0 0 1-1.28-4.4c0-4.55 3.7-8.24 8.15-8.24zm4.52 5.86c-.25-.12-1.47-.72-1.7-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.78.97-.14.17-.29.19-.53.06-.25-.12-1.04-.38-1.99-1.22-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.14.16-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.23.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.68 4.25 3.75.59.25 1.06.4 1.42.52.6.19 1.14.16 1.57.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.1-.23-.16-.48-.28z"/></svg>
+</a>
+<button id="kw-top-btn" class="kw-fab" aria-label="Back to top" title="Back to top">&uarr;</button>
+
+<script>
+function filterRef(q){
+  q=q.trim().toLowerCase();
+  var anyVisible=false;
+  document.querySelectorAll('.sub, .rm-item').forEach(function(el){
+    if(!q){el.classList.remove('hidden-by-search');anyVisible=true;return;}
+    var t=el.textContent.toLowerCase();
+    var match=t.indexOf(q)!==-1;
+    el.classList.toggle('hidden-by-search', !match);
+    if(match) anyVisible=true;
+  });
+  document.getElementById('search-empty').classList.toggle('vis', !!q && !anyVisible);
+}
+var navItems=document.querySelectorAll('.nav-item:not(.planned)');
+var sections=document.querySelectorAll('.part[id]');
+if('IntersectionObserver' in window){
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        navItems.forEach(function(n){n.classList.remove('active')});
+        var match=document.querySelector('.nav-item[href="#'+entry.target.id+'"]');
+        if(match) match.classList.add('active');
+      }
+    });
+  },{rootMargin:'-20% 0px -70% 0px'});
+  sections.forEach(function(s){obs.observe(s)});
+}
+
+var kwTopBtn=document.getElementById('kw-top-btn');
+function kwToggleTop(){kwTopBtn.classList.toggle('vis',window.scrollY>400)}
+window.addEventListener('scroll',kwToggleTop,{passive:true});
+kwTopBtn.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'})});
+kwToggleTop();
+
+var kwProg=document.getElementById('kw-prog');
+function kwUpdateProg(){
+  var total=document.body.scrollHeight-window.innerHeight;
+  kwProg.style.transform='scaleX('+(total>0?window.scrollY/total:0)+')';
+}
+window.addEventListener('scroll',kwUpdateProg,{passive:true});
+window.addEventListener('resize',kwUpdateProg);
+kwUpdateProg();
+</script>
+</body>
+</html>

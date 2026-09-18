@@ -1,0 +1,2091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Frappe Framework — Complete Learning Guide</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23F79F1B'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --sb:#0A0A0A;--sb-text:#9A968E;--sb-active:#F79F1B;--sb-hover:#E8E6E0;--sb-badge:rgba(247,159,27,0.16);
+  --bg:#F7F6F2;--card:#FFFFFF;--border:#E2E0DA;
+  --tx:#141519;--tx2:#5C5B57;
+  --ac:#F79F1B;--ac-tx:#8A5A0E;--ac-dim:rgba(247,159,27,0.10);
+  --tip:#005B50;--tip-bg:#E8F1EF;--tip-bd:#C9DFDA;
+  --note:#54524D;--note-bg:#F0EFEC;--note-bd:#D4D2CC;
+  --warn:#8A5A0E;--warn-bg:#FFF7E6;--warn-bd:#F0D6A3;
+  --dng:#E63815;--dng-bg:#FDEEEA;--dng-bd:#F3C6BA;
+  --code:#181B2E;--code-tx:#CDD6F4;
+  --sw:280px
+}
+html{scroll-behavior:smooth}
+body{font-family:'Instrument Sans',-apple-system,sans-serif;background:var(--bg);color:var(--tx);line-height:1.72;font-size:15px}
+#prog{position:fixed;top:0;left:var(--sw);right:0;height:3px;background:var(--ac);transform-origin:left;transform:scaleX(0);z-index:200;transition:transform .08s linear}
+#sb{position:fixed;top:0;left:0;width:var(--sw);height:100vh;background:var(--sb);overflow-y:auto;display:flex;flex-direction:column;z-index:100;scrollbar-width:thin;scrollbar-color:#252838 transparent}
+#sb::-webkit-scrollbar{width:3px}
+#sb::-webkit-scrollbar-thumb{background:#252838}
+.sb-head{padding:22px 20px 14px;border-bottom:1px solid rgba(255,255,255,0.06);flex-shrink:0}
+.sb-eyebrow{font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--ac);margin-bottom:3px}
+.sb-title{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;color:#E0E4EF;line-height:1.25}
+.sb-search{padding:12px 14px;border-bottom:1px solid rgba(255,255,255,0.05);flex-shrink:0}
+#srch{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:7px;padding:7px 10px 7px 30px;color:#E0E4EF;font-size:13px;font-family:'Instrument Sans',sans-serif;outline:none;transition:border-color .2s;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:9px center}
+#srch:focus{border-color:rgba(247,159,27,.5)}
+#srch::placeholder{color:#3E4459}
+#sb-nav{padding:6px 0 40px;flex:1}
+#no-res{display:none;padding:20px 14px;font-size:12px;color:var(--sb-text);text-align:center}
+.nm{margin-bottom:1px}
+.nm-hd{display:flex;align-items:center;gap:9px;padding:9px 16px 9px 18px;cursor:pointer;transition:background .15s;user-select:none}
+.nm-hd:hover{background:rgba(255,255,255,0.03)}
+.nm-num{font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;color:var(--ac);background:var(--sb-badge);padding:2px 6px;border-radius:3px;flex-shrink:0;letter-spacing:.02em}
+.nm-name{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;color:#9BA5BF;flex:1}
+.nm.open .nm-name{color:#E0E4EF}
+.nm-arr{width:13px;height:13px;color:#3E4459;transition:transform .2s;flex-shrink:0}
+.nm.open .nm-arr{transform:rotate(90deg)}
+.nm-sub{display:none;padding:0 0 4px}
+.nm.open .nm-sub{display:block}
+.nm-sub-sec{padding:12px 18px 3px;font-size:10px;font-weight:700;color:#2E3347;text-transform:uppercase;letter-spacing:.1em;font-family:'Space Grotesk',sans-serif}
+.nl{display:block;padding:6px 16px 6px 42px;color:var(--sb-text);text-decoration:none;font-size:13px;transition:all .15s}
+.nl:hover{color:var(--sb-hover);background:rgba(255,255,255,0.025)}
+.nl.on{color:#E0E4EF;background:rgba(247,159,27,.14);font-weight:600}
+#main{margin-left:var(--sw);min-height:100vh}
+.mod-banner{background:var(--card);border-bottom:1px solid var(--border);padding:56px 64px 44px;position:relative;overflow:hidden}
+.mod-banner::after{content:attr(data-n);position:absolute;right:32px;top:50%;transform:translateY(-50%);font-family:'Space Grotesk',sans-serif;font-size:180px;font-weight:800;color:var(--ac);opacity:.035;line-height:1;user-select:none;pointer-events:none}
+.mod-eye{font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--ac-tx);margin-bottom:8px}
+.mod-title{font-family:'Space Grotesk',sans-serif;font-size:36px;font-weight:700;color:var(--tx);line-height:1.12;margin-bottom:12px}
+.mod-desc{font-size:15px;color:var(--tx2);max-width:580px;line-height:1.7}
+.mod-body{padding:48px 64px 80px;max-width:900px}
+.anc{padding-top:72px;margin-top:-72px}
+h2.st{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;color:var(--tx);margin:64px 0 10px;padding-top:32px;border-top:1px solid var(--border);display:flex;align-items:center;flex-wrap:wrap;gap:10px}
+h2.st:first-child{margin-top:0;border-top:none}
+.badge{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;background:rgba(247,159,27,.14);color:var(--ac-tx);padding:3px 7px;border-radius:3px;font-family:'Space Grotesk',sans-serif}
+h3.ss{font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:600;color:var(--tx);margin:32px 0 10px}
+h4.dh{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;color:var(--tx2);text-transform:uppercase;letter-spacing:.08em;margin:24px 0 8px}
+p{margin-bottom:14px;line-height:1.75;color:var(--tx)}
+p:last-child{margin-bottom:0}
+ul,ol{padding-left:20px;margin-bottom:14px}
+li{margin-bottom:7px;line-height:1.65;color:var(--tx)}
+li strong{color:var(--tx);font-weight:600}
+strong{font-weight:600}
+a{color:var(--ac-tx);text-decoration:none}
+a:hover{text-decoration:underline}
+code{font-family:'JetBrains Mono','Fira Code',monospace;font-size:12.5px;background:rgba(247,159,27,.10);color:var(--ac-tx);padding:2px 5px;border-radius:3px;border:1px solid rgba(247,159,27,.22)}
+.cb{position:relative;margin:22px 0;border-radius:9px;overflow:hidden;background:var(--code);border:1px solid rgba(255,255,255,0.06)}
+.cb-hd{display:flex;align-items:center;justify-content:space-between;padding:9px 16px;background:rgba(255,255,255,.035);border-bottom:1px solid rgba(255,255,255,0.06)}
+.cb-lang{font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#5A6180}
+.cp-btn{font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;color:#5A6180;background:none;border:1px solid rgba(255,255,255,.1);border-radius:3px;padding:2px 8px;cursor:pointer;transition:all .15s}
+.cp-btn:hover{color:#E0E4EF;border-color:rgba(255,255,255,.25)}
+.cp-btn.done{color:#2DD4A8;border-color:#2DD4A8}
+pre{margin:0;padding:20px;overflow-x:auto;scrollbar-width:thin;scrollbar-color:#252838 transparent}
+pre code{font-family:'JetBrains Mono',monospace;font-size:13px;background:none;color:var(--code-tx);padding:0;border:none;border-radius:0;line-height:1.65;display:block;white-space:pre}
+.cl{display:flex;gap:13px;padding:14px 18px;border-radius:10px;margin:18px 0;border:1px solid;backdrop-filter:blur(8px) saturate(150%);-webkit-backdrop-filter:blur(8px) saturate(150%)}
+.cl-icon{font-size:15px;flex-shrink:0;margin-top:1px}
+.cl-body{flex:1}
+.cl-title{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;margin-bottom:3px}
+.cl-body p{font-size:14px;margin-bottom:0;line-height:1.6}
+.cl.tip{background:var(--tip-bg);border-color:var(--tip-bd)}.cl.tip .cl-title{color:var(--tip)}
+.cl.note{background:var(--note-bg);border-color:var(--note-bd)}.cl.note .cl-title{color:var(--note)}
+.cl.warn{background:var(--warn-bg);border-color:var(--warn-bd)}.cl.warn .cl-title{color:var(--warn)}
+.cl.dng{background:var(--dng-bg);border-color:var(--dng-bd)}.cl.dng .cl-title{color:var(--dng)}
+.ft{width:100%;border-collapse:collapse;margin:14px 0 22px;font-size:14px}
+.ft th{background:rgba(247,159,27,.10);color:var(--ac-tx);font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:9px 13px;text-align:left;border:1px solid var(--border)}
+.ft td{padding:9px 13px;border:1px solid var(--border);vertical-align:top;background:var(--card);line-height:1.5}
+.ft tr:hover td{background:#FAFAF7}
+.ft td:first-child{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ac-tx);white-space:nowrap}
+.steps{counter-reset:sc;margin:14px 0 22px;padding-left:0;list-style:none}
+.steps li{counter-increment:sc;display:flex;gap:13px;margin-bottom:10px;align-items:flex-start}
+.steps li::before{content:counter(sc);font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;background:var(--ac);color:#fff;width:21px;height:21px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+/* FLOATING ACTIONS */
+.kw-fab{position:fixed;z-index:9999;display:flex;align-items:center;justify-content:center;border-radius:50%;text-decoration:none;cursor:pointer;border:none;font-family:'Instrument Sans',sans-serif;transition:transform .15s ease,box-shadow .15s ease,opacity .2s ease}
+#kw-wa-btn{bottom:24px;right:24px;width:52px;height:52px;background:#25D366;box-shadow:0 6px 20px rgba(37,211,102,.4),0 2px 8px rgba(0,0,0,.18)}
+#kw-wa-btn:hover{transform:translateY(-2px) scale(1.05);box-shadow:0 10px 26px rgba(37,211,102,.5),0 3px 10px rgba(0,0,0,.22)}
+#kw-top-btn{bottom:88px;right:24px;width:44px;height:44px;background:rgba(10,10,10,.82);color:#FAFAF8;font-size:18px;font-weight:700;opacity:0;pointer-events:none;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 6px 18px rgba(0,0,0,.25)}
+#kw-top-btn.vis{opacity:1;pointer-events:auto}
+#kw-top-btn:hover{background:var(--ac);transform:translateY(-2px)}
+@media(max-width:600px){
+  #kw-wa-btn{width:46px;height:46px;bottom:18px;right:18px}
+  #kw-top-btn{width:38px;height:38px;bottom:72px;right:18px;font-size:16px}
+}
+#kw-menu-btn{display:none;position:fixed;top:14px;left:14px;z-index:250;width:38px;height:38px;border-radius:8px;background:var(--sb);border:1px solid rgba(255,255,255,.14);color:#E0E4EF;align-items:center;justify-content:center;cursor:pointer;font-size:16px}
+#sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.42);z-index:90}
+#sb-overlay.show{display:block}
+@media(max-width:860px){
+  :root{--sw:0px}
+  #kw-menu-btn{display:flex}
+  #sb{display:flex;width:280px;transform:translateX(-100%);transition:transform .25s ease;box-shadow:0 0 40px rgba(0,0,0,.35)}
+  #sb.open{transform:translateX(0)}
+  #prog{left:0}
+  .mod-banner{padding:64px 22px 28px}
+  .mod-body{padding:32px 22px 56px}
+  .mod-title{font-size:26px}
+  h2.st{font-size:20px}
+}
+.skip-link{position:absolute;top:-100px;left:12px;z-index:10000;background:#0A0A0A;color:#FAFAF8;padding:10px 18px;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;transition:top .15s ease}
+.skip-link:focus{top:12px}
+#main:focus{outline:none}
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+<div id="prog"></div>
+<button id="kw-menu-btn" aria-label="Toggle navigation" title="Toggle navigation">&#9776;</button>
+<div id="sb-overlay"></div>
+<aside id="sb">
+  <div class="sb-head">
+    <div class="sb-eyebrow">Frappe Framework</div>
+    <div class="sb-title">Complete Learning Guide</div>
+  </div>
+  <div class="sb-search"><input type="text" id="srch" placeholder="Search topics…" autocomplete="off"/></div>
+  <nav id="sb-nav">
+    <div id="no-res">No results found</div>
+    <div class="nm open" data-m="1">
+      <div class="nm-hd" onclick="tog(this)"><span class="nm-num">01</span><span class="nm-name">Build</span><svg class="nm-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+      <div class="nm-sub">
+        <div class="nm-sub-sec">Core</div>
+        <a class="nl" href="#doctype">DocType</a><a class="nl" href="#page">Page</a><a class="nl" href="#report">Report</a>
+        <a class="nl" href="#workspace">Workspace</a><a class="nl" href="#dashboard">Dashboard</a><a class="nl" href="#moduledef">Module Def</a>
+        <div class="nm-sub-sec">Customization</div>
+        <a class="nl" href="#workflow">Workflow</a><a class="nl" href="#server-script">Server Script</a>
+        <a class="nl" href="#client-script">Client Script</a><a class="nl" href="#customize-form">Customize Form</a>
+        <a class="nl" href="#custom-field">Custom Field</a><a class="nl" href="#property-setter">Property Setter</a><a class="nl" href="#automation-rule-desk">Automation Rule</a><a class="nl" href="#naming-series">Naming Series</a>
+      </div>
+    </div>
+    <div class="nm" data-m="2">
+      <div class="nm-hd" onclick="tog(this)"><span class="nm-num">02</span><span class="nm-name">Automation</span><svg class="nm-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+      <div class="nm-sub">
+        <a class="nl" href="#assignment-rule">Assignment Rule</a><a class="nl" href="#milestone">Milestone</a>
+        <a class="nl" href="#auto-repeat">Auto Repeat</a><a class="nl" href="#auto-email">Auto Email Report</a>
+        <a class="nl" href="#reminder">Reminder</a>
+      </div>
+    </div>
+    <div class="nm" data-m="3">
+      <div class="nm-hd" onclick="tog(this)"><span class="nm-num">03</span><span class="nm-name">Data</span><svg class="nm-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+      <div class="nm-sub">
+        <a class="nl" href="#data-import">Data Import</a><a class="nl" href="#data-export">Data Export</a>
+        <a class="nl" href="#bulk-update">Bulk Update</a><a class="nl" href="#backups">Backups</a>
+        <a class="nl" href="#deleted-doc">Deleted Document</a>
+      </div>
+    </div>
+    <div class="nm" data-m="4">
+      <div class="nm-hd" onclick="tog(this)"><span class="nm-num">04</span><span class="nm-name">Users</span><svg class="nm-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+      <div class="nm-sub">
+        <a class="nl" href="#user">User</a><a class="nl" href="#role">Role</a>
+        <div class="nm-sub-sec">Permissions</div>
+        <a class="nl" href="#user-perm">User Permission</a><a class="nl" href="#perm-mgr">Permission Manager</a>
+        <a class="nl" href="#perm-inspector">Permission Inspector</a>
+        <div class="nm-sub-sec">Audits</div>
+        <a class="nl" href="#audits">Activity, Permission &amp; Access Logs</a>
+      </div>
+    </div>
+    <div class="nm" data-m="5">
+      <div class="nm-hd" onclick="tog(this)"><span class="nm-num">05</span><span class="nm-name">Printing</span><svg class="nm-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+      <div class="nm-sub">
+        <a class="nl" href="#print-format">Print Format</a><a class="nl" href="#print-heading">Print Heading</a>
+        <a class="nl" href="#pfb">Print Format Builder</a><a class="nl" href="#print-settings">Print Settings</a>
+      </div>
+    </div>
+    <div class="nm" data-m="6">
+      <div class="nm-hd" onclick="tog(this)"><span class="nm-num">06</span><span class="nm-name">Integrations</span><svg class="nm-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+      <div class="nm-sub">
+        <a class="nl" href="#email-account">Email Account</a><a class="nl" href="#connected-app">Connected App</a><a class="nl" href="#push-notif">Push Notification</a>
+        <a class="nl" href="#webhook">Webhook</a>
+        <div class="nm-sub-sec">Google</div>
+        <a class="nl" href="#google">Contacts, Calendar &amp; Settings</a>
+        <div class="nm-sub-sec">Authentication</div>
+        <a class="nl" href="#social-login">Social Login Key</a><a class="nl" href="#ldap">LDAP Settings</a>
+        <a class="nl" href="#oauth">OAuth Client &amp; Provider</a>
+      </div>
+    </div>
+    <div class="nm" data-m="7">
+      <div class="nm-hd" onclick="tog(this)"><span class="nm-num">07</span><span class="nm-name">System</span><svg class="nm-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+      <div class="nm-sub">
+        <a class="nl" href="#health">Health Report</a><a class="nl" href="#sys-notif">Notifications</a>
+        <a class="nl" href="#bg-jobs">Background Jobs</a><a class="nl" href="#tools">Tools</a>
+        <a class="nl" href="#logs">Logs</a>
+      </div>
+    </div>
+    <div class="nm" data-m="8">
+      <div class="nm-hd" onclick="tog(this)"><span class="nm-num">08</span><span class="nm-name">Website</span><svg class="nm-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+      <div class="nm-sub">
+        <a class="nl" href="#web-page">Web Page</a><a class="nl" href="#web-form">Web Form</a>
+        <a class="nl" href="#website-settings">Website Settings</a><a class="nl" href="#portal-settings">Portal Settings</a>
+        <a class="nl" href="#website-script">Website Script</a><a class="nl" href="#website-theme">Website Theme</a>
+      </div>
+    </div>
+  </nav>
+</aside>
+<main id="main" tabindex="-1">
+
+<!-- MODULE 01: BUILD -->
+<section id="build">
+<div class="mod-banner" data-n="1">
+  <div class="mod-eye">Module 01</div>
+  <h1 class="mod-title">Build</h1>
+  <p class="mod-desc">The architecture layer of Frappe. Define data structures, create custom views, build reports, and extend the system without touching app source code. Master this module and everything else follows.</p>
+</div>
+<div class="mod-body">
+
+<div class="anc" id="doctype"></div>
+<h2 class="st">DocType <span class="badge">Core Concept</span></h2>
+<p>DocType is the single most important concept in all of Frappe. Every entity you work with — a Sales Invoice, a Customer, a Purchase Order, a custom data table you create — is a DocType. When you define a DocType, Frappe automatically creates the database table, generates the form UI from your field definitions, and wires up all CRUD operations. No manual SQL or form coding required.</p>
+<p>Frappe transforms DocType names into database table names by prefixing with <code>tab</code>. A DocType named <strong>Work Order</strong> becomes the table <code>tabWork Order</code>. You will see this prefix in raw SQL and the System Console.</p>
+
+<h3 class="ss">DocType Flags</h3>
+<table class="ft">
+<tr><th>Flag</th><th>What it controls</th></tr>
+<tr><td>Module</td><td>Which module this DocType belongs to. Controls sidebar grouping.</td></tr>
+<tr><td>Is Single</td><td>Only one record ever exists (like System Settings). No list view. Used for configuration DocTypes.</td></tr>
+<tr><td>Is Child Table</td><td>Embedded inside a parent DocType as line items (e.g., Sales Order Items). Cannot be accessed standalone.</td></tr>
+<tr><td>Is Submittable</td><td>Enables the Draft → Submitted → Cancelled lifecycle for transactional documents.</td></tr>
+<tr><td>Is Tree</td><td>Hierarchical parent-child structure (like Chart of Accounts or Territory). Adds Parent and Is Group fields automatically.</td></tr>
+<tr><td>Track Changes</td><td>Logs every field change in the document timeline for audit trails.</td></tr>
+<tr><td>Track Views</td><td>Records when each user opened this document.</td></tr>
+<tr><td>Quick Entry</td><td>Enables creating records via a minimal popup showing only mandatory fields.</td></tr>
+<tr><td>Has Website</td><td>Gives this DocType a public web route at /[doctype-slug]/[document-name].</td></tr>
+<tr><td>Search Fields</td><td>Extra fields searched when a user types in a Link field pointing to this DocType.</td></tr>
+<tr><td>Title Field</td><td>Which field shows as the document display name throughout the system.</td></tr>
+</table>
+
+<h3 class="ss">Auto Naming</h3>
+<ul>
+<li><strong>Naming Series</strong> (e.g., <code>SINV-.YYYY.-.####</code>): generates sequential IDs like SINV-2025-0001. Use <code>.YYYY.</code>, <code>.MM.</code>, or <code>.DD.</code> for date segments. <code>####</code> is the auto-incrementing zero-padded counter.</li>
+<li><strong>field:fieldname</strong>: uses the value of a specific field as the name. Common for master data where the name is meaningful (e.g., Customer).</li>
+<li><strong>Prompt</strong>: user types the name when creating the record.</li>
+<li><strong>Auto</strong>: Frappe generates a random hash. Use only when the name does not need to be human-readable.</li>
+<li><strong>format:{field1}-{field2}</strong>: combines field values into the name at save time.</li>
+</ul>
+
+<h3 class="ss">Field Types</h3>
+<table class="ft">
+<tr><th>Fieldtype</th><th>Purpose and behavior</th></tr>
+<tr><td>Data</td><td>Single-line text. VARCHAR(140) in DB. Add validation in Options: Email, Phone, Name, URL.</td></tr>
+<tr><td>Small Text</td><td>Short multi-line text. VARCHAR(255).</td></tr>
+<tr><td>Text</td><td>Multi-line textarea. LONGTEXT in DB.</td></tr>
+<tr><td>Long Text</td><td>Same as Text, for longer content.</td></tr>
+<tr><td>Text Editor</td><td>Rich text WYSIWYG editor. Outputs HTML. Good for descriptions and notes.</td></tr>
+<tr><td>Markdown Editor</td><td>Markdown input with live preview. Renders as HTML when displayed.</td></tr>
+<tr><td>Int</td><td>Whole number. INT(11) in DB.</td></tr>
+<tr><td>Float</td><td>Decimal number. DECIMAL(21,9) in DB.</td></tr>
+<tr><td>Currency</td><td>Float formatted with currency symbol. Respects site currency and precision settings.</td></tr>
+<tr><td>Percent</td><td>Float displayed with % symbol.</td></tr>
+<tr><td>Date</td><td>Date picker. DATE in DB.</td></tr>
+<tr><td>Time</td><td>Time picker. TIME in DB.</td></tr>
+<tr><td>Datetime</td><td>Combined date and time. DATETIME in DB.</td></tr>
+<tr><td>Duration</td><td>Human-readable elapsed time (e.g., "2 hours 30 minutes").</td></tr>
+<tr><td>Select</td><td>Dropdown. Options are newline-separated values in the Options field of the field definition.</td></tr>
+<tr><td>Check</td><td>Boolean checkbox. Stores 0 or 1.</td></tr>
+<tr><td>Rating</td><td>Star rating widget (1 to 5).</td></tr>
+<tr><td>Link</td><td>Foreign key to another DocType. Target DocType name goes in Options. Renders as a searchable dropdown.</td></tr>
+<tr><td>Dynamic Link</td><td>Link field whose target DocType is determined at runtime by another field. Options = the fieldname of that other field.</td></tr>
+<tr><td>Table</td><td>Embeds a child DocType as a line-item table. Options = child DocType name.</td></tr>
+<tr><td>Table MultiSelect</td><td>Like Table but shows as a tag-style multi-select. Good for many-to-many relationships.</td></tr>
+<tr><td>Attach</td><td>File upload. Stores the file URL. Shows a browse button on the form.</td></tr>
+<tr><td>Attach Image</td><td>Like Attach, accepts images only, shows a preview thumbnail.</td></tr>
+<tr><td>Password</td><td>Masked input. Stored encrypted in DB.</td></tr>
+<tr><td>Color</td><td>Color picker. Stores hex value.</td></tr>
+<tr><td>Barcode</td><td>Barcode or QR scanner input. Renders the barcode visually.</td></tr>
+<tr><td>Geolocation</td><td>Map widget for coordinates or polygons (stored as GeoJSON).</td></tr>
+<tr><td>JSON</td><td>Stores raw JSON. No form widget — only accessible via scripts.</td></tr>
+<tr><td>Section Break</td><td>Layout only. Starts a collapsible section with a label. Not stored.</td></tr>
+<tr><td>Column Break</td><td>Layout only. Splits the current section into two columns. Not stored.</td></tr>
+<tr><td>Tab Break</td><td>Layout only. Creates a new form tab. Not stored.</td></tr>
+<tr><td>HTML</td><td>Display only. Renders static HTML in the form. Not stored.</td></tr>
+<tr><td>Heading</td><td>Display only. Bold visual separator text. Not stored.</td></tr>
+</table>
+
+<h3 class="ss">Key Field Properties</h3>
+<table class="ft">
+<tr><th>Property</th><th>Effect</th></tr>
+<tr><td>Mandatory</td><td>Blocks save if empty. Shows a red asterisk on the label.</td></tr>
+<tr><td>Read Only</td><td>Visible but not editable by users. Scripts can still set values.</td></tr>
+<tr><td>Hidden</td><td>Not shown on the form. Scripts can read and set values.</td></tr>
+<tr><td>In List View</td><td>Shows as a column in the list view. Keep to 3-4 fields max.</td></tr>
+<tr><td>In Standard Filter</td><td>Adds to the quick filter panel on the list view.</td></tr>
+<tr><td>In Global Search</td><td>Includes this field in full-text global search.</td></tr>
+<tr><td>Allow on Submit</td><td>Submitted documents are normally locked. This flag lets this specific field be edited post-submission.</td></tr>
+<tr><td>No Copy</td><td>Not carried over when duplicating the document.</td></tr>
+<tr><td>Print Hide</td><td>Hidden in print formats by default.</td></tr>
+<tr><td>Bold</td><td>Label displays in bold on the form.</td></tr>
+<tr><td>Description</td><td>Help text shown below the field on the form.</td></tr>
+<tr><td>Default</td><td>Pre-fills on new documents. Dynamic defaults: <code>Today</code>, <code>Now</code>, <code>__user</code> (current user email).</td></tr>
+<tr><td>Fetch From</td><td>Auto-fetches a value from a linked document. Format: <code>link_fieldname.fieldname</code></td></tr>
+<tr><td>Permission Level</td><td>0 = document level (default). 1-9 = field level. Fields with Level 1 require Level 1 Read/Write permission on the role.</td></tr>
+</table>
+
+<div class="cl tip"><div class="cl-icon">&#128161;</div><div class="cl-body"><div class="cl-title">Always add at least one permission row</div><p>If a DocType has zero permission rows, only System Manager can access it. Always add permissions even for internal DocTypes, or users will get blank screens with no explanation.</p></div></div>
+
+<h3 class="ss">The Permissions Tab</h3>
+<p>Each row in the Permissions tab specifies a Role and what it can do on this DocType. Permission types available: <strong>Read, Write, Create, Delete, Submit, Cancel, Amend, Report, Export, Import, Share, Print, Email</strong>. Set the Level to match field-level permissions where needed.</p>
+
+<h3 class="ss">Creating a DocType: Step by Step</h3>
+<ol class="steps">
+<li>Go to <strong>Build &gt; DocType &gt; New</strong> (or press Cmd/Ctrl+K and search "New DocType").</li>
+<li>Enter a <strong>DocType Name</strong> in Title Case (e.g., "Field Service Report" not "fieldservicereport").</li>
+<li>Set the <strong>Module</strong> to control sidebar placement.</li>
+<li>Set flags: <strong>Is Submittable</strong> for transactional documents, <strong>Is Child Table</strong> for line-item tables.</li>
+<li>Set <strong>Auto Name</strong>: naming series for transactional docs (e.g., <code>FSR-.YYYY.-.####</code>), or <code>field:fieldname</code> for masters.</li>
+<li>Click <strong>Add Row</strong> in the Fields table. Add fields one by one, using Section Break and Column Break to organize the layout.</li>
+<li>Switch to the <strong>Permissions</strong> tab and add at least one Role with appropriate permissions.</li>
+<li>Save. Frappe creates the database table immediately.</li>
+</ol>
+
+<div class="cl warn"><div class="cl-icon">&#9888;&#65039;</div><div class="cl-body"><div class="cl-title">Renaming fieldnames after data exists is dangerous</div><p>Renaming a fieldname after data has been saved creates an empty new column and leaves data in the old (now orphaned) column. Plan your fieldnames carefully before going live. Deleting a field only hides it from the form — the database column remains.</p></div></div>
+
+<div class="cl note"><div class="cl-icon">&#8505;&#65039;</div><div class="cl-body"><div class="cl-title">DocTypes in desk vs DocTypes in app files</div><p>DocTypes you create through the desk (Build &gt; DocType &gt; New) are stored in the database and apply to the site immediately. DocTypes defined in a custom app's source files are applied to a site by running <code>bench --site yoursite.local migrate</code> after installing or updating the app. If you modify a file-based DocType and your changes are not showing up, run bench migrate from the terminal.</p></div></div>
+
+<!-- PAGE -->
+<div class="anc" id="page"></div>
+<h2 class="st">Page</h2>
+<p>A Page is a standalone single-screen view in the Frappe desk that has no corresponding database table. Pages are for custom dashboards, utility tools, control panels, or any interface that does not follow the standard list-form data pattern.</p>
+
+<h3 class="ss">Page vs DocType</h3>
+<ul>
+<li>Use a <strong>DocType</strong> when you need to create, store, and manage records (CRUD operations).</li>
+<li>Use a <strong>Page</strong> when you need a custom interface without its own data model — aggregated views, calculators, configurators, or admin tools.</li>
+</ul>
+
+<h3 class="ss">Page Components</h3>
+<table class="ft">
+<tr><th>Field</th><th>Purpose</th></tr>
+<tr><td>Name</td><td>URL route: /app/[name]. No spaces — use hyphens.</td></tr>
+<tr><td>Module</td><td>Module association for organization.</td></tr>
+<tr><td>Title</td><td>Display name shown in the browser tab and page header.</td></tr>
+<tr><td>Script</td><td>JavaScript that runs when the page loads. Full access to the Frappe JS API.</td></tr>
+<tr><td>Style</td><td>CSS scoped to this page.</td></tr>
+<tr><td>Content</td><td>HTML template rendered in the page body. Jinja supported.</td></tr>
+</table>
+
+<div class="cb"><div class="cb-hd"><span class="cb-lang">JavaScript — Page Script Example</span><button class="cp-btn" onclick="cp(this)">Copy</button></div><pre><code>frappe.pages['my-custom-page'].on_page_load = function(wrapper) {
+    var page = frappe.ui.make_app_page({
+        parent: wrapper,
+        title: 'My Custom Page',
+        single_column: true
+    });
+
+    // Add toolbar button
+    page.add_action_item('Run Report', function() {
+        frappe.call({
+            method: 'frappe.client.get_list',
+            args: {
+                doctype: 'Sales Order',
+                filters: [['status', '=', 'Draft']],
+                fields: ['name', 'customer', 'grand_total'],
+                limit: 20
+            },
+            callback: function(r) {
+                // Render r.message into the page
+                var html = r.message.map(function(row) {
+                    return '&lt;p&gt;' + row.name + ' — ' + row.customer + '&lt;/p&gt;';
+                }).join('');
+                $(wrapper).find('.page-content').html(html);
+            }
+        });
+    });
+};</code></pre></div>
+
+<!-- REPORT -->
+<div class="anc" id="report"></div>
+<h2 class="st">Report</h2>
+<p>Reports extract, aggregate, and display data. There are four report types in Frappe, each suited for different needs. Choosing the right type is the first decision when building a report.</p>
+
+<h4 class="dh">1. Query Report</h4>
+<p>You write raw SQL. Frappe executes it and displays the results. Best for complex joins and aggregations where you know exactly what SQL you need. Columns are defined inline in the query using a special format string.</p>
+<div class="cb"><div class="cb-hd"><span class="cb-lang">SQL — Query Report</span><button class="cp-btn" onclick="cp(this)">Copy</button></div><pre><code>-- Column format: "Label:Fieldtype/Options:Width"
+-- Put this SQL in the Query field of a Query Report DocType
+
+SELECT
+    so.name              AS "Sales Order:Link/Sales Order:150",
+    so.customer          AS "Customer:Link/Customer:180",
+    so.transaction_date  AS "Date:Date:100",
+    so.grand_total       AS "Total:Currency:120",
+    so.status            AS "Status:Data:100"
+FROM `tabSales Order` so
+WHERE
+    so.docstatus = 1
+    AND so.transaction_date BETWEEN %(from_date)s AND %(to_date)s
+ORDER BY so.transaction_date DESC</code></pre></div>
+
+<h4 class="dh">2. Script Report</h4>
+<p>A Python function runs on the server and returns columns and data. Most flexible — you can call APIs, run multiple queries, transform data, and implement complex business logic.</p>
+<div class="cb"><div class="cb-hd"><span class="cb-lang">Python — Script Report</span><button class="cp-btn" onclick="cp(this)">Copy</button></div><pre><code>def execute(filters=None):
+    columns = [
+        {"label": "Customer", "fieldname": "customer",
+         "fieldtype": "Link", "options": "Customer", "width": 180},
+        {"label": "Total Orders", "fieldname": "total_orders",
+         "fieldtype": "Int", "width": 120},
+        {"label": "Revenue", "fieldname": "revenue",
+         "fieldtype": "Currency", "width": 140},
+    ]
+
+    conditions, values = "", {}
+    if filters.get("from_date"):
+        conditions += " AND so.transaction_date >= %(from_date)s"
+        values["from_date"] = filters.from_date
+
+    data = frappe.db.sql("""
+        SELECT so.customer,
+               COUNT(so.name)       AS total_orders,
+               SUM(so.grand_total)  AS revenue
+        FROM `tabSales Order` so
+        WHERE so.docstatus = 1 {cond}
+        GROUP BY so.customer
+        ORDER BY revenue DESC
+    """.format(cond=conditions), values, as_dict=True)
+
+    return columns, data</code></pre></div>
+
+<h4 class="dh">3. Report Builder (Custom Report)</h4>
+<p>No-code. Select a DocType, choose columns, set filters, add sorting. Saved as a named Custom Report and accessible under the Report Builder option in any list view. Perfect for giving business users the ability to create their own standard views without coding.</p>
+
+<h4 class="dh">4. Standard Report</h4>
+<p>Pre-built reports shipped with ERPNext and other apps. Defined in code files — you cannot create these from the desk. You can customize them (add or remove columns) using the Customize Report option in the report toolbar.</p>
+
+<h3 class="ss">Adding Filters to Script and Query Reports</h3>
+<p>Filters for Script and Query reports are defined in a separate JavaScript file:</p>
+<div class="cb"><div class="cb-hd"><span class="cb-lang">JavaScript — Report Filters</span><button class="cp-btn" onclick="cp(this)">Copy</button></div><pre><code>frappe.query_reports["My Custom Report"] = {
+    filters: [
+        {
+            fieldname: "from_date",
+            label: "From Date",
+            fieldtype: "Date",
+            default: frappe.datetime.add_months(frappe.datetime.get_today(), -1),
+            reqd: 1
+        },
+        {
+            fieldname: "to_date",
+            label: "To Date",
+            fieldtype: "Date",
+            default: frappe.datetime.get_today(),
+            reqd: 1
+        },
+        {
+            fieldname: "customer",
+            label: "Customer",
+            fieldtype: "Link",
+            options: "Customer"
+        },
+        {
+            fieldname: "status",
+            label: "Status",
+            fieldtype: "Select",
+            options: "\nDraft\nSubmitted\nCancelled"
+        }
+    ]
+};</code></pre></div>
+
+<!-- WORKSPACE -->
+<div class="anc" id="workspace"></div>
+<h2 class="st">Workspace</h2>
+<p>Workspaces are the module home pages in the Frappe desk. When a user clicks a module name in the sidebar, they land on a Workspace. You can create custom Workspaces to organize shortcuts, charts, and number cards for specific roles or departments.</p>
+
+<h3 class="ss">Workspace Components</h3>
+<ul>
+<li><strong>Shortcuts</strong>: Clickable tiles linking to DocTypes, Reports, or Pages. Optionally show a count badge for open/draft records.</li>
+<li><strong>Dashboard Charts</strong>: Embedded charts from Dashboard Chart definitions.</li>
+<li><strong>Number Cards</strong>: Single KPI values (e.g., "Open Purchase Orders: 12") pulled from report data.</li>
+<li><strong>Custom Blocks</strong>: HTML or Markdown content blocks for announcements or documentation.</li>
+</ul>
+
+<h3 class="ss">Creating a Workspace</h3>
+<ol class="steps">
+<li>Go to <strong>Build &gt; Workspace &gt; New</strong>.</li>
+<li>Set the Name (used as URL slug), Label (displayed name), Module, and Icon.</li>
+<li>Optionally restrict to specific Roles for visibility control.</li>
+<li>Save. Navigate to the workspace to see the drag-and-drop editor via the Customize button.</li>
+<li>Add shortcuts, charts, and cards. Arrange by dragging.</li>
+<li>Click <strong>Save Customizations</strong> when done.</li>
+</ol>
+
+<div class="cl tip"><div class="cl-icon">&#128161;</div><div class="cl-body"><div class="cl-title">Role-specific Workspaces per department</div><p>You can create multiple Workspaces for the same module, each restricted to a different role. A "Warehouse Supervisor" workspace and a "Procurement Manager" workspace under Stock can show completely different shortcuts and charts to the same people depending on which role they are assigned.</p></div></div>
+
+<div class="cl note"><div class="cl-icon">&#8505;&#65039;</div><div class="cl-body"><div class="cl-title">Workspace shortcut count badges</div><p>Workspace shortcuts can show a count badge next to the icon — for example "Purchase Invoices" with a badge showing 12 (for 12 open invoices). Enable this by checking <strong>Count</strong> on the shortcut configuration and setting the <strong>Doctype</strong> and optional filter. The badge auto-refreshes when the Workspace loads. This is the fastest way to turn a Workspace into a lightweight dashboard for a role.</p></div></div>
+
+<!-- DASHBOARD -->
+<div class="anc" id="dashboard"></div>
+<h2 class="st">Dashboard</h2>
+<p>A Dashboard is a dedicated page that groups charts and number cards into a single operational view. Dashboards can be embedded in Workspaces or opened as standalone pages from the desk. They are the primary tool for live visibility into KPIs, trends, and distributions without running a full report each time.</p>
+
+<div class="cl warn"><div class="cl-icon">&#9888;&#65039;</div><div class="cl-body"><div class="cl-title">Build the parts first, then assemble</div><p>The most important thing to understand about ERPNext dashboards: Dashboard Charts and Number Cards are their own separate DocType records. You create them independently, then link them into a Dashboard container. You do not build charts inline inside the Dashboard form itself. If you go to Build &gt; Dashboard &gt; New and click Add Chart, it prompts you to select an already-existing Dashboard Chart record. Nothing gets built there. The building happens earlier, in Build &gt; Dashboard Chart and Build &gt; Number Card.</p></div></div>
+
+<h3 class="ss">The Assembly Sequence</h3>
+<ol class="steps">
+<li><strong>Build your Number Cards first:</strong> go to Build &gt; Number Card &gt; New. Create one card per KPI you want at the top of the dashboard.</li>
+<li><strong>Build your Dashboard Charts:</strong> go to Build &gt; Dashboard Chart &gt; New. Create one chart per visualization.</li>
+<li><strong>Create the Dashboard container:</strong> go to Build &gt; Dashboard &gt; New. Add your pre-built charts and cards by selecting them in the Charts and Cards child tables.</li>
+<li><strong>Embed in a Workspace:</strong> navigate to the target Workspace, click Customize, drag in a Charts block, and select which Dashboard Chart or Number Card to embed.</li>
+</ol>
+
+<h3 class="ss">Number Cards vs Charts: The Core Mental Model</h3>
+<p>Before building anything, apply this rule: <strong>one number at a time = Number Card; multiple numbers compared at once = Chart.</strong></p>
+<ul>
+<li>How many purchase invoices are outstanding right now? One number. Number Card.</li>
+<li>How has revenue trended over the last six months? Many numbers across time. Chart.</li>
+<li>What is the current stock level of one item? One number. Number Card.</li>
+<li>Which suppliers account for what proportion of my spend? Multiple values in comparison. Chart.</li>
+</ul>
+<p>Number Cards sit at the top of a Dashboard as the at-a-glance summary row. Charts fill the body below. A well-structured dashboard typically has 3 to 6 Number Cards at the top and 4 to 8 Charts in the grid below them.</p>
+
+<h3 class="ss">Number Card: Fields Explained</h3>
+<table class="ft">
+<tr><th>Field</th><th>What it does</th></tr>
+<tr><td>Label</td><td>The text shown above the number (e.g., "Outstanding Invoices"). Keep it under 4 words. The label is the first thing a manager reads.</td></tr>
+<tr><td>Document Type</td><td>The DocType to aggregate from (e.g., Purchase Invoice, Bin, Sales Order, Quality Inspection).</td></tr>
+<tr><td>Function</td><td>How to produce the single number: Count (number of matching records), Sum (total of a numeric field), Average, Minimum, or Maximum.</td></tr>
+<tr><td>Aggregate Based On</td><td>Which numeric field to operate on when Function is Sum, Average, Min, or Max. For example <code>outstanding_amount</code> or <code>grand_total</code>. Not required when Function = Count.</td></tr>
+<tr><td>Filters</td><td>Scope which records are included. Build filters using the visual filter builder. See the Three-Layer Filter Framework section below.</td></tr>
+<tr><td>Show Percentage Stats</td><td>When enabled, shows a small percentage change indicator below the number (e.g., up 12% vs last month). Requires Stats Time Interval to be set.</td></tr>
+<tr><td>Stats Time Interval</td><td>The period to compare against for the percentage change: Daily, Weekly, Monthly, Quarterly, Yearly. Only active when Show Percentage Stats is on.</td></tr>
+<tr><td>Show Full Number</td><td>By default, large numbers abbreviate (1,200,000 becomes 1.2M). Enable this to display the full unformatted number when precision matters.</td></tr>
+<tr><td>Color</td><td>Accent color for the card left border and label text. Use color deliberately: red for warning KPIs, green for targets met, teal for neutral counts.</td></tr>
+</table>
+
+<h3 class="ss">Dashboard Chart: Two Separate Concepts</h3>
+<p>The Dashboard Chart form has two fields that look like the same thing but control entirely different decisions:</p>
+<table class="ft">
+<tr><th>Field</th><th>What it controls</th><th>Examples</th></tr>
+<tr><td><strong>Chart Type</strong></td><td>How data is <em>aggregated</em> from the database. The computation method.</td><td>Count, Sum, Average, Group By, Report, Custom</td></tr>
+<tr><td><strong>Type</strong></td><td>The <em>visual shape</em> used to render the result. The display format.</td><td>Line, Bar, Pie, Donut, Percentage, Heatmap</td></tr>
+</table>
+<p>A Bar chart (Type = Bar) can use Count aggregation (Chart Type = Count). A Line chart (Type = Line) can use Sum aggregation (Chart Type = Sum). They are completely independent choices: one governs how the data is computed, the other governs how it is drawn on screen.</p>
+
+<h4 class="dh">Chart Type (Aggregation) Options</h4>
+<table class="ft">
+<tr><th>Chart Type</th><th>What it does</th><th>When to use</th></tr>
+<tr><td>Count</td><td>Counts the number of records matching the filter, optionally grouped by a field.</td><td>How many Purchase Orders submitted this month? How many QI inspections were rejected by supplier?</td></tr>
+<tr><td>Sum</td><td>Adds up a numeric field across all matching records.</td><td>Total revenue this quarter. Total outstanding payables. Total production quantity.</td></tr>
+<tr><td>Average</td><td>Averages a numeric field across all matching records.</td><td>Average order value. Average days to payment. Average QI sample size.</td></tr>
+<tr><td>Group By</td><td>Groups records by the distinct values of a chosen field, then counts or sums within each group. Produces category comparisons.</td><td>Revenue by Customer. Orders by Status. Spend by Supplier Group.</td></tr>
+<tr><td>Report</td><td>Pulls data from an existing Script or Query Report. The report does the aggregation; the chart displays the result.</td><td>Any KPI requiring joins across multiple DocTypes, arithmetic calculations, or business logic that a simple Count/Sum cannot produce.</td></tr>
+<tr><td>Custom</td><td>A Python server script returns the full chart configuration as a dictionary. Maximum control over data shape and rendering.</td><td>Edge cases where even Report-based charts cannot produce the right structure. Rarely needed in practice.</td></tr>
+</table>
+
+<h4 class="dh">Type (Visual Shape) Options</h4>
+<table class="ft">
+<tr><th>Type</th><th>Best used for</th></tr>
+<tr><td>Line</td><td>Time-series trends. Shows how a metric moves across days, weeks, or months. Requires Time Series to be enabled on the chart. Good for revenue over time, orders over time.</td></tr>
+<tr><td>Bar</td><td>Comparing values across discrete categories. Clear and readable for most category comparisons. Best default choice when in doubt.</td></tr>
+<tr><td>Pie</td><td>Proportions of a whole. Limit to 5 or fewer segments. Too many segments produces an illegible colour ring that nobody can read.</td></tr>
+<tr><td>Donut</td><td>Like Pie but with a center cutout. Marginally more readable when one category dominates. Same 5-segment limit applies.</td></tr>
+<tr><td>Percentage</td><td>A single percentage value with a visual fill bar. Good for progress-toward-goal KPIs where the target is known (e.g., month target hit 73%).</td></tr>
+<tr><td>Heatmap</td><td>Activity frequency over time displayed as a calendar grid, similar to a GitHub contribution graph. Good for spotting operational patterns in daily transaction volume.</td></tr>
+</table>
+
+<h3 class="ss">Dashboard Chart: Key Configuration Fields</h3>
+<table class="ft">
+<tr><th>Field</th><th>Purpose</th></tr>
+<tr><td>Chart Name</td><td>The title shown above the chart. Be specific: "Outgrower AP Aging" is better than "Payables".</td></tr>
+<tr><td>Chart Type</td><td>Aggregation method. See table above.</td></tr>
+<tr><td>Type</td><td>Visual shape. See table above.</td></tr>
+<tr><td>Document Type</td><td>The DocType to pull data from. Only shown when Chart Type is not Report or Custom.</td></tr>
+<tr><td>Based On Date Field</td><td>The date field to use for time grouping when Time Series is enabled (e.g., <code>posting_date</code>, <code>transaction_date</code>, <code>due_date</code>).</td></tr>
+<tr><td>Time Series</td><td>Enable to group data along a time axis. When on, the X-axis becomes the time dimension and Type should generally be Line or Bar.</td></tr>
+<tr><td>Time Interval</td><td>Time bucket size when Time Series is on: Daily, Weekly, Monthly, Quarterly, Yearly.</td></tr>
+<tr><td>Value Based On</td><td>Which numeric field to aggregate (e.g., <code>grand_total</code>, <code>actual_qty</code>, <code>outstanding_amount</code>). Leave blank to Count records.</td></tr>
+<tr><td>Aggregate Function</td><td>Sum, Count, Average, Minimum, or Maximum applied to Value Based On.</td></tr>
+<tr><td>Group By Field</td><td>Splits results into series by this field's distinct values. Only for non-time-series charts.</td></tr>
+<tr><td>Number of Groups</td><td>Maximum distinct values shown when using Group By. Values beyond this are merged into "Other".</td></tr>
+<tr><td>Filters</td><td>Pre-filter which records are included. Use the visual filter builder. See Three-Layer Filter Framework below.</td></tr>
+<tr><td>Timespan</td><td>Rolling backward time window. See Timespan Limitation section below.</td></tr>
+<tr><td>Use Cache</td><td>Cache the chart data and refresh it via the Frappe scheduler rather than on every page load.</td></tr>
+</table>
+
+<h3 class="ss">Three-Layer Filter Framework</h3>
+<p>Apply filters in this sequence for every chart and number card you build:</p>
+<ol class="steps">
+<li><strong>Layer 1: Status.</strong> Always start here. Without a status filter, your chart or card includes Draft records that have not been posted yet, which inflates every number and makes the dashboard misleading. For transactional DocTypes (Sales Invoice, Purchase Invoice, Payment Entry, Delivery Note, Purchase Receipt, Quality Inspection), set Document Status = Submitted. For master data DocTypes like Bin, there is no docstatus field and this layer does not apply.</li>
+<li><strong>Layer 2: Time.</strong> Scope to a relevant period. Use the Timespan field for a rolling window (Last Month, Last Quarter) or add a filter on Posting Date or Transaction Date for a fixed range. Without a time scope, your card or chart accumulates every record ever created, which quickly loses operational meaning.</li>
+<li><strong>Layer 3: Scope.</strong> Narrow to the right slice of the business for the role viewing the dashboard. Common scope filters: Company (for multi-entity sites), Supplier Group or Customer Group, Item Group, Warehouse, Cost Center, Department. Only add scope filters that actually matter for the dashboard's intended user. A CEO dashboard needs the full picture; a warehouse supervisor dashboard needs their warehouse only.</li>
+</ol>
+
+<div class="cl warn"><div class="cl-icon">&#9888;&#65039;</div><div class="cl-body"><div class="cl-title">Document Status shows labels, not numbers in the filter builder</div><p>In the visual filter builder, the Document Status filter shows <strong>Draft</strong>, <strong>Submitted</strong>, and <strong>Cancelled</strong> as the dropdown options, not the numeric values 0, 1, and 2. Select the label. The underlying system stores and queries using the integer values internally, but the filter builder abstracts that away. If you type 1 into the filter value expecting Submitted, it will not work.</p></div></div>
+
+<h3 class="ss">Stock KPIs: Use Bin, Not Stock Ledger Entry</h3>
+<p>When building a Number Card or chart for current stock levels, the common mistake is to use Stock Ledger Entry because that DocType appears in all the stock reports. This is wrong. Stock Ledger Entry is a transaction log, not a balance sheet.</p>
+<table class="ft">
+<tr><th>DocType</th><th>What it actually is</th><th>Use for current-stock dashboards?</th></tr>
+<tr><td>Bin</td><td>A live record per item per warehouse that holds the current stock balance. One Bin record = one item in one warehouse right now. Key fields: <code>actual_qty</code> (what is physically there), <code>reserved_qty</code> (committed to open orders), <code>ordered_qty</code> (on open purchase orders), <code>projected_qty</code> (actual minus reserved plus ordered).</td><td>Yes. Always use Bin for current-state stock KPIs.</td></tr>
+<tr><td>Stock Ledger Entry</td><td>An immutable row is created for every single stock movement ever made. It is a chronological history of what happened to stock, not a record of what exists now. Summing Stock Ledger Entry gives you the running total of all incoming and outgoing movements since the company was created, which is not the current balance.</td><td>No. Summing SLE does not give you current stock.</td></tr>
+</table>
+<p>Example: Number Card for current stock of one item: Document Type = Bin, Function = Sum, Aggregate Based On = <code>actual_qty</code>, Filter = Item Code = [item name].</p>
+
+<h3 class="ss">Timespan Field Limitation</h3>
+<p>The Timespan field on Dashboard Charts offers only rolling backward windows: Last Day, Last Week, Last Month, Last Quarter, Last Year. There are no "Current Month", "This Week", "Month to Date", or "Year to Date" options in the native dashboard builder. The field looks backward from today by the selected period, not forward from a calendar boundary.</p>
+<p>If you need a current-period window (for example, data from the first of this month through today), you have two paths:</p>
+<ul>
+<li>Build a Script Report that handles the date logic on the server, then create a Dashboard Chart with Chart Type = Report pointing to that report.</li>
+<li>Use Frappe Insights, which offers full date range flexibility including period-to-date calculations.</li>
+</ul>
+
+<div class="cl note"><div class="cl-icon">&#8505;&#65039;</div><div class="cl-body"><div class="cl-title">When to escalate to Frappe Insights</div><p>Native ERPNext dashboards work well for straightforward counts, sums, and groupings from a single DocType. Reach for <strong>Frappe Insights</strong> (a separate installable app: <code>bench get-app insights</code>) when your KPI requires: <strong>division</strong> (e.g., gross margin percentage requires revenue minus cost divided by revenue, which native charts cannot compute); <strong>multi-table joins</strong> (e.g., comparing a parent document value against a child table value in the same calculation); <strong>child table parameter extraction</strong> (e.g., pulling the reading for a specific quality parameter from a Quality Inspection Readings child table row); or <strong>comparison against a known standard or threshold</strong> (e.g., actual yield rate versus the budgeted yield in a separate master record). If you find yourself trying to work around a calculation using two separate charts and asking the viewer to do the math mentally, that is the signal to install and use Frappe Insights instead.</p></div></div>
+
+<h3 class="ss">Auto-Refresh</h3>
+<p>Dashboard charts can be configured to auto-refresh at a set interval. On the Dashboard page, click the refresh interval selector in the top-right corner. Options range from every 1 minute to every hour. Use this for operational dashboards that are displayed on a screen in a warehouse, production floor, or operations room.</p>
+
+<div class="cl note"><div class="cl-icon">&#8505;&#65039;</div><div class="cl-body"><div class="cl-title">Performance note on frequent auto-refresh</div><p>Each chart refresh fires a database query. On a busy production server with many users watching dashboards on 1-minute refresh cycles, this creates noticeable load. Enable the <strong>Use Cache</strong> option on individual charts to reduce database hits. The cache is refreshed by the Frappe scheduler so 50 users watching the same chart only cause one database query per cache interval rather than 50.</p></div></div>
+
+<h3 class="ss">Linking Dashboards to Workspaces</h3>
+<p>Once your Dashboard and its charts exist, embed them in a Workspace for daily use:</p>
+<ol class="steps">
+<li>Navigate to the Workspace you want to update.</li>
+<li>Click <strong>Customize</strong> in the workspace toolbar.</li>
+<li>Drag a <strong>Charts</strong> block from the component panel onto the canvas.</li>
+<li>Select the specific Dashboard Chart or Number Card to embed.</li>
+<li>Arrange and resize as needed.</li>
+<li>Click <strong>Save Customizations</strong>.</li>
+</ol>
+
+<!-- MODULE DEF -->
+<div class="anc" id="moduledef"></div>
+<h2 class="st">Module Def</h2>
+<p>Module Def defines what a module is. Every DocType, Report, Page, and Workspace is assigned to a module. Creating a Module Def lets you group your custom DocTypes under a meaningful name in the Frappe sidebar, separate from standard ERPNext modules.</p>
+<table class="ft">
+<tr><th>Field</th><th>Purpose</th></tr>
+<tr><td>Module Name</td><td>The name used when assigning DocTypes, Reports, and Workspaces to this module.</td></tr>
+<tr><td>App Name</td><td>Optionally restrict this module to a specific installed app.</td></tr>
+<tr><td>Restrict To Domain</td><td>Show this module only when a specific ERPNext domain is active.</td></tr>
+</table>
+
+<!-- WORKFLOW -->
+<div class="anc" id="workflow"></div>
+<h2 class="st">Workflow <span class="badge">Customization</span></h2>
+<p>Workflows add state-machine behavior to DocTypes. Instead of a single Save/Submit button, documents move through defined States via Actions, and each transition can be restricted to a specific Role. This is how you implement approval flows, review chains, and multi-stage document pipelines.</p>
+
+<h3 class="ss">Core Concepts</h3>
+<ul>
+<li><strong>States</strong>: The stages a document can be in (Draft, Pending Approval, Approved, Rejected, etc.).</li>
+<li><strong>Transitions</strong>: Rules defining who can move a document from one State to another via which Action.</li>
+<li><strong>Actions</strong>: The button labels that appear on the form (Submit for Approval, Approve, Reject, etc.).</li>
+<li><strong>Document Status</strong>: Each State maps to a Frappe docstatus: 0 = Draft, 1 = Submitted, 2 = Cancelled.</li>
+</ul>
+
+<h3 class="ss">Setting Up a Workflow</h3>
+<ol class="steps">
+<li>Go to <strong>Build &gt; Customization &gt; Workflow &gt; New</strong>.</li>
+<li>Set the <strong>Document Type</strong> you want to add workflow behavior to.</li>
+<li>Set the <strong>Workflow State Field</strong> — the field that will store the current state. Frappe prompts you to create it if it does not exist.</li>
+<li>In the <strong>States</strong> table: add state names, map each to a Document Status (0/1/2), and optionally set a style color.</li>
+<li>In the <strong>Transitions</strong> table: for each transition set From State, To State, Action (button label), and Allowed Role.</li>
+<li>Optionally check <strong>Send Email Alert</strong> on transitions to trigger notifications automatically.</li>
+<li>Save. Navigate to the DocType form — workflow action buttons replace the standard Save/Submit toolbar.</li>
+</ol>
+
+<div class="cl warn"><div class="cl-icon">&#9888;&#65039;</div><div class="cl-body"><div class="cl-title">One Workflow Per DocType</div><p>Only one active workflow can exist per DocType at a time. Changing state names after records already exist in those states can break those existing records. Plan your states carefully before deploying to production data.</p></div></div>
+
+<!-- SERVER SCRIPT -->
+<div class="anc" id="server-script"></div>
+<h2 class="st">Server Script <span class="badge">Customization</span></h2>
+<p>Server Scripts run Python code on the Frappe server without editing any app files. This is one of the most powerful tools in Frappe: you can automate field calculations, enforce business rules, expose API endpoints, and schedule background tasks — all from the desk UI with no deployment required.</p>
+
+<h3 class="ss">Script Types</h3>
+<table class="ft">
+<tr><th>Type</th><th>When it runs</th></tr>
+<tr><td>DocType Event</td><td>Triggered by document lifecycle events (Before Save, After Submit, etc.).</td></tr>
+<tr><td>API</td><td>Creates a whitelisted endpoint at <code>/api/method/[script-name]</code>.</td></tr>
+<tr><td>Permission Query Conditions</td><td>Returns a SQL WHERE clause that filters which records a role can see in list views.</td></tr>
+<tr><td>Job</td><td>Runs on a cron-like schedule (Hourly, Daily, Weekly, etc.).</td></tr>
+</table>
+
+<h3 class="ss">DocType Event Triggers</h3>
+<ul>
+<li><strong>Before Insert</strong>: Before a new document is saved for the first time. Good for setting computed defaults.</li>
+<li><strong>After Insert</strong>: After a new document is committed to DB. Good for creating related records.</li>
+<li><strong>Before Validate</strong>: Before the system runs its own validation. Runs on every save attempt.</li>
+<li><strong>Validate</strong>: After Before Validate. Your main place to throw validation errors.</li>
+<li><strong>Before Save</strong>: Last chance to modify before write to DB.</li>
+<li><strong>After Save</strong>: After a successful save. Good for syncing data to other DocTypes.</li>
+<li><strong>Before Submit / After Submit</strong>: Around submission (docstatus 0 to 1).</li>
+<li><strong>Before Cancel / After Cancel</strong>: Around cancellation (docstatus 1 to 2).</li>
+<li><strong>Before Delete / After Delete</strong>: Around document deletion.</li>
+</ul>
+
+<div class="cb"><div class="cb-hd"><span class="cb-lang">Python — Server Script Reference</span><button class="cp-btn" onclick="cp(this)">Copy</button></div><pre><code># In DocType Event scripts, the document is available as 'doc'
+# Full Frappe Python API is available
+
+# --- Read and set field values ---
+doc.status = "Pending Approval"
+doc.approved_by = frappe.session.user
+current_total = doc.grand_total
+
+# --- Throw a validation error (stops save) ---
+if doc.grand_total &lt; 0:
+    frappe.throw("Grand total cannot be negative.")
+
+# --- Non-blocking message to user ---
+frappe.msgprint("Document saved. Awaiting approval.")
+
+# --- Fetch another document ---
+customer = frappe.get_doc("Customer", doc.customer)
+doc.credit_limit = customer.credit_limit
+
+# --- Database: get a single field from a single record ---
+customer_group = frappe.db.get_value("Customer", doc.customer, "customer_group")
+
+# --- Database: get a list of records ---
+open_orders = frappe.db.get_all(
+    "Sales Order",
+    filters={"customer": doc.customer, "status": "Draft"},
+    fields=["name", "grand_total"],
+    order_by="creation desc",
+    limit=10
+)
+for o in open_orders:
+    print(o.name, o.grand_total)
+
+# --- Database: raw SQL ---
+result = frappe.db.sql("""
+    SELECT SUM(grand_total) AS total
+    FROM `tabSales Order`
+    WHERE customer = %(customer)s AND docstatus = 1
+""", {"customer": doc.customer}, as_dict=True)
+total = result[0].total if result else 0
+
+# --- Create a new document ---
+task = frappe.get_doc({
+    "doctype": "Task",
+    "subject": "Review order {}".format(doc.name),
+    "assigned_to": doc.owner,
+    "status": "Open"
+})
+task.insert(ignore_permissions=True)
+
+# --- Set a value directly in DB (bypasses events) ---
+frappe.db.set_value("Sales Order", doc.name, "custom_flag", 1)
+frappe.db.commit()  # Always commit explicit DB writes
+
+# --- Permission Query Conditions (returns SQL string) ---
+# 'user' variable is available automatically
+conditions = "`tabSales Order`.owner = '{}'".format(user)
+return conditions</code></pre></div>
+
+<!-- CLIENT SCRIPT -->
+<div class="anc" id="client-script"></div>
+<h2 class="st">Client Script <span class="badge">Customization</span></h2>
+<p>Client Scripts run JavaScript in the user's browser on Frappe forms. They control UI behavior: showing or hiding fields based on conditions, calculating values when a field changes, adding custom buttons, validating input, and fetching server data without a full page reload.</p>
+
+<div class="cb"><div class="cb-hd"><span class="cb-lang">JavaScript — Client Script (complete structure)</span><button class="cp-btn" onclick="cp(this)">Copy</button></div><pre><code>frappe.ui.form.on('Sales Order', {
+
+    // Runs once when the form first loads
+    onload: function(frm) {
+        // One-time setup: configure field options, set filters, etc.
+        frm.set_query('warehouse', function() {
+            return { filters: { company: frm.doc.company } };
+        });
+    },
+
+    // Runs on every render (load, save, submit, refresh)
+    // This is your main event handler
+    refresh: function(frm) {
+        // Clear buttons first to avoid duplicates
+        frm.clear_custom_buttons();
+
+        // Add a button only on submitted documents
+        if (frm.doc.docstatus === 1) {
+            frm.add_custom_button('Create Delivery', function() {
+                frappe.confirm('Create a Delivery Note?', function() {
+                    frappe.call({
+                        method: 'erpnext.selling.doctype.sales_order.sales_order.make_delivery_note',
+                        args: { source_name: frm.doc.name },
+                        callback: function(r) {
+                            var doc = frappe.model.sync(r.message);
+                            frappe.set_route('Form', 'Delivery Note', doc[0].name);
+                        }
+                    });
+                });
+            }, 'Create');  // Groups under a "Create" dropdown
+        }
+
+        // Show/hide a field dynamically
+        frm.toggle_display('custom_approval_note',
+            frm.doc.status === 'Pending Approval');
+    },
+
+    // Triggers when the 'customer' field changes
+    customer: function(frm) {
+        if (!frm.doc.customer) return;
+        frappe.db.get_value('Customer', frm.doc.customer,
+            ['payment_terms_template', 'credit_limit'],
+            function(r) {
+                frm.set_value('payment_terms_template', r.payment_terms_template);
+                // Show the fetched credit limit in a message
+                if (r.credit_limit) {
+                    frappe.show_alert('Credit limit: ' + format_currency(r.credit_limit));
+                }
+            }
+        );
+    },
+
+    // Triggers when 'qty' changes in the items child table
+    // cdt = child DocType name, cdn = child row name (ID)
+    'items.qty': function(frm, cdt, cdn) {
+        var row = frappe.get_doc(cdt, cdn);
+        frappe.model.set_value(cdt, cdn, 'amount', row.qty * row.rate);
+        frm.refresh_field('items');
+    },
+
+    // Validate before save — frappe.throw() blocks save
+    validate: function(frm) {
+        if (frm.doc.grand_total &lt;= 0) {
+            frappe.throw('Order total must be greater than zero.');
+        }
+        if (!frm.doc.delivery_date) {
+            frappe.throw('Delivery date is required.');
+        }
+    },
+
+    // Runs before the user submits the document
+    before_submit: function(frm) {
+        if (!frm.doc.customer_po_number) {
+            frappe.msgprint('Warning: No customer PO number entered.');
+            // Does not block submit — use frappe.throw() to block
+        }
+    }
+});</code></pre></div>
+
+<h3 class="ss">Essential frm Methods</h3>
+<table class="ft">
+<tr><th>Method</th><th>Purpose</th></tr>
+<tr><td>frm.set_value(field, value)</td><td>Set a field value and trigger its change event. Updates the UI.</td></tr>
+<tr><td>frm.set_df_property(field, prop, val)</td><td>Dynamically change a field property (hidden, reqd, read_only, label, options).</td></tr>
+<tr><td>frm.toggle_reqd(field, bool)</td><td>Make a field mandatory or optional at runtime.</td></tr>
+<tr><td>frm.toggle_display(field, bool)</td><td>Show or hide a field dynamically.</td></tr>
+<tr><td>frm.toggle_enable(field, bool)</td><td>Enable or disable (read-only) a field.</td></tr>
+<tr><td>frm.add_custom_button(label, fn, group)</td><td>Add a button to the form toolbar. Pass a group string to nest inside a dropdown.</td></tr>
+<tr><td>frm.clear_custom_buttons()</td><td>Remove all previously added custom buttons. Call in refresh before re-adding.</td></tr>
+<tr><td>frm.refresh_field(fieldname)</td><td>Re-render a field (especially useful after programmatic child table changes).</td></tr>
+<tr><td>frm.reload_doc()</td><td>Reload the document from the database. Discards unsaved changes.</td></tr>
+<tr><td>frm.save()</td><td>Programmatically save the document.</td></tr>
+<tr><td>frm.scroll_to_field(field)</td><td>Scroll the form to bring a field into view.</td></tr>
+<tr><td>frm.set_query(field, fn)</td><td>Set a filter function for a Link field dropdown.</td></tr>
+<tr><td>frappe.db.get_value(dt, name, fields, cb)</td><td>Async fetch of field values from the server.</td></tr>
+<tr><td>frappe.db.get_list(dt, opts, cb)</td><td>Async fetch of a list of records.</td></tr>
+<tr><td>frappe.call({method, args, callback})</td><td>Call any whitelisted Python method on the server.</td></tr>
+</table>
+
+<!-- CUSTOMIZE FORM -->
+<div class="anc" id="customize-form"></div>
+<h2 class="st">Customize Form <span class="badge">Customization</span></h2>
+<p>Customize Form is the safest way to modify existing DocTypes — including all standard ERPNext DocTypes like Sales Invoice, Customer, Purchase Order — without touching source code and without breaking on app upgrades.</p>
+
+<h3 class="ss">What You Can Do</h3>
+<ul>
+<li>Add new fields to existing DocTypes</li>
+<li>Reorder existing fields by dragging rows</li>
+<li>Change field properties: mandatory, read-only, hidden, bold, default value</li>
+<li>Change field labels without renaming the fieldname</li>
+<li>Add or remove Section Breaks and Column Breaks to reorganize form layout</li>
+<li>Hide standard fields that your implementation does not need</li>
+</ul>
+
+<h3 class="ss">What You Cannot Do Here</h3>
+<ul>
+<li>Rename existing core fieldnames (would orphan existing data and break system code)</li>
+<li>Change the fieldtype of existing fields (DB column type changes require migrations)</li>
+<li>Remove core fields entirely — only hide them</li>
+</ul>
+
+<div class="cl tip"><div class="cl-icon">&#128161;</div><div class="cl-body"><div class="cl-title">Clear cache if customizations are not taking effect</div><p>Frappe caches DocType metadata aggressively. If you save a customization and do not see the change on the form, run <strong>System &gt; Tools &gt; Clear Cache</strong> from the desk, or execute <code>bench --site yoursite.local clear-cache</code> from the CLI. Cached metadata can mask newly saved customizations, especially on multi-user production sites.</p></div></div>
+
+<ol class="steps">
+<li>Go to <strong>Build &gt; Customization &gt; Customize Form</strong>.</li>
+<li>In <strong>Select DocType</strong>, type the name of the DocType you want to modify.</li>
+<li>The field list appears. Drag rows to reorder. Click any row to edit its properties. Click <strong>Add Row</strong> to add a new custom field.</li>
+<li>Set <strong>Insert After</strong> on new fields to control placement precisely.</li>
+<li>Click <strong>Update</strong> to apply. Use <strong>Reset to Defaults</strong> to undo all customizations for this DocType.</li>
+</ol>
+
+<div class="cl tip"><div class="cl-icon">&#128161;</div><div class="cl-body"><div class="cl-title">Use Customize Form over Custom Field when making multiple changes</div><p>Customize Form shows all fields in context, making it much easier to place new fields correctly and understand the overall form structure. Custom Field is faster only when adding a single field in isolation.</p></div></div>
+
+<!-- CUSTOM FIELD -->
+<div class="anc" id="custom-field"></div>
+<h2 class="st">Custom Field <span class="badge">Customization</span></h2>
+<p>Custom Field adds a single field to any existing DocType. It is stored separately from the core DocType definition, making it upgrade-safe — app updates do not remove it.</p>
+<table class="ft">
+<tr><th>Field</th><th>Purpose</th></tr>
+<tr><td>DocType</td><td>Which DocType to add this field to.</td></tr>
+<tr><td>Label</td><td>Display name on the form.</td></tr>
+<tr><td>Fieldtype</td><td>Same types as standard fields.</td></tr>
+<tr><td>Fieldname</td><td>Auto-generated from Label. Best practice: keep the <code>custom_</code> prefix to avoid collision with future standard fields.</td></tr>
+<tr><td>Insert After</td><td>The existing fieldname this custom field should appear after. Use the exact internal fieldname.</td></tr>
+<tr><td>Is Global</td><td>If the DocType is company-aware, uncheck to make this field company-specific; check for global scope.</td></tr>
+<tr><td>Mandatory, Read Only, Hidden</td><td>Same as standard field properties.</td></tr>
+</table>
+
+<!-- PROPERTY SETTER -->
+<div class="anc" id="property-setter"></div>
+<h2 class="st">Property Setter <span class="badge">Customization</span></h2>
+<p>A Property Setter overrides a specific property of an existing field or DocType-level setting. It is the low-level mechanism behind what Customize Form does when you change a core field's property. Use it for surgical, single-property changes.</p>
+
+<h3 class="ss">Common Use Cases</h3>
+<ul>
+<li>Make an existing field hidden: set property <code>hidden</code>, value <code>1</code></li>
+<li>Make an existing field mandatory: set property <code>reqd</code>, value <code>1</code></li>
+<li>Change a field label: set property <code>label</code>, value <code>Your New Label</code></li>
+<li>Set a field's default value: set property <code>default</code>, value <code>your_default</code></li>
+<li>Add options to an existing Select field: set property <code>options</code>, value <code>Option1
+Option2
+Option3</code></li>
+</ul>
+
+<table class="ft">
+<tr><th>Field</th><th>Purpose</th></tr>
+<tr><td>DocType</td><td>The DocType containing the field to override.</td></tr>
+<tr><td>Field Name</td><td>The fieldname of the specific field. Leave blank for DocType-level property overrides.</td></tr>
+<tr><td>Property</td><td>Which property to override: hidden, reqd, read_only, label, default, options, description, print_hide, allow_on_submit, etc.</td></tr>
+<tr><td>Value</td><td>The new value. For boolean properties use "1" (true) or "0" (false).</td></tr>
+</table>
+
+</div></section>
+
+<!-- AUTOMATION RULE DESK -->
+<div class="anc" id="automation-rule-desk"></div>
+<h2 class="st">Automation Rule <span class="badge">Customization</span></h2>
+<p>Automation Rules let you set field values, validate data, or send notifications automatically when a document matches a condition. No Python required. They are the no-code alternative to Server Scripts for straightforward conditional logic and are easier to read and audit than scripts.</p>
+
+<h3 class="ss">Action Types</h3>
+<table class="ft">
+<tr><th>Action</th><th>What it does</th></tr>
+<tr><td>Set Value</td><td>Sets one or more field values on the document when the condition is met. Use for automatically stamping dates, setting default statuses, or marking priority levels.</td></tr>
+<tr><td>Validate</td><td>Throws a validation error and blocks save if the condition is met. Equivalent to a simple <code>frappe.throw()</code> in a Server Script but requires no code.</td></tr>
+<tr><td>Create Log</td><td>Writes an entry to the Automation Log for audit and monitoring. Useful for tracking when specific conditions occurred without modifying the document.</td></tr>
+<tr><td>Send Notification</td><td>Triggers an existing Notification record (email, in-app, Slack, etc.).</td></tr>
+</table>
+
+<h3 class="ss">Configuration</h3>
+<table class="ft">
+<tr><th>Field</th><th>Purpose</th></tr>
+<tr><td>Document Type</td><td>Which DocType to watch.</td></tr>
+<tr><td>Event</td><td>When to run: Before Save, After Save, Before Insert, After Insert, Before Submit, After Submit, Before Cancel, After Cancel.</td></tr>
+<tr><td>Condition</td><td>Python expression that must evaluate to True for the rule to fire. E.g., <code>doc.status == "Approved" and doc.grand_total &gt; 100000</code></td></tr>
+<tr><td>Actions (table)</td><td>The field-value pairs to set, validation message to throw, or notification to send.</td></tr>
+</table>
+
+<div class="cl note"><div class="cl-icon">&#8505;&#65039;</div><div class="cl-body"><div class="cl-title">Automation Rule vs Server Script</div><p>Use an Automation Rule when you need to set a field value or block a save with a simple condition. Use a Server Script when you need to query other documents, call external APIs, create child records, or run logic with loops and branching. Automation Rules are visible and auditable without any Python knowledge; Server Scripts are more powerful but harder for non-developers to read.</p></div></div>
+
+<!-- NAMING SERIES -->
+<div class="anc" id="naming-series"></div>
+<h2 class="st">Naming Series <span class="badge">Customization</span></h2>
+<p>The Naming Series manager lets you view and control the counter state for all document naming series across the site. Use it to reset a counter, set the next number in sequence, or register a new series prefix on a DocType.</p>
+
+<h3 class="ss">Pattern Syntax</h3>
+<table class="ft">
+<tr><th>Token</th><th>What it produces</th></tr>
+<tr><td><code>.YYYY.</code></td><td>4-digit year (e.g., 2026)</td></tr>
+<tr><td><code>.YY.</code></td><td>2-digit year (e.g., 26)</td></tr>
+<tr><td><code>.MM.</code></td><td>2-digit month (e.g., 06)</td></tr>
+<tr><td><code>.DD.</code></td><td>2-digit day of month</td></tr>
+<tr><td><code>.####</code></td><td>Auto-incrementing counter, zero-padded to 4 digits. Add more <code>#</code> for wider padding.</td></tr>
+<tr><td><code>{fieldname}</code></td><td>Value of a specific field on the document at creation time (e.g., <code>{territory}</code>).</td></tr>
+</table>
+<p>Example: <code>SINV-.YYYY.-.MM.-.####</code> produces <code>SINV-2026-06-0001</code>.</p>
+
+<h3 class="ss">Managing the Counter</h3>
+<ol class="steps">
+<li>Go to <strong>Build &gt; Customize &gt; Naming Series</strong> (or use global search).</li>
+<li>Select the <strong>Document Type</strong> whose series you want to manage.</li>
+<li>The active series options are shown. You can add new prefixes here.</li>
+<li>To change the counter: select the series, enter the new starting number in <strong>Set Sequence To</strong>, and click <strong>Update</strong>.</li>
+</ol>
+
+<div class="cl warn"><div class="cl-icon">&#9888;&#65039;</div><div class="cl-body"><div class="cl-title">Lowering a counter produces duplicate IDs</div><p>Setting the counter to a number lower than already-issued documents will produce IDs that collide with existing records. Only lower a counter on a site with test data that you plan to clear, or when you are completely certain those document names have never been committed to the database.</p></div></div>
+
+
+<!-- MODULE 02: AUTOMATION -->
+<section id="automation">
+<div class="mod-banner" data-n="2">
+  <div class="mod-eye">Module 02</div>
+  <h1 class="mod-title">Automation</h1>
+  <p class="mod-desc">Tools for automating recurring tasks, routing documents to the right person, tracking lifecycle milestones, and scheduling reports. Let Frappe handle the repetitive work.</p>
+</div>
+<div class="mod-body">
+
+<div class="anc" id="assignment-rule"></div>
+<h2 class="st">Assignment Rule</h2>
+<p>Assignment Rules automatically assign documents to users when they are created or updated. They replace the manual process of a supervisor routing each incoming task, ticket, or order to a team member.</p>
+
+<h3 class="ss">Assignment Methods</h3>
+<ul>
+<li><strong>Round Robin</strong>: Cycles through a list of users in sequence. User 1 gets document 1, User 2 gets document 2, and so on, then repeats. Fair and predictable.</li>
+<li><strong>Load Balancing</strong>: Assigns to the user in the list who currently has the fewest open assignments. More intelligent than round robin when workload varies.</li>
+<li><strong>Based on Field</strong>: Assigns to whoever is named in a specific field on the document (e.g., the "Assigned Sales Person" field). Use when the document already carries the assignee information.</li>
+</ul>
+
+<h3 class="ss">Configuration</h3>
+<table class="ft">
+<tr><th>Field</th><th>Purpose</th></tr>
+<tr><td>Document Type</td><td>Which DocType to watch for automatic assignment.</td></tr>
+<tr><td>Rule</td><td>Assignment method: Round Robin, Load Balancing, or Based on Field.</td></tr>
+<tr><td>Users (table)</td><td>The list of users to rotate through (for Round Robin and Load Balancing).</td></tr>
+<tr><td>Assign Condition</td><td>Python expression that must evaluate to True for the rule to fire. E.g., <code>doc.priority == "High"</code>.</td></tr>
+<tr><td>Due Date Based On</td><td>Link to a Date field on the document. Sets the due date on the resulting assignment.</td></tr>
+<tr><td>Close Condition</td><td>Python expression that, when True, marks the assignment as Complete.</td></tr>
+<tr><td>Assignment Days</td><td>Which days of the week this rule is active.</td></tr>
+</table>
+
+<div class="cl note"><div class="cl-icon">&#8505;&#65039;</div><div class="cl-body"><div class="cl-title">Multiple rules on one DocType</div><p>You can have multiple Assignment Rules for the same DocType. Each rule fires independently when its Assign Condition is met. This allows different routing logic — for example, high-priority tickets go to senior agents via load balancing, while normal tickets rotate via round robin.</p></div></div>
+
+<div class="anc" id="milestone"></div>
+<h2 class="st">Milestone</h2>
+<p>Milestone tracking records when a document first reaches a specific field value and stamps that moment with a timestamp. This lets you measure how long a document spent in each stage of its lifecycle — useful for SLA tracking and process analytics.</p>
+
+<h3 class="ss">How It Works</h3>
+<p>You configure a Milestone to watch a field on a DocType (usually a Status field). When the field value changes to the configured target for the first time, Frappe automatically sets a Date or Datetime field on the same document to the current time.</p>
+
+<table class="ft">
+<tr><th>Field</th><th>Purpose</th></tr>
+<tr><td>Document Type</td><td>The DocType to track.</td></tr>
+<tr><td>Track Field</td><td>The field whose value transitions are watched (e.g., <code>status</code>).</td></tr>
+<tr><td>Milestone Field</td><td>The Date or Datetime field on the document that gets stamped when the milestone is reached.</td></tr>
+<tr><td>Value</td><td>The specific value the Track Field must equal to trigger the stamp (e.g., "Approved").</td></tr>
+</table>
+
+<div class="cl tip"><div class="cl-icon">&#128161;</div><div class="cl-body"><div class="cl-title">Tip: Measure process time with Milestones</div><p>Add custom Date fields like <code>approved_on</code> and <code>delivered_on</code> to a DocType, then create Milestone records to stamp them automatically when the status changes. Report on the difference between these timestamps to measure process duration and identify bottlenecks.</p></div></div>
+
+<div class="anc" id="auto-repeat"></div>
+<h2 class="st">Auto Repeat</h2>
+<p>Auto Repeat creates recurring copies of a document on a defined schedule. Use it for recurring invoices, standing purchase orders, monthly journal entries, or any document that needs to be regenerated periodically without manual intervention.</p>
+
+<table class="ft">
+<tr><th>Field</th><th>Purpose</th></tr>
+<tr><td>Reference DocType</td><td>The type of document to repeat (e.g., Sales Invoice).</td></tr>
+<tr><td>Reference Document</td><td>The specific document to use as the template for each new copy.</td></tr>
+<tr><td>Start Date</td><td>When the first repeat should occur.</td></tr>
+<tr><td>End Date</td><td>Optional. Stop repeating after this date.</td></tr>
+<tr><td>Frequency</td><td>Daily, Weekly, Monthly, Quarterly, Half-Yearly, Yearly, or Custom.</td></tr>
+<tr><td>Repeat on Day of Month</td><td>For monthly frequency: which calendar day (1-28).</td></tr>
+<tr><td>Repeat on Last Day of Month</td><td>Use end-of-month logic (handles February correctly).</td></tr>
+<tr><td>Days in Advance</td><td>Create the document X days before the scheduled date. Useful when the document needs approval lead time.</td></tr>
+<tr><td>Submit on Creation</td><td>Auto-submit the newly created document without manual intervention.</td></tr>
+<tr><td>Notify By Email</td><td>Send an email notification when a new document is created.</td></tr>
+</table>
+
+<div class="cl warn"><div class="cl-icon">&#9888;&#65039;</div><div class="cl-body"><div class="cl-title">Scheduler must be running</div><p>Auto Repeat depends on Frappe's background scheduler. If workers are down or the scheduler is disabled, repeats will not trigger. Always verify the scheduler is active in System &gt; Health Report before relying on any scheduled automation.</p></div></div>
+
+<div class="anc" id="auto-email"></div>
+<h2 class="st">Auto Email Report</h2>
+<p>Auto Email Report schedules any Frappe report to be automatically emailed to a list of recipients on a recurring basis. Use this to deliver weekly summaries, daily operational snapshots, or monthly KPI reports without anyone manually running and forwarding them.</p>
+
+<table class="ft">
+<tr><th>Field</th><th>Purpose</th></tr>
+<tr><td>Report</td><td>The report to send (Query, Script, or Custom Report).</td></tr>
+<tr><td>User</td><td>Run the report as this user. Affects User Permission filtering on the data.</td></tr>
+<tr><td>Email To</td><td>Comma-separated email addresses.</td></tr>
+<tr><td>Frequency</td><td>Daily, Weekly, or Monthly.</td></tr>
+<tr><td>Day of Week / Day of Month</td><td>When within the frequency period to send.</td></tr>
+<tr><td>Send if Data Exists</td><td>Skip sending if the report returns zero rows.</td></tr>
+<tr><td>Format</td><td>HTML (inline in email body) or XLSX (as attachment).</td></tr>
+<tr><td>No of Rows</td><td>Maximum rows to include in the email.</td></tr>
+<tr><td>Filters (table)</td><td>Pre-set filter values for the report. Fieldname + value pairs.</td></tr>
+</table>
+
+<div class="anc" id="reminder"></div>
+<h2 class="st">Reminder</h2>
+<p>Reminders send an email or in-app notification to a specified user a defined number of days before a date field on a document. Use them for contract renewal alerts, warranty expiry notices, or follow-up prompts.</p>
+
+<table class="ft">
+<tr><th>Field</th><th>Purpose</th></tr>
+<tr><td>Document Type</td><td>The DocType to watch.</td></tr>
+<tr><td>Date Field</td><td>Which date field to calculate from (e.g., <code>contract_end_date</code>, <code>warranty_expiry</code>).</td></tr>
+<tr><td>Days Before</td><td>Send the reminder X days before the date. Use negative values for days after.</td></tr>
+<tr><td>Remind Whom</td><td>A User Link field on the document. The user in this field receives the reminder.</td></tr>
+<tr><td>Condition</td><td>Python expression that must be True for the reminder to send. E.g., <code>doc.status == "Active"</code>.</td></tr>
+</table>
+
+</div></section>
+
+<!-- MODULE 03: DATA -->
+<section id="data">
+<div class="mod-banner" data-n="3">
+  <div class="mod-eye">Module 03</div>
+  <h1 class="mod-title">Data</h1>
+  <p class="mod-desc">Import records in bulk, export filtered data, run mass updates, manage backups, and recover deleted documents. The Data module is your data operations center.</p>
+</div>
+<div class="mod-body">
+
+<div class="anc" id="data-import"></div>
+<h2 class="st">Data Import</h2>
+<p>Data Import lets you create or update many records at once using a CSV or Excel file. Essential during initial implementation (importing master data like customers, items, suppliers) and for ongoing bulk operations.</p>
+
+<h3 class="ss">Import Process</h3>
+<ol class="steps">
+<li>Go to <strong>Data &gt; Data Import &gt; New</strong>.</li>
+<li>Select the <strong>Document Type</strong> you want to import into.</li>
+<li>Select <strong>Import Type</strong>: "Insert New Records" or "Update Existing Records".</li>
+<li>Click <strong>Download Template</strong>. This generates a CSV with the correct column headers for the DocType.</li>
+<li>Fill in the template with your data. Do not change the column headers.</li>
+<li>Upload the completed file using the Attach button.</li>
+<li>Click <strong>Import</strong>. A background job starts. Progress displays on screen.</li>
+</ol>
+
+<h3 class="ss">Template Structure Rules</h3>
+<ul>
+<li>The first row is column headers (fieldnames) — never modify these.</li>
+<li>For <strong>Link fields</strong>: enter the exact name or ID of the linked document. Case-sensitive.</li>
+<li>For <strong>Date fields</strong>: use the format from System Settings (usually YYYY-MM-DD).</li>
+<li>For <strong>Select fields</strong>: value must exactly match one of the defined options. Case-sensitive.</li>
+<li>For <strong>child tables</strong> (e.g., Invoice Items): each child row is a separate CSV row, with the parent ID repeated in the first column.</li>
+<li>For <strong>Update mode</strong>: the <code>name</code> column (document ID) is required so Frappe knows which record to update.</li>
+</ul>
+
+<h3 class="ss">Error Handling</h3>
+<p>When some rows fail and others succeed, Frappe logs each failure with a reason. You can click <strong>Download Errored Rows</strong> to get a CSV of only the failed rows (with the error reason in an extra column). Fix the issues and re-import that file. Successfully imported rows are committed even when others fail.</p>
+
+<div class="cl warn"><div class="cl-icon">&#9888;&#65039;</div><div class="cl-body"><div class="cl-title">Validate before full import</div><p>For large imports (thousands of rows), click <strong>Validate Data</strong> first. This runs all import logic without actually saving anything, letting you catch errors before committing the full dataset.</p></div></div>
+
+<div class="anc" id="data-export"></div>
+<h2 class="st">Data Export</h2>
+<p>Data Export downloads filtered records from any DocType as a CSV or Excel file. Useful for reporting, data analysis in external tools, and preparing data for re-import after bulk modification.</p>
+
+<ol class="steps">
+<li>Go to <strong>Data &gt; Data Export</strong>.</li>
+<li>Select the <strong>Document Type</strong>.</li>
+<li>Set <strong>Filters</strong> to narrow down which records to export.</li>
+<li>In <strong>Select Fields</strong>, choose which fields to include.</li>
+<li>Select the file format: CSV or Excel.</li>
+<li>Click <strong>Export</strong>.</li>
+</ol>
+
+<div class="cl tip"><div class="cl-icon">&#128161;</div><div class="cl-body"><div class="cl-title">Export, modify, re-import pattern</div><p>A powerful workflow: export a set of records, modify the file in Excel (e.g., change a field value across many rows), then re-import using "Update Existing Records" mode. This is often faster and safer than Bulk Update for complex multi-field changes because it goes through normal document validation and events.</p></div></div>
+
+<div class="anc" id="bulk-update"></div>
+<h2 class="st">Bulk Update</h2>
+<p>Bulk Update applies a single field change to all records matching your filters in one operation. The fastest way to normalize data across many documents.</p>
+
+<table class="ft">
+<tr><th>Field</th><th>Purpose</th></tr>
+<tr><td>DocType</td><td>Which DocType records to update.</td></tr>
+<tr><td>Field</td><td>The specific field to change.</td></tr>
+<tr><td>Value</td><td>The new value to set.</td></tr>
+<tr><td>Condition</td><td>SQL WHERE clause fragment to filter which records to update. E.g., <code>status = 'Open'</code>.</td></tr>
+<tr><td>Limit</td><td>Max records to update per run. Use this to avoid timeouts on very large datasets.</td></tr>
+</table>
+
+<div class="cl dng"><div class="cl-icon">&#128680;</div><div class="cl-body"><div class="cl-title">Bypasses document events entirely</div><p>Bulk Update writes directly to the database. It does NOT trigger Before Save, After Save, Validate, or any Server/Client Scripts. It also does not update the "modified" timestamp or create timeline entries. Test your Condition carefully on a small subset first using a tight Limit value before running on the full dataset.</p></div></div>
+
+<div class="anc" id="backups"></div>
+<h2 class="st">Backups</h2>
+<p>The Backups screen provides access to site database backups. Take manual backups, configure scheduled backups, and download backup files for external storage.</p>
+
+<h3 class="ss">What a Backup Contains</h3>
+<ul>
+<li><strong>database.sql.gz</strong>: Compressed full dump of the MariaDB database. Contains all data, DocType definitions, custom fields, settings.</li>
+<li><strong>files.tar</strong>: All public uploaded attachments.</li>
+<li><strong>private-files.tar</strong>: Private file uploads.</li>
+</ul>
+
+<h3 class="ss">Scheduled Backups (System Settings)</h3>
+<ul>
+<li><strong>Take Backup Every X Hours</strong>: frequency of automated backups.</li>
+<li><strong>Backup Limit</strong>: how many backup files to keep before the oldest is deleted.</li>
+<li><strong>Send Email with Backup</strong>: email backup files to an address after each run.</li>
+<li><strong>Backup to Google Drive</strong>: requires Google integration to be configured.</li>
+</ul>
+
+<div class="cb"><div class="cb-hd"><span class="cb-lang">Shell — Backup Commands</span><button class="cp-btn" onclick="cp(this)">Copy</button></div><pre><code># Take a manual backup from CLI (from inside your bench directory)
+bench --site yoursite.local backup
+
+# Backup with uploaded files included
+bench --site yoursite.local backup --with-files
+
+# List available backup files
+bench --site yoursite.local list-backups</code></pre></div>
+
+<div class="cb"><div class="cb-hd"><span class="cb-lang">Shell — Restore from Backup (CLI only)</span><button class="cp-btn" onclick="cp(this)">Copy</button></div><pre><code># SSH to your server, navigate to the frappe-bench directory
+
+# Restore database only
+bench --site your-site.com restore /path/to/database-YYYYMMDD.sql.gz
+
+# Restore with files
+bench --site your-site.com restore /path/to/database.sql.gz \
+  --with-public-files /path/to/files.tar \
+  --with-private-files /path/to/private-files.tar
+
+# Always run pending migrations after restore
+bench --site your-site.com migrate</code></pre></div>
+
+<div class="anc" id="deleted-doc"></div>
+<h2 class="st">Deleted Document</h2>
+<p>When a document is deleted through the Frappe UI (not via raw SQL), Frappe saves a full copy of its JSON data in the Deleted Document log. This provides both an audit trail and the ability to restore accidentally deleted records.</p>
+
+<ol class="steps">
+<li>Go to <strong>Data &gt; Deleted Document</strong>.</li>
+<li>Search by DocType or by the document's original name.</li>
+<li>Open the Deleted Document record. It shows the full JSON of the deleted document.</li>
+<li>Click <strong>Restore</strong>. Frappe re-creates the document from the saved JSON.</li>
+<li>The restored document will be in Draft status regardless of its previous state.</li>
+</ol>
+
+<div class="cl note"><div class="cl-icon">&#8505;&#65039;</div><div class="cl-body"><div class="cl-title">Linked records are not auto-restored</div><p>Restoring a deleted document only restores that specific document. Child tables embedded in it are restored along with it, but any separately deleted linked documents or file attachments are not automatically recovered. Check related records after restoring.</p></div></div>
+
+</div></section>
+
+<!-- MODULE 04: USERS -->
+<section id="users">
+<div class="mod-banner" data-n="4">
+  <div class="mod-eye">Module 04</div>
+  <h1 class="mod-title">Users</h1>
+  <p class="mod-desc">Manage who can log in, what data they can see, and what they can do. Frappe's permission system is role-based with fine-grained control down to the individual record and field level.</p>
+</div>
+<div class="mod-body">
+
+<div class="anc" id="user"></div>
+<h2 class="st">User</h2>
+<p>A User record represents a person who can log into Frappe. The email address is both the unique identifier and the login credential.</p>
+
+<h3 class="ss">User Types</h3>
+<ul>
+<li><strong>System User</strong>: Full access to the Frappe desk (the admin interface). Used for employees and internal team members.</li>
+<li><strong>Website User</strong>: Can only access the public portal (customer self-service, Web Forms). Cannot see the desk.</li>
+</ul>
+
+<h3 class="ss">Key User Settings</h3>
+<table class="ft">
+<tr><th>Setting</th><th>Purpose</th></tr>
+<tr><td>Email</td><td>Primary identifier. Also the login username.</td></tr>
+<tr><td>Full Name</td><td>Display name throughout the system.</td></tr>
+<tr><td>User Type</td><td>System User or Website User.</td></tr>
+<tr><td>Roles table</td><td>Assign one or more Roles. Permissions are the union of all assigned roles.</td></tr>
+<tr><td>Allow Modules</td><td>Restrict which modules appear in this user's sidebar. Unselected modules won't show even if the user has permissions.</td></tr>
+<tr><td>Enabled</td><td>Uncheck to suspend access without deleting the user.</td></tr>
+<tr><td>Language</td><td>Per-user interface language.</td></tr>
+<tr><td>Time Zone</td><td>All datetime values display in the user's timezone.</td></tr>
+<tr><td>Send Welcome Email</td><td>Sends an invite email with a password-set link.</td></tr>
+<tr><td>Login After / Login Before</td><td>Restrict the hours of the day this user can log in.</td></tr>
+<tr><td>Simultaneous Sessions</td><td>How many active browser sessions this user can have at once.</td></tr>
+<tr><td>Two Factor Authentication</td><td>Require OTP or app-based 2FA for this user.</td></tr>
+</table>
+
+<div class="cl note"><div class="cl-icon">&#8505;&#65039;</div><div class="cl-body"><div class="cl-title">User vs Employee in ERPNext</div><p>A User is the login account. An Employee is the HR record. They are separate DocTypes linked via the "User ID" field on the Employee record. You can have Employees without User accounts (e.g., hourly workers who do not use the system) and Users without Employee records (e.g., external consultants).</p></div></div>
+
+<div class="anc" id="role"></div>
+<h2 class="st">Role</h2>
+<p>Roles are named groups of permissions. You assign permissions to Roles, then assign Roles to Users. This makes permission management scalable: change a Role's permissions and every user with that Role is updated.</p>
+
+<h3 class="ss">Built-in Roles</h3>
+<ul>
+<li><strong>System Manager</strong>: Full access to everything. Assign only to system administrators.</li>
+<li><strong>Guest</strong>: Unauthenticated visitors. Permissions assigned to Guest apply to non-logged-in users accessing the portal.</li>
+<li><strong>All</strong>: All logged-in users. Permissions for "All" apply to every authenticated user.</li>
+<li><strong>Desk User</strong>: Required for any user who accesses the desk interface.</li>
+</ul>
+
+<h3 class="ss">Creating a Custom Role</h3>
+<ol class="steps">
+<li>Go to <strong>Users &gt; Role &gt; New</strong>.</li>
+<li>Enter a descriptive Role Name (e.g., "Warehouse Supervisor", "Finance Approver").</li>
+<li>Set <strong>Desk Access</strong> to Yes for internal users, No for portal-only roles.</li>
+<li>Save. Then configure DocType permissions for this role via Permission Manager.</li>
+</ol>
+
+<div class="cl tip"><div class="cl-icon">&#128161;</div><div class="cl-body"><div class="cl-title">Role Profile: assign many roles at once</div><p>A Role Profile is a named template that bundles a set of Roles together. Instead of assigning ten individual Roles to each new Finance Manager user, create a "Finance Manager" Role Profile containing all ten Roles and assign the profile to the user. When you later add or remove a Role from the profile, every user with that profile is updated automatically. Create Role Profiles at <strong>Users &gt; Role Profile</strong>.</p></div></div>
+
+<div class="anc" id="user-perm"></div>
+<h2 class="st">User Permission</h2>
+<p>User Permissions restrict which specific records a user can access — not just which DocTypes, but which individual documents within them. This is how you implement multi-branch, multi-company, or territory-based access control.</p>
+
+<h3 class="ss">How It Works</h3>
+<p>A User Permission says: "For this User, only allow access to records where [DocType] value = [specific record]." If you restrict a user to one Company, they will only see Sales Orders, Invoices, and other documents where Company equals that restricted value.</p>
+
+<table class="ft">
+<tr><th>Field</th><th>Purpose</th></tr>
+<tr><td>User</td><td>Which user this restriction applies to.</td></tr>
+<tr><td>Allow</td><td>The DocType being restricted (e.g., Company, Territory, Warehouse, Cost Center).</td></tr>
+<tr><td>For Value</td><td>The specific record name the user is allowed to access (e.g., "East Africa Ltd").</td></tr>
+<tr><td>Apply to All Doctypes</td><td>If checked, this restriction applies everywhere this DocType appears as a Link field.</td></tr>
+<tr><td>Applicable For (DocType)</td><td>If set, restricts the User Permission to only apply when viewing this specific DocType (e.g., only for Sales Orders, not for all documents).</td></tr>
+<tr><td>Is Default</td><td>When creating new documents, auto-fill this restricted value in the relevant Link field.</td></tr>
+</table>
+
+<div class="cl tip"><div class="cl-icon">&#128161;</div><div class="cl-body"><div class="cl-title">Bypassing User Permissions on a specific Link field</div><p>Some Link fields should not be filtered by User Permissions (e.g., a Currency field should always show all currencies). In DocType or Customize Form, check <strong>Ignore User Permissions</strong> on that specific Link field to exclude it from the restriction cascade.</p></div></div>
+
+<div class="anc" id="perm-mgr"></div>
+<h2 class="st">Permission Manager</h2>
+<p>The Permission Manager is the central control panel for all DocType-level permissions. It shows which Roles have which permissions on each DocType, and lets you grant or revoke them. Every custom DocType you create should have its permissions configured here.</p>
+
+<h3 class="ss">Permission Levels</h3>
+<ul>
+<li><strong>Level 0</strong>: Document level (default). Permissions here control access to the entire document.</li>
+<li><strong>Level 1-9</strong>: Field level. Fields with Permission Level = 1 are only visible and editable to roles that have Level 1 Read/Write permission on that DocType. This lets you hide sensitive fields (like salary or margin) from most roles while still granting document access.</li>
+</ul>
+
+<h3 class="ss">Permission Types</h3>
+<table class="ft">
+<tr><th>Permission</th><th>What it allows</th></tr>
+<tr><td>Read</td><td>Open and view documents and list views. Required for any other permission to be useful.</td></tr>
+<tr><td>Write</td><td>Edit and save existing documents.</td></tr>
+<tr><td>Create</td><td>Create new documents. A user can have Write without Create (can edit, cannot create).</td></tr>
+<tr><td>Delete</td><td>Delete documents. Grant sparingly.</td></tr>
+<tr><td>Submit</td><td>Submit documents (change docstatus from 0 to 1) on submittable DocTypes.</td></tr>
+<tr><td>Cancel</td><td>Cancel submitted documents (change docstatus from 1 to 2).</td></tr>
+<tr><td>Amend</td><td>Create an amended copy of a cancelled document to make corrections.</td></tr>
+<tr><td>Report</td><td>Run reports on this DocType.</td></tr>
+<tr><td>Export</td><td>Export data from this DocType via Data Export.</td></tr>
+<tr><td>Import</td><td>Import records into this DocType via Data Import.</td></tr>
+<tr><td>Share</td><td>Share specific documents with other users via the Share button.</td></tr>
+<tr><td>Print</td><td>Print or generate PDF of documents.</td></tr>
+<tr><td>Email</td><td>Email documents directly from the form toolbar.</td></tr>
+</table>
+
+<div class="anc" id="perm-inspector"></div>
+<h2 class="st">Permission Inspector</h2>
+<p>Permission Inspector is a diagnostic tool. When you cannot figure out why a user can or cannot access something, Permission Inspector shows the exact permission evaluation for a given user, DocType, and document combination.</p>
+
+<ol class="steps">
+<li>Go to <strong>Users &gt; Permissions &gt; Permission Inspector</strong>.</li>
+<li>Select the <strong>Role</strong> or <strong>User</strong> to inspect.</li>
+<li>Select the <strong>DocType</strong>.</li>
+<li>Optionally enter a specific <strong>Document Name</strong> to check access to a particular record.</li>
+<li>Click <strong>Show Permissions</strong>. The resulting matrix explains each allowed or denied permission with reasons, such as "No permission rows found for role X" or "User Permission denies access based on Company field".</li>
+</ol>
+
+<div class="anc" id="audits"></div>
+<h2 class="st">Audits: Activity, Permission &amp; Access Logs</h2>
+
+<h3 class="ss">Activity Log</h3>
+<p>Records every significant user action: login, logout, document creation, modification, deletion, and submission. Each entry includes the user, action type, document involved, and timestamp. Use this to answer "who changed this?" or "when was this deleted?"</p>
+
+<h3 class="ss">Permission Log</h3>
+<p>Records every change made to permissions — Role permissions, User Permissions, and document Shares. Essential for auditing permission escalations or understanding why unexpected access changes occurred.</p>
+
+<h3 class="ss">Access Log</h3>
+<p>Records every time a document was opened (viewed) by a user. Useful in compliance contexts where you need to prove that certain sensitive documents were or were not accessed by specific users.</p>
+
+<div class="cl note"><div class="cl-icon">&#8505;&#65039;</div><div class="cl-body"><div class="cl-title">Log retention and cleanup</div><p>These logs grow large over time. Set purging schedules in System Settings (typically 90-180 days for Activity and Access logs) to prevent database bloat. Permission Logs are usually kept longer for compliance purposes.</p></div></div>
+
+</div></section>
+
+<!-- MODULE 05: PRINTING -->
+<section id="printing">
+<div class="mod-banner" data-n="5">
+  <div class="mod-eye">Module 05</div>
+  <h1 class="mod-title">Printing</h1>
+  <p class="mod-desc">Design and manage the printed and PDF output of your documents. From Jinja-powered custom templates to drag-and-drop layout tools, Frappe gives you full control over how documents look on paper and in email.</p>
+</div>
+<div class="mod-body">
+
+<div class="anc" id="print-format"></div>
+<h2 class="st">Print Format</h2>
+<p>Print Formats are HTML templates that control how a document looks when printed or exported to PDF. They use the Jinja2 templating engine, giving you full HTML/CSS control combined with dynamic access to all document data.</p>
+
+<h3 class="ss">Core Jinja2 Reference</h3>
+<div class="cb"><div class="cb-hd"><span class="cb-lang">HTML/Jinja — Print Format Template</span><button class="cp-btn" onclick="cp(this)">Copy</button></div><pre><code>&lt;!-- Basic field access --&gt;
+&lt;h1&gt;{{ doc.name }}&lt;/h1&gt;
+&lt;p&gt;Customer: {{ doc.customer }}&lt;/p&gt;
+
+&lt;!-- Formatted values (respects site currency and date settings) --&gt;
+&lt;p&gt;Total: {{ frappe.format(doc.grand_total, "Currency") }}&lt;/p&gt;
+&lt;p&gt;Date: {{ frappe.format(doc.posting_date, "Date") }}&lt;/p&gt;
+
+&lt;!-- Conditional rendering --&gt;
+{% if doc.status == "Paid" %}
+  &lt;div class="stamp"&gt;PAID&lt;/div&gt;
+{% elif doc.status == "Overdue" %}
+  &lt;div class="stamp red"&gt;OVERDUE&lt;/div&gt;
+{% endif %}
+
+&lt;!-- Loop through items child table --&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;&lt;th&gt;Item&lt;/th&gt;&lt;th&gt;Qty&lt;/th&gt;&lt;th&gt;Rate&lt;/th&gt;&lt;th&gt;Amount&lt;/th&gt;&lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    {% for item in doc.items %}
+    &lt;tr&gt;
+      &lt;td&gt;{{ item.item_name }}&lt;/td&gt;
+      &lt;td&gt;{{ item.qty }}&lt;/td&gt;
+      &lt;td&gt;{{ frappe.format(item.rate, "Currency") }}&lt;/td&gt;
+      &lt;td&gt;{{ frappe.format(item.amount, "Currency") }}&lt;/td&gt;
+    &lt;/tr&gt;
+    {% endfor %}
+  &lt;/tbody&gt;
+  &lt;tfoot&gt;
+    &lt;tr&gt;
+      &lt;td colspan="3"&gt;&lt;strong&gt;Grand Total&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;strong&gt;{{ frappe.format(doc.grand_total, "Currency") }}&lt;/strong&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tfoot&gt;
+&lt;/table&gt;
+
+&lt;!-- Access a linked document's data --&gt;
+{% set company = frappe.get_doc("Company", doc.company) %}
+&lt;p&gt;{{ company.company_name }}&lt;br&gt;{{ company.address }}&lt;/p&gt;
+
+&lt;!-- Amount in words --&gt;
+&lt;p&gt;Amount in Words: {{ doc.in_words }}&lt;/p&gt;
+
+&lt;!-- Image field --&gt;
+{% if doc.custom_signature %}
+  &lt;img src="{{ doc.custom_signature }}" style="height:60px"&gt;
+{% endif %}
+
+&lt;!-- Tax rows loop --&gt;
+{% for tax in doc.taxes %}
+  {% if tax.tax_amount != 0 %}
+  &lt;tr&gt;
+    &lt;td&gt;{{ tax.description }}&lt;/td&gt;
+    &lt;td&gt;{{ frappe.format(tax.tax_amount, "Currency") }}&lt;/td&gt;
+  &lt;/tr&gt;
+  {% endif %}
+{% endfor %}</code></pre></div>
+
+<h3 class="ss">Print Format Settings</h3>
+<table class="ft">
+<tr><th>Setting</th><th>Purpose</th></tr>
+<tr><td>DocType</td><td>Which document type this format applies to.</td></tr>
+<tr><td>Default Print Language</td><td>The language used for this format (for translated content).</td></tr>
+<tr><td>Disabled</td><td>Hides this format from the print dialog without deleting it.</td></tr>
+<tr><td>Standard</td><td>Check for shipped formats. Once checked, cannot be edited from the desk (for app developers only).</td></tr>
+<tr><td>Custom Format (CSS)</td><td>CSS rules scoped to this print format only.</td></tr>
+<tr><td>HTML</td><td>The main Jinja2 HTML template body.</td></tr>
+</table>
+
+<h3 class="ss">PDF Generation Notes</h3>
+<p>Frappe uses wkhtmltopdf (or WeasyPrint on newer versions) to convert print formats to PDF. These engines differ slightly from browser rendering:</p>
+<ul>
+<li>Use inline styles or a <code>&lt;style&gt;</code> block directly in the template rather than external stylesheets.</li>
+<li>Flexbox and CSS Grid may not render correctly in older wkhtmltopdf versions. Table-based layouts are safer for maximum compatibility.</li>
+<li>Control page breaks with <code>page-break-before: always;</code> and <code>page-break-inside: avoid;</code>.</li>
+<li>Test by clicking Print on a document, then switch between screen preview and PDF download to compare rendering.</li>
+</ul>
+
+<div class="anc" id="print-heading"></div>
+<h2 class="st">Print Heading</h2>
+<p>Print Headings let you create alternate document titles for print purposes. Instead of "Sales Invoice," you can print "Tax Invoice," "Pro Forma Invoice," or "Receipt" without changing the DocType name. On any document form, find the <strong>Print Heading</strong> field (usually in a Miscellaneous section) and select a heading from the list.</p>
+<p>Create a new Print Heading at <strong>Printing &gt; Print Heading &gt; New</strong>. Enter the heading text and save. It immediately becomes available on all compatible forms.</p>
+
+<div class="anc" id="pfb"></div>
+<h2 class="st">Print Format Builder</h2>
+<p>The Print Format Builder is a visual, no-code drag-and-drop alternative to writing Jinja HTML. Select a DocType, drag fields onto a print canvas, arrange columns, set widths, and preview in real time.</p>
+
+<h3 class="ss">When to Use It</h3>
+<ul>
+<li>When you need a straightforward layout showing selected fields and child table data without custom logic</li>
+<li>When the person building the format is not comfortable with HTML and CSS</li>
+<li>For quick iteration on simple document layouts</li>
+</ul>
+
+<h3 class="ss">Limitations</h3>
+<ul>
+<li>No conditional rendering (no <code>{% if %}</code> logic)</li>
+<li>Limited styling control compared to a custom HTML template</li>
+<li>Cannot access linked document data beyond the document itself</li>
+<li>Complex layouts with custom spacing and multi-section designs are difficult</li>
+</ul>
+
+<div class="cl tip"><div class="cl-icon">&#128161;</div><div class="cl-body"><div class="cl-title">Start with Builder, refine with HTML</div><p>A useful workflow: build the initial layout with Print Format Builder to get field placement and structure right quickly, then click "Edit HTML" to access the raw Jinja template and add custom logic, branding, and conditional sections.</p></div></div>
+
+<div class="cl note"><div class="cl-icon">&#8505;&#65039;</div><div class="cl-body"><div class="cl-title">Print Designer: the dedicated print app</div><p><strong>Print Designer</strong> is a separately installed Frappe app (<code>bench get-app print_designer</code>) that replaces the built-in Print Format Builder with a more capable visual editor. It supports drag-and-drop layout with precise positioning, custom sections, barcode/QR fields, and page header and footer regions. If you are building production-grade print formats for client deliverables, install and use Print Designer rather than the built-in builder. The resulting templates are still stored as Print Format records but are edited exclusively through the Print Designer interface.</p></div></div>
+
+<div class="anc" id="print-settings"></div>
+<h2 class="st">Print Settings</h2>
+<p>Print Settings controls global defaults applied across all print formats on the site.</p>
+<table class="ft">
+<tr><th>Setting</th><th>Purpose</th></tr>
+<tr><td>Send Print as PDF</td><td>When emailing documents, always attach as PDF. Recommended for all deployments.</td></tr>
+<tr><td>With Letterhead</td><td>Default: include the letterhead in printed documents. Users can override per print.</td></tr>
+<tr><td>Allow Print for Draft</td><td>Allow printing documents that are still in Draft status.</td></tr>
+<tr><td>Allow Print for Cancelled</td><td>Allow printing Cancelled documents.</td></tr>
+<tr><td>Font</td><td>Default font family for all print formats (overridable per format).</td></tr>
+<tr><td>Font Size</td><td>Default base font size in pixels.</td></tr>
+<tr><td>Print Style</td><td>Built-in CSS theme: Modern, Classic, Redesigned, etc.</td></tr>
+<tr><td>Compact Item Columns</td><td>Reduce whitespace in item tables to fit more rows per page.</td></tr>
+<tr><td>Print Taxes with Zero Amount</td><td>Show tax rows that evaluate to zero. Useful for explicit tax exemption lines.</td></tr>
+</table>
+
+</div></section>
+
+<!-- MODULE 06: INTEGRATIONS -->
+<section id="integrations">
+<div class="mod-banner" data-n="6">
+  <div class="mod-eye">Module 06</div>
+  <h1 class="mod-title">Integrations</h1>
+  <p class="mod-desc">Connect Frappe to external services and authentication providers. Webhooks, OAuth, Google Workspace, LDAP — this module handles all outbound and inbound integrations.</p>
+</div>
+<div class="mod-body">
+
+<div class="anc" id="email-account"></div>
+<h2 class="st">Email Account</h2>
+<p>Email Account records configure how Frappe sends and receives email. Without at least one outgoing Email Account configured and enabled, no system notifications, Auto Email Reports, Reminders, or document email buttons will work. Configuring email is one of the first steps for any live installation.</p>
+
+<h3 class="ss">Outgoing Email (SMTP)</h3>
+<table class="ft">
+<tr><th>Field</th><th>Purpose</th></tr>
+<tr><td>Email Account Name</td><td>Descriptive label. The primary outgoing account is typically named after the company domain or "Notifications".</td></tr>
+<tr><td>Email ID</td><td>The sender address (e.g., <code>noreply@yourcompany.com</code>). This becomes the "From" address on all outgoing mail from this account.</td></tr>
+<tr><td>Password</td><td>SMTP account password or App Password. Stored encrypted in the database.</td></tr>
+<tr><td>Enable Outgoing</td><td>Must be checked for this account to send email.</td></tr>
+<tr><td>Default Outgoing</td><td>Mark one account as the system default. All automated emails use this account unless a specific account is set on the notification.</td></tr>
+<tr><td>SMTP Server</td><td>Hostname of your mail server (e.g., <code>smtp.gmail.com</code>, <code>smtp.office365.com</code>).</td></tr>
+<tr><td>Use TLS</td><td>Enable for port 587 (STARTTLS). This is the recommended configuration for most providers.</td></tr>
+<tr><td>Use SSL</td><td>Enable for port 465 (implicit SSL). Choose one of TLS or SSL, not both.</td></tr>
+<tr><td>SMTP Port</td><td>587 for TLS (recommended), 465 for SSL, or 25 for unencrypted (avoid in production).</td></tr>
+</table>
+
+<h3 class="ss">Incoming Email (IMAP)</h3>
+<p>An incoming email account lets Frappe poll an inbox and create records automatically — converting support emails into Issues, or marketing inquiries into Leads.</p>
+<table class="ft">
+<tr><th>Field</th><th>Purpose</th></tr>
+<tr><td>Enable Incoming</td><td>Activates the scheduled job that checks the inbox periodically.</td></tr>
+<tr><td>Append To</td><td>Which DocType to create from incoming emails (e.g., Issue, Lead, Communication).</td></tr>
+<tr><td>Email Server</td><td>IMAP server hostname.</td></tr>
+<tr><td>Use SSL</td><td>Enable for secure IMAP (port 993). Strongly recommended.</td></tr>
+</table>
+
+<div class="cl warn"><div class="cl-icon">&#9888;&#65039;</div><div class="cl-body"><div class="cl-title">Gmail and Google Workspace require an App Password</div><p>If your provider is Gmail or Google Workspace with 2-factor authentication active, Google blocks authentication with a regular account password. You must generate an <strong>App Password</strong> in the Google Account security settings and use that value in the Password field. Regular passwords produce a "Username and Password not accepted" SMTP error that is not obvious from its error message alone.</p></div></div>
+
+<div class="cl tip"><div class="cl-icon">&#128161;</div><div class="cl-body"><div class="cl-title">Test outgoing email immediately after setup</div><p>After saving an Email Account with outgoing enabled, use the <strong>Send a Test Email</strong> button on the record to verify the SMTP connection works before relying on it for automated notifications. The test sends a real message to the Email ID configured on the account.</p></div></div>
+
+<div class="anc" id="connected-app"></div>
+<h2 class="st">Connected App</h2>
+<p>A Connected App stores OAuth2 client credentials for an external service that Frappe needs to authenticate against. When Frappe connects to an external OAuth2 API, the client ID, secret, and endpoint URLs are stored here.</p>
+<table class="ft">
+<tr><th>Field</th><th>Purpose</th></tr>
+<tr><td>Client ID</td><td>The OAuth2 client ID issued by the external service.</td></tr>
+<tr><td>Client Secret</td><td>The corresponding secret. Stored encrypted in the database.</td></tr>
+<tr><td>Authorization URL</td><td>The authorization endpoint of the external OAuth2 provider.</td></tr>
+<tr><td>Access Token URL</td><td>The token exchange endpoint.</td></tr>
+<tr><td>Redirect URI</td><td>Your Frappe site's callback URL where the provider sends the auth code back.</td></tr>
+<tr><td>Scopes</td><td>The OAuth2 scopes to request (space-separated).</td></tr>
+</table>
+
+<div class="anc" id="push-notif"></div>
+<h2 class="st">Push Notification</h2>
+<p>Push Notifications enable browser-based push alerts for Frappe desk users. These are OS-level notifications that appear in the system notification center even when the browser is not in the foreground.</p>
+
+<h3 class="ss">Requirements</h3>
+<ul>
+<li>The site must be served over <strong>HTTPS</strong> (required by the browser Push API — HTTP will not work).</li>
+<li>VAPID key pairs are generated automatically when you enable Push Notifications.</li>
+<li>Each user must grant notification permission in their browser the first time they encounter a push notification prompt.</li>
+<li>Push notification triggers are configured in System &gt; Notifications using the "System Notification" channel.</li>
+</ul>
+
+<div class="anc" id="webhook"></div>
+<h2 class="st">Webhook</h2>
+<p>Webhooks are outgoing HTTP calls from Frappe to an external URL when a document event occurs. This is a push integration pattern: instead of external systems polling Frappe for changes, Frappe proactively notifies them the moment data changes.</p>
+
+<h3 class="ss">Configuration</h3>
+<table class="ft">
+<tr><th>Field</th><th>Purpose</th></tr>
+<tr><td>Webhook Name</td><td>Descriptive name for this webhook.</td></tr>
+<tr><td>DocType</td><td>Which DocType to watch.</td></tr>
+<tr><td>Webhook Trigger</td><td>The event: after_insert, after_save, after_submit, after_cancel, after_delete.</td></tr>
+<tr><td>Enabled</td><td>Toggle the webhook on/off without deleting it.</td></tr>
+<tr><td>Request URL</td><td>The external HTTPS endpoint to POST to.</td></tr>
+<tr><td>Request Method</td><td>POST (default) or GET.</td></tr>
+<tr><td>Request Headers (table)</td><td>HTTP headers to include, e.g., <code>Authorization: Bearer TOKEN</code> or <code>X-Api-Key: abc123</code>.</td></tr>
+<tr><td>Webhook Data (table)</td><td>Which fields to include in the JSON body. Empty = sends no body.</td></tr>
+<tr><td>Condition</td><td>Python expression that must be True for the webhook to fire. E.g., <code>doc.status == "Submitted"</code>.</td></tr>
+</table>
+
+<h3 class="ss">Example Payload</h3>
+<div class="cb"><div class="cb-hd"><span class="cb-lang">JSON — Webhook Payload</span><button class="cp-btn" onclick="cp(this)">Copy</button></div><pre><code>{
+  "name": "SAL-ORD-2025-00247",
+  "customer": "Acme Corporation",
+  "transaction_date": "2025-11-15",
+  "grand_total": 150000.00,
+  "status": "Submitted",
+  "items": [
+    {
+      "item_code": "WIDGET-001",
+      "qty": 10,
+      "rate": 15000.00,
+      "amount": 150000.00
+    }
+  ]
+}</code></pre></div>
+
+<h3 class="ss">Debugging Webhooks</h3>
+<p>Every webhook attempt is logged. Check System &gt; Logs &gt; Error Log filtered by "Webhook" for failures with full HTTP response details. During development, use <a href="https://webhook.site" target="_blank">webhook.site</a> as a temporary receiver to inspect exact payloads before connecting the real external system.</p>
+
+<div class="anc" id="google"></div>
+<h2 class="st">Google Integration</h2>
+<p>Frappe provides built-in sync capabilities with Google Contacts and Google Calendar. Both require OAuth2 credentials from the Google Cloud Console.</p>
+
+<h3 class="ss">Setup Steps</h3>
+<ol class="steps">
+<li>Go to <strong>Google Cloud Console</strong> and create or open a project.</li>
+<li>Enable the <strong>Google Contacts API</strong> and <strong>Google Calendar API</strong>.</li>
+<li>Create an <strong>OAuth 2.0 Client ID</strong> (Web Application type). Add your Frappe site URL as an authorized origin and the Frappe callback URL as an authorized redirect URI: <code>https://yoursite.com/api/method/frappe.integrations.doctype.google_settings.google_settings.google_callback</code></li>
+<li>Copy the Client ID and Client Secret.</li>
+<li>In Frappe: go to <strong>Integrations &gt; Google &gt; Google Settings</strong>, paste the credentials, and click <strong>Authorize</strong> to complete the OAuth flow.</li>
+</ol>
+
+<p><strong>Google Contacts:</strong> After setup, Frappe Contacts can be synced to Google Contacts. Each linked contact syncs changes bidirectionally.</p>
+<p><strong>Google Calendar:</strong> Links Frappe Events to Google Calendar. Supports two-way sync — events created in either system appear in the other.</p>
+
+<div class="anc" id="social-login"></div>
+<h2 class="st">Social Login Key</h2>
+<p>Social Login Keys let users authenticate with Frappe using external OAuth2 providers like Google, GitHub, Facebook, or any custom OAuth2 service — removing the need for a separate Frappe password.</p>
+<table class="ft">
+<tr><th>Field</th><th>Purpose</th></tr>
+<tr><td>Social Login Provider</td><td>Select from built-in providers (Google, GitHub, Facebook, Office 365) or "Custom".</td></tr>
+<tr><td>Client ID / Secret</td><td>OAuth2 app credentials from the provider.</td></tr>
+<tr><td>Base URL</td><td>For custom providers: the base URL of the OAuth2 server.</td></tr>
+<tr><td>Custom Icons URL</td><td>Icon to show on the login button.</td></tr>
+<tr><td>Enable Social Login</td><td>Toggle to activate or deactivate this login option on the login page.</td></tr>
+</table>
+
+<div class="anc" id="ldap"></div>
+<h2 class="st">LDAP Settings</h2>
+<p>LDAP integration connects Frappe to an enterprise directory like Active Directory or OpenLDAP. Users can log in with their corporate credentials, and Frappe pulls profile information and role assignments directly from the directory.</p>
+<table class="ft">
+<tr><th>Field</th><th>Purpose</th></tr>
+<tr><td>LDAP Server URL</td><td>Connection URL: <code>ldap://server:389</code> or <code>ldaps://server:636</code> for SSL.</td></tr>
+<tr><td>Base DN</td><td>Distinguished Name from which to search for users. E.g., <code>DC=company,DC=com</code></td></tr>
+<tr><td>Bind DN</td><td>Service account DN for searching the directory. E.g., <code>CN=frappe-svc,OU=ServiceAccounts,DC=company,DC=com</code></td></tr>
+<tr><td>Bind Password</td><td>Service account password. Stored encrypted.</td></tr>
+<tr><td>LDAP Search String</td><td>Filter to find a user: <code>(sAMAccountName={0})</code> for Active Directory, <code>(uid={0})</code> for OpenLDAP.</td></tr>
+<tr><td>LDAP Email Field</td><td>LDAP attribute to use as the Frappe email. Typically <code>mail</code>.</td></tr>
+<tr><td>LDAP First / Last Name Field</td><td>Attributes for the user's name. Typically <code>givenName</code> and <code>sn</code>.</td></tr>
+<tr><td>Default Role</td><td>Frappe role to assign to all LDAP-authenticated users on first login.</td></tr>
+<tr><td>LDAP Groups (table)</td><td>Map LDAP group membership to Frappe Roles for automatic role assignment at login.</td></tr>
+</table>
+
+<div class="anc" id="oauth"></div>
+<h2 class="st">OAuth Client &amp; OAuth Provider</h2>
+
+<h3 class="ss">OAuth Client</h3>
+<p>Use when Frappe needs to authenticate against an external OAuth2 server — Frappe is the consuming application. Most use cases are handled via Connected App (described above).</p>
+
+<h3 class="ss">OAuth Provider</h3>
+<p>Use when you want Frappe itself to act as an OAuth2 identity provider. External applications authenticate their users through Frappe as the single sign-on (SSO) source of truth. Configure this by creating an OAuth Client record for each external app, specifying allowed redirect URIs and scopes. External apps then redirect users to Frappe's authorization endpoint at <code>/api/method/frappe.integrations.oauth2.authorize</code>, receive an auth code, and exchange it for tokens.</p>
+
+</div></section>
+
+<!-- MODULE 07: SYSTEM -->
+<section id="system">
+<div class="mod-banner" data-n="7">
+  <div class="mod-eye">Module 07</div>
+  <h1 class="mod-title">System</h1>
+  <p class="mod-desc">Monitor system health, manage background jobs and the scheduler, configure system notifications, run live Python in the console, and diagnose issues through detailed logs.</p>
+</div>
+<div class="mod-body">
+
+<div class="anc" id="health"></div>
+<h2 class="st">Health Report</h2>
+<p>The Health Report is your first stop when something seems wrong. It gives a real-time status overview of all major Frappe system components.</p>
+
+<h3 class="ss">What It Checks</h3>
+<ul>
+<li><strong>Database</strong>: Connection status and basic query response time.</li>
+<li><strong>Cache (Redis)</strong>: Whether the Redis cache server is reachable and responding.</li>
+<li><strong>Background Workers</strong>: Whether RQ workers are running and processing the job queue.</li>
+<li><strong>Scheduler</strong>: Whether the Frappe task scheduler is enabled and active.</li>
+<li><strong>Email Queue</strong>: Pending email count and any stuck email items.</li>
+<li><strong>Disk Space</strong>: Available storage on the server.</li>
+</ul>
+
+<div class="cl tip"><div class="cl-icon">&#128161;</div><div class="cl-body"><div class="cl-title">Always check Health Report first</div><p>Before troubleshooting "why aren't my reminders sending?" or "why isn't the auto-email report going out?" — check Health Report first. If the scheduler is disabled or workers are down, you have your answer without any further investigation.</p></div></div>
+
+<div class="anc" id="sys-notif"></div>
+<h2 class="st">Notifications</h2>
+<p>The Notification DocType (under System &gt; Notifications) defines automated messages sent when document events occur. Channels: Email, System Notification (in-app bell icon), Slack, SMS, or WhatsApp (if configured).</p>
+
+<h3 class="ss">Notification Events</h3>
+<ul>
+<li><strong>New</strong>: When a new document is created.</li>
+<li><strong>Save</strong>: Whenever a document is saved.</li>
+<li><strong>Submit</strong>: When a submittable document is submitted.</li>
+<li><strong>Cancel</strong>: When a document is cancelled.</li>
+<li><strong>Days Before</strong>: X days before a date field on the document.</li>
+<li><strong>Days After</strong>: X days after a date field.</li>
+<li><strong>Value Change</strong>: When a specific field changes to a specific value.</li>
+</ul>
+
+<h3 class="ss">Notification Configuration</h3>
+<table class="ft">
+<tr><th>Field</th><th>Purpose</th></tr>
+<tr><td>Document Type</td><td>Which DocType to watch.</td></tr>
+<tr><td>Event</td><td>When to trigger (see list above).</td></tr>
+<tr><td>Condition</td><td>Python expression that must be True: e.g., <code>doc.grand_total &gt; 100000</code></td></tr>
+<tr><td>Channel</td><td>Email, System Notification, Slack, SMS, or WhatsApp.</td></tr>
+<tr><td>Recipients (table)</td><td>Who receives it. Can be a field from the document (e.g., customer email field), a role (all users with that role), or an explicit email address.</td></tr>
+<tr><td>Subject</td><td>Email subject line. Jinja2 supported: <code>New Order {{ doc.name }} from {{ doc.customer }}</code></td></tr>
+<tr><td>Message</td><td>The notification body. Full Jinja2 access to all doc fields and frappe utilities.</td></tr>
+<tr><td>Print Format</td><td>Optionally attach a PDF print of the document to the notification email.</td></tr>
+</table>
+
+<div class="cb"><div class="cb-hd"><span class="cb-lang">Jinja — Notification Message Template</span><button class="cp-btn" onclick="cp(this)">Copy</button></div><pre><code>&lt;p&gt;Dear {{ doc.customer }},&lt;/p&gt;
+
+&lt;p&gt;Your Sales Order &lt;strong&gt;{{ doc.name }}&lt;/strong&gt;
+dated {{ frappe.format(doc.transaction_date, "Date") }}
+for &lt;strong&gt;{{ frappe.format(doc.grand_total, "Currency") }}&lt;/strong&gt;
+has been submitted.&lt;/p&gt;
+
+{% if doc.delivery_date %}
+&lt;p&gt;Expected delivery: {{ frappe.format(doc.delivery_date, "Date") }}&lt;/p&gt;
+{% endif %}
+
+&lt;p&gt;
+  &lt;a href="{{ frappe.utils.get_url() }}/app/sales-order/{{ doc.name }}"&gt;
+    View Order {{ doc.name }}
+  &lt;/a&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Regards,&lt;br&gt;{{ doc.company }}&lt;/p&gt;</code></pre></div>
+
+<div class="anc" id="bg-jobs"></div>
+<h2 class="st">Background Jobs</h2>
+<p>Frappe uses Redis Queue (RQ) to run tasks asynchronously in the background. This covers everything from scheduled automation (Auto Repeat, Email Reports, Reminders) to long-running operations (Data Import, PDF generation) to framework internals.</p>
+
+<h3 class="ss">RQ Job</h3>
+<p>The RQ Job list shows all current, queued, completed, and failed jobs. Key fields: Status (queued, started, finished, failed), Queue (default, long, short), Job Name (the Python function), and Exc Info (the traceback on failure). You can manually retry failed jobs from the list view.</p>
+
+<h3 class="ss">RQ Worker</h3>
+<p>Workers are the processes that pull jobs from Redis queues and execute them. In a healthy installation, you should see at least one worker per queue type (default, long, short). If no workers are running, all background jobs pile up in the queue without executing. Worker management is done via the bench CLI on the server, not from the desk.</p>
+
+<h3 class="ss">Scheduled Job Type</h3>
+<p>Defines Python functions to run on a schedule. This is how ERPNext runs daily processes like payment reminders, subscription billing, and stock valuation updates.</p>
+<table class="ft">
+<tr><th>Field</th><th>Purpose</th></tr>
+<tr><td>Method</td><td>Dotted Python path to the function: e.g., <code>erpnext.accounts.utils.update_outstanding_amounts</code></td></tr>
+<tr><td>Frequency</td><td>All (every scheduler tick, ~1-5 min), Hourly, Daily, Weekly, Monthly, Yearly, or Custom Cron.</td></tr>
+<tr><td>Cron Format</td><td>If Custom: a standard cron expression, e.g., <code>0 8 * * 1</code> for every Monday at 8am.</td></tr>
+<tr><td>Create Log</td><td>Whether to write a log entry for each run. Useful for debugging scheduling issues.</td></tr>
+</table>
+
+<h3 class="ss">Scheduled Job Log</h3>
+<p>The history of every scheduled job execution. Check here to confirm whether a scheduled job ran and whether it succeeded or produced an error. Each entry shows the job name, run time, duration, and status (success or failure with traceback).</p>
+
+<div class="anc" id="tools"></div>
+<h2 class="st">Tools</h2>
+
+<h3 class="ss">System Console</h3>
+<p>The System Console is a live Python REPL running on your Frappe server. You can execute any Python code with full access to the frappe API, your database, and all installed apps. It is the most direct way to do one-off data fixes, test a script before putting it into a Server Script, or investigate system state in real time.</p>
+
+<div class="cb"><div class="cb-hd"><span class="cb-lang">Python — System Console Examples</span><button class="cp-btn" onclick="cp(this)">Copy</button></div><pre><code># Inspect a document
+doc = frappe.get_doc("Sales Invoice", "SINV-2025-00123")
+print(doc.status, doc.grand_total, doc.outstanding_amount)
+
+# List documents matching conditions
+orders = frappe.db.get_all("Sales Order",
+    filters={"status": "Draft", "transaction_date": ["&lt;", "2025-01-01"]},
+    fields=["name", "customer", "grand_total"])
+for o in orders:
+    print(o.name, o.customer)
+
+# Safely update a field (always commit)
+frappe.db.set_value("Customer", "CUST-00001", "custom_segment", "Enterprise")
+frappe.db.commit()
+
+# Raw SQL with safety
+result = frappe.db.sql("""
+    SELECT COUNT(*) AS cnt, SUM(grand_total) AS total
+    FROM `tabSales Order`
+    WHERE docstatus = 1
+    AND YEAR(transaction_date) = 2025
+""", as_dict=True)
+print(result[0])
+
+# Reload all cached DocTypes after manual changes
+frappe.clear_cache()
+
+# Check installed apps
+print(frappe.get_installed_apps())
+
+# Get site config
+print(frappe.conf.db_name, frappe.conf.site_name)</code></pre></div>
+
+<div class="cl tip"><div class="cl-icon">&#128161;</div><div class="cl-body"><div class="cl-title">bench execute: run Python functions from the terminal</div><p>For scripts you want to run from the CLI without opening the desk, use <code>bench --site yoursite.local execute module.path.to.function</code>. The function runs in the Frappe context with full database access, exactly like the System Console but from the terminal. Useful for one-off data migrations, testing scheduled functions manually, or running fixes on a server via SSH.</p></div></div>
+
+<div class="cl dng"><div class="cl-icon">&#128680;</div><div class="cl-body"><div class="cl-title">System Console has no undo</div><p>Code in the System Console runs immediately on your live database. Always test on a staging site first. Always include <code>frappe.db.commit()</code> explicitly for DB writes — never rely on auto-commit. For destructive operations, add a tight WHERE condition and use a Limit clause to test on a small subset before running on the full dataset.</p></div></div>
+
+<h3 class="ss">Recorder</h3>
+<p>The Recorder captures all database queries executed during a specific request. Use it for performance profiling — identifying slow, redundant, or excessive queries that degrade page load or form submit speed.</p>
+
+<ol class="steps">
+<li>Go to <strong>System &gt; Tools &gt; Recorder</strong>.</li>
+<li>Click <strong>Start</strong> to begin recording.</li>
+<li>Perform the action you want to profile (open a form, submit a document, load a report).</li>
+<li>Return to Recorder and click <strong>Stop</strong>.</li>
+<li>Browse the recorded requests. Click any request to see the full SQL list with execution times, call counts, and Python call stacks per query.</li>
+</ol>
+
+<p>Common findings: N+1 queries (a loop that fires one DB query per row instead of one batched query), repeated identical queries (same data fetched multiple times per request), and slow queries without proper database indexes.</p>
+
+<div class="anc" id="logs"></div>
+<h2 class="st">Logs</h2>
+
+<h3 class="ss">Error Log</h3>
+<p>The most important log for developers. Every unhandled Python exception — from Server Scripts, scheduled jobs, form submissions, API calls — creates an Error Log entry with the full Python traceback, the request URL, and the timestamp. Check here first when a form fails to save, a scheduled job does not run, or an API returns a 500 error. The traceback tells you exactly which line of code failed and why.</p>
+
+<h3 class="ss">API Request Log</h3>
+<p>Records every API call to the Frappe server: URL, HTTP method, response code, and execution time. Use this to audit which external systems are calling your Frappe API, identify slow endpoints by execution time, debug integration failures, and track usage patterns.</p>
+
+<h3 class="ss">View Log</h3>
+<p>Records document view events: who opened which document and when. This is the data behind the "Seen By" list that appears in the document timeline, showing which users have opened the document.</p>
+
+<h3 class="ss">Patch Log</h3>
+<p>Records every database migration patch applied to the site. Frappe apps ship Python patches that run once during upgrades to migrate schema or data. The Patch Log tells you which patches have run, when, and whether they succeeded. Critical for diagnosing upgrade issues where a migration may have failed partway through.</p>
+
+</div></section>
+
+<!-- MODULE 08: WEBSITE -->
+<section id="website">
+<div class="mod-banner" data-n="8">
+  <div class="mod-eye">Module 08</div>
+  <h1 class="mod-title">Website</h1>
+  <p class="mod-desc">Build and manage the public-facing web presence of your Frappe site. Content pages, self-service forms, portal access control, and custom themes — all managed from the same desk.</p>
+</div>
+<div class="mod-body">
+
+<div class="anc" id="web-page"></div>
+<h2 class="st">Web Page</h2>
+<p>Web Pages are content pages published at public URLs on your Frappe site. Accessible without logging in (unless you restrict them). Use them for About Us pages, product pages, blog articles, documentation, or any semi-static content.</p>
+
+<table class="ft">
+<tr><th>Field</th><th>Purpose</th></tr>
+<tr><td>Title</td><td>Page title shown in the browser tab and as the H1 heading.</td></tr>
+<tr><td>Route</td><td>URL path: set to <code>about-us</code> for <code>yoursite.com/about-us</code>. Auto-generated from Title if left blank.</td></tr>
+<tr><td>Published</td><td>Toggle to make the page live or take it offline without deleting it.</td></tr>
+<tr><td>Content Type</td><td>Markdown (easier to write), Rich Text (WYSIWYG), or HTML (full control with Jinja2).</td></tr>
+<tr><td>Main Section HTML</td><td>The page body content.</td></tr>
+<tr><td>Header Image</td><td>Banner or hero image shown at the top of the page.</td></tr>
+<tr><td>Show Title</td><td>Whether to display the Title as an H1 on the page.</td></tr>
+<tr><td>Meta Title</td><td>SEO title for the browser tab (overrides Title if set).</td></tr>
+<tr><td>Meta Description</td><td>SEO description shown in search engine results.</td></tr>
+</table>
+
+<div class="cb"><div class="cb-hd"><span class="cb-lang">Jinja — Dynamic Web Page Content</span><button class="cp-btn" onclick="cp(this)">Copy</button></div><pre><code>&lt;!-- Check login status --&gt;
+{% if frappe.session.user != "Guest" %}
+  &lt;p&gt;Welcome, {{ frappe.session.user }}.&lt;/p&gt;
+{% else %}
+  &lt;p&gt;&lt;a href="/login"&gt;Login&lt;/a&gt; to access your account.&lt;/p&gt;
+{% endif %}
+
+&lt;!-- Fetch and display live data from a DocType --&gt;
+{% set items = frappe.db.get_all("Item",
+   filters={"is_sales_item": 1, "show_in_website": 1},
+   fields=["item_name", "description", "website_image"],
+   limit=6) %}
+
+&lt;div class="item-grid"&gt;
+  {% for item in items %}
+  &lt;div class="item-card"&gt;
+    {% if item.website_image %}
+    &lt;img src="{{ item.website_image }}" alt="{{ item.item_name }}"&gt;
+    {% endif %}
+    &lt;h3&gt;{{ item.item_name }}&lt;/h3&gt;
+    &lt;p&gt;{{ item.description or "" }}&lt;/p&gt;
+  &lt;/div&gt;
+  {% endfor %}
+&lt;/div&gt;</code></pre></div>
+
+<div class="anc" id="web-form"></div>
+<h2 class="st">Web Form</h2>
+<p>Web Forms are public-facing forms that let portal users, customers, or prospects submit data directly into a Frappe DocType. The primary tool for customer self-service portals, support ticket submission, job applications, and lead capture.</p>
+
+<table class="ft">
+<tr><th>Field</th><th>Purpose</th></tr>
+<tr><td>Title</td><td>Form heading shown to users.</td></tr>
+<tr><td>Route</td><td>URL path for the form.</td></tr>
+<tr><td>DocType</td><td>Where submissions are stored (e.g., "Issue", "Lead", "Job Applicant").</td></tr>
+<tr><td>Published</td><td>Toggle to make the form publicly accessible.</td></tr>
+<tr><td>Login Required</td><td>Users must log in before seeing or submitting the form.</td></tr>
+<tr><td>Allow Multiple Submissions</td><td>If unchecked, each user (or session for guests) can only submit once.</td></tr>
+<tr><td>Allow Edit After Submission</td><td>Let users return to edit their own submission. Requires Login Required.</td></tr>
+<tr><td>Success URL</td><td>Redirect to this URL after submission. Leave blank to show a success message in place.</td></tr>
+<tr><td>Success Message</td><td>Message shown after successful submission.</td></tr>
+<tr><td>Fields (table)</td><td>Which DocType fields to show, with per-field settings for mandatory, read-only, hidden, default, and description.</td></tr>
+</table>
+
+<div class="cl tip"><div class="cl-icon">&#128161;</div><div class="cl-body"><div class="cl-title">Link submissions to the logged-in user automatically</div><p>Add the user-linking field (e.g., <code>raised_by</code> on Issue) to the Web Form fields table. Set Default Value to <code>{{ frappe.session.user }}</code> and mark it Hidden. Every submission will carry the submitter's email without showing the field on the form.</p></div></div>
+
+<div class="anc" id="website-settings"></div>
+<h2 class="st">Website Settings</h2>
+<p>Global configuration for the public website. These settings apply to every page.</p>
+<table class="ft">
+<tr><th>Setting</th><th>Purpose</th></tr>
+<tr><td>Home Page</td><td>The route shown at your site root (/). E.g., set to "about-us" or "login".</td></tr>
+<tr><td>Title Suffix</td><td>Appended to every page title in the browser tab. E.g., " | Company Name".</td></tr>
+<tr><td>Brand HTML</td><td>HTML for the website header brand and logo area.</td></tr>
+<tr><td>Favicon</td><td>Upload a .ico or .png for the browser favicon.</td></tr>
+<tr><td>Top Bar Items</td><td>Navigation links in the header.</td></tr>
+<tr><td>Footer Items</td><td>Links in the website footer.</td></tr>
+<tr><td>Banner HTML</td><td>A site-wide announcement banner above the navigation bar.</td></tr>
+<tr><td>Google Analytics ID</td><td>Adds the GA tracking script to all pages (UA-XXXXX or G-XXXXX format).</td></tr>
+<tr><td>Robots.txt</td><td>Content for the robots.txt file that instructs search engine crawlers.</td></tr>
+<tr><td>Show Language Picker</td><td>Display a language selector for multilingual sites.</td></tr>
+</table>
+
+<div class="anc" id="portal-settings"></div>
+<h2 class="st">Portal Settings</h2>
+<p>Controls the sidebar navigation shown to logged-in portal users (Website Users — not desk users). This is the menu customers or suppliers see when they log into your site's self-service portal.</p>
+<p>Portal Settings contains a table of menu items. Each item has a Title, Route, Enabled toggle, and optional Role restriction. Set a Reference DocType to optionally show a record count badge next to the menu item.</p>
+
+<div class="cl note"><div class="cl-icon">&#8505;&#65039;</div><div class="cl-body"><div class="cl-title">Portal vs Desk sidebar</div><p>Portal Settings only affects the portal sidebar (the menu Website Users see). The Frappe desk sidebar (what System Users see) is controlled by Workspace visibility settings and the Allow Modules list on each User record.</p></div></div>
+
+<div class="anc" id="website-script"></div>
+<h2 class="st">Website Script</h2>
+<p>Website Script injects global JavaScript and CSS into every page of the public website. The place for third-party integrations that need a script tag on every page.</p>
+
+<h3 class="ss">Common Use Cases</h3>
+<ul>
+<li><strong>Google Tag Manager</strong>: paste the GTM container snippet into the JS section.</li>
+<li><strong>Chat widgets</strong>: Intercom, Crisp, Freshdesk, Tawk.to — each provides a JS snippet.</li>
+<li><strong>Custom fonts</strong>: load a Google Fonts link in the CSS section.</li>
+<li><strong>Global CSS overrides</strong>: site-wide style tweaks outside of a theme.</li>
+<li><strong>Analytics scripts</strong>: Hotjar, Heap, Mixpanel, or custom pixel trackers.</li>
+</ul>
+
+<div class="cl warn"><div class="cl-icon">&#9888;&#65039;</div><div class="cl-body"><div class="cl-title">Only affects the public website</div><p>Scripts added here load on public pages (Web Pages, Web Forms, portal) — NOT on the Frappe desk (/app). To inject scripts into the desk, use a Client Script or a custom app. Heavy analytics scripts on every page add measurable page load time — audit what you have here regularly.</p></div></div>
+
+<div class="anc" id="website-theme"></div>
+<h2 class="st">Website Theme</h2>
+<p>Website Theme lets you customize the visual appearance of the public website by overriding CSS variables and adding custom SCSS. Create multiple themes and switch between them to test different looks.</p>
+
+<table class="ft">
+<tr><th>Field</th><th>Purpose</th></tr>
+<tr><td>Theme Name</td><td>Identifier for this theme.</td></tr>
+<tr><td>Google Font</td><td>Select a Google Font to load for the entire public website.</td></tr>
+<tr><td>Apply Font to Headings</td><td>Use the selected font for h1-h6 tags.</td></tr>
+<tr><td>Color Overrides (table)</td><td>Override specific CSS variables: primary color, background, link color, button color, etc.</td></tr>
+<tr><td>Custom SCSS</td><td>SCSS compiled server-side for deeper styling control beyond CSS variable overrides.</td></tr>
+</table>
+
+<h3 class="ss">Activating a Theme</h3>
+<ol class="steps">
+<li>Create or edit a Website Theme record.</li>
+<li>Click <strong>Set as Default</strong> to make it active.</li>
+<li>The theme compiles and applies to all public pages immediately on save.</li>
+</ol>
+
+<div class="cl note"><div class="cl-icon">&#8505;&#65039;</div><div class="cl-body"><div class="cl-title">Theme scope is public website only</div><p>Website Theme only affects the public website. The Frappe desk has its own appearance settings accessible from your user profile menu under Display Settings, where you can switch between light and dark mode independently.</p></div></div>
+
+</div></section>
+
+</main>
+
+<a id="kw-wa-btn" class="kw-fab" href="https://wa.me/2347089167007?text=Hi%2C%20I%20have%20a%20question%20about%20the%20ERPNext%2FFrappe%20learning%20resources." target="_blank" rel="noopener" aria-label="Message on WhatsApp" title="Message me on WhatsApp">
+  <svg viewBox="0 0 24 24" width="24" height="24" fill="#fff"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 1.67c2.24 0 4.35.87 5.94 2.46a8.2 8.2 0 0 1 2.41 5.78c0 4.55-3.7 8.25-8.25 8.25a8.2 8.2 0 0 1-4.19-1.15l-.3-.17-3.12.82.83-3.04-.19-.31a8.18 8.18 0 0 1-1.28-4.4c0-4.55 3.7-8.24 8.15-8.24zm4.52 5.86c-.25-.12-1.47-.72-1.7-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.78.97-.14.17-.29.19-.53.06-.25-.12-1.04-.38-1.99-1.22-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.14.16-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.23.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.68 4.25 3.75.59.25 1.06.4 1.42.52.6.19 1.14.16 1.57.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.1-.23-.16-.48-.28z"/></svg>
+</a>
+<button id="kw-top-btn" class="kw-fab" aria-label="Back to top" title="Back to top">&uarr;</button>
+
+<script>
+// ── Progress bar ─────────────────────────────────────────
+var prog = document.getElementById('prog');
+var kwTopBtn = document.getElementById('kw-top-btn');
+window.addEventListener('scroll', function() {
+  var scrolled = window.scrollY;
+  var total = document.body.scrollHeight - window.innerHeight;
+  prog.style.transform = 'scaleX(' + (scrolled / total) + ')';
+  kwTopBtn.classList.toggle('vis', scrolled > 400);
+});
+kwTopBtn.addEventListener('click', function(){ window.scrollTo({ top: 0, behavior: 'smooth' }); });
+
+// ── Module accordion ─────────────────────────────────────
+function tog(hd) {
+  hd.parentElement.classList.toggle('open');
+}
+
+// ── Active link via IntersectionObserver ─────────────────
+var ancs = document.querySelectorAll('.anc');
+var links = document.querySelectorAll('.nl');
+
+var observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      var id = entry.target.id;
+      links.forEach(function(lk) {
+        var active = lk.getAttribute('href') === '#' + id;
+        lk.classList.toggle('on', active);
+        if (active) {
+          var mod = lk.closest('.nm');
+          if (mod && !mod.classList.contains('open')) mod.classList.add('open');
+        }
+      });
+    }
+  });
+}, { rootMargin: '-80px 0px -70% 0px', threshold: 0 });
+
+ancs.forEach(function(a) { observer.observe(a); });
+
+// ── Smooth scroll ─────────────────────────────────────────
+links.forEach(function(lk) {
+  lk.addEventListener('click', function(e) {
+    e.preventDefault();
+    var id = lk.getAttribute('href').slice(1);
+    var target = document.getElementById(id);
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    closeMobileNav();
+  });
+});
+
+// ── Mobile nav drawer ───────────────────────────────────────
+var sbEl = document.getElementById('sb');
+var menuBtn = document.getElementById('kw-menu-btn');
+var sbOverlay = document.getElementById('sb-overlay');
+function openMobileNav(){ sbEl.classList.add('open'); sbOverlay.classList.add('show'); }
+function closeMobileNav(){ sbEl.classList.remove('open'); sbOverlay.classList.remove('show'); }
+menuBtn.addEventListener('click', function(){ sbEl.classList.contains('open') ? closeMobileNav() : openMobileNav(); });
+sbOverlay.addEventListener('click', closeMobileNav);
+
+// ── Copy code ─────────────────────────────────────────────
+function cp(btn) {
+  var code = btn.closest('.cb').querySelector('code').innerText;
+  navigator.clipboard.writeText(code).then(function() {
+    btn.textContent = 'Copied!';
+    btn.classList.add('done');
+    setTimeout(function() {
+      btn.textContent = 'Copy';
+      btn.classList.remove('done');
+    }, 2000);
+  }).catch(function() {
+    // Fallback for older browsers
+    var ta = document.createElement('textarea');
+    ta.value = code;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    btn.textContent = 'Copied!';
+    setTimeout(function() { btn.textContent = 'Copy'; }, 2000);
+  });
+}
+
+// ── Search ────────────────────────────────────────────────
+var srch = document.getElementById('srch');
+var noRes = document.getElementById('no-res');
+
+srch.addEventListener('input', function() {
+  var q = this.value.toLowerCase().trim();
+
+  if (!q) {
+    document.querySelectorAll('.nm').forEach(function(m) { m.style.display = ''; });
+    document.querySelectorAll('.nl').forEach(function(l) { l.style.display = ''; });
+    document.querySelectorAll('.nm-sub-sec').forEach(function(s) { s.style.display = ''; });
+    noRes.style.display = 'none';
+    return;
+  }
+
+  var anyVisible = false;
+
+  document.querySelectorAll('.nm').forEach(function(mod) {
+    var moduleMatch = mod.querySelector('.nm-name').textContent.toLowerCase().includes(q);
+    var linkMatch = false;
+
+    mod.querySelectorAll('.nl').forEach(function(lk) {
+      var matches = lk.textContent.toLowerCase().includes(q) || moduleMatch;
+      lk.style.display = matches ? '' : 'none';
+      if (matches) linkMatch = true;
+    });
+
+    var show = moduleMatch || linkMatch;
+    mod.style.display = show ? '' : 'none';
+    if (show) {
+      mod.classList.add('open');
+      anyVisible = true;
+    }
+
+    mod.querySelectorAll('.nm-sub-sec').forEach(function(s) {
+      s.style.display = show ? '' : 'none';
+    });
+  });
+
+  noRes.style.display = anyVisible ? 'none' : 'block';
+});
+</script>
+</body>
+</html>
